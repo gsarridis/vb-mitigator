@@ -11,7 +11,7 @@ MITIGATOR:
     BCC_PATH: "./output/imagenet9_baselines/tags/erm/best"
 SOLVER:
   BATCH_SIZE: 64
-  EPOCHS: 30
+  EPOCHS: 10
   LR: 0.001
   TYPE: "SGD"
   WEIGHT_DECAY: 1e-4

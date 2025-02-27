@@ -74,7 +74,7 @@ class JTTTrainer(BaseTrainer):
         train_loader = torch.utils.data.DataLoader(
             concat_train_set,
             batch_size=cfg.SOLVER.BATCH_SIZE,
-            shuffle=False,  # no shuffle for inferring error set
+            shuffle=True,  # no shuffle for inferring error set
             num_workers=cfg.DATASET.NUM_WORKERS,
             pin_memory=True,
             persistent_workers=cfg.DATASET.NUM_WORKERS > 0,

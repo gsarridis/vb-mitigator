@@ -19,7 +19,7 @@ conda activate dl310
 
 # Define datasets and methods
 DATASETS=("imagenet9")
-METHODS=("mavias" "debian" "flacb" "jtt" "lff" "sd" "softcon" "erm")
+METHODS=("flacb" "sd" "softcon" "mavias" "jtt" "erm" "debian"  "lff")
 SEEDS=(0 1 2)
 
 # Compute indices from SLURM_ARRAY_TASK_ID

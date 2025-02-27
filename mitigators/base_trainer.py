@@ -644,7 +644,7 @@ class BaseTrainer:
             log_dict.update(test_log_dict)
             update_cpkt = self._update_best(log_dict)
             if update_cpkt:
-                self._save_checkpoint(tag="best")
+                self._save_checkpoint(tag=f"best_{self.cfg.EXPERIMENT.SEED}")
             self._save_checkpoint(tag=f"current_{self.cfg.EXPERIMENT.SEED}")
             self._log_epoch(log_dict, update_cpkt)
         self._save_checkpoint(tag="latest")

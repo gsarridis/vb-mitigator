@@ -24,7 +24,7 @@ for dataset in datasets:
     # Get top-10 tags per class
     top_tags = (
         df.groupby("Class")
-        .apply(lambda x: x.nlargest(20, "Score"))
+        .apply(lambda x: x.nlargest(10, "Score"))
         .reset_index(drop=True)
     )
 
@@ -32,4 +32,10 @@ for dataset in datasets:
     output_path = f"./data/{dataset}/top_biased_tags.csv"
     top_tags.to_csv(output_path, index=False)
 
-    print(f"Processed {dataset}: saved top tags to {output_path}")
+    print(f"\nProcessed {dataset}: saved top tags to {output_path}")
+    for class_label, tags_df in top_tags.groupby("Class"):
+        tags = ", ".join(
+            tags_df["Tag"].tolist()
+        )  # Convert tags to comma-separated string
+        print(f"{class_label}: {tags}")
+    print("=" * 80)  # Separator for readability

@@ -38,7 +38,7 @@ class ERMTagsTrainer(BaseTrainer):
         )
         self.model.to(self.device)
 
-    def get_overperforming_tags(self, stage="test", threshold=None):
+    def get_overperforming_tags(self, stage="test", threshold=None, epoch=0):
         self._set_eval()
         # threshold = threshold / 100
         with torch.no_grad():
@@ -120,8 +120,10 @@ class ERMTagsTrainer(BaseTrainer):
                 tags_for_csv, columns=["Class", "Tag", "Acc", "Samples"]
             )
             tags_df = tags_df.sort_values(by="Acc", ascending=False)
+            ov_name = f"overperforming_tags_ep{epoch}.csv"
             tags_df.to_csv(
-                os.path.join(self.data_root, "overperforming_tags.csv"), index=False
+                os.path.join(self.data_root, ov_name),
+                index=False,
             )
             return tags_df
 
@@ -148,13 +150,13 @@ class ERMTagsTrainer(BaseTrainer):
             update_cpkt = self._update_best(log_dict)
             if update_cpkt:
                 self._save_checkpoint(tag="best")
-                self.overperforming_tags_df = self.get_overperforming_tags(
-                    stage="test", threshold=test_performance
-                )
-                test_performance_tags = self._validate_epoch_tags(stage="test")
-                log_dict.update(
-                    self.build_log_dict(test_performance_tags, stage="test_tags")
-                )
+            self.overperforming_tags_df = self.get_overperforming_tags(
+                stage="test", threshold=test_performance, epoch=epoch
+            )
+            test_performance_tags = self._validate_epoch_tags(stage="test")
+            log_dict.update(
+                self.build_log_dict(test_performance_tags, stage="test_tags")
+            )
             self._log_epoch(log_dict, update_cpkt)
             self._save_checkpoint(tag=f"current_{self.cfg.EXPERIMENT.SEED}")
 
