@@ -123,6 +123,14 @@ CFG.DATASET.IMAGENET9.BIAS = "unknown"
 CFG.DATASET.IMAGENET9.BENCHMARK_VAL = "mixed_rand"  # choices: mixed_rand, mixed_next, mixed_same, no_fg, only_bg_b, only_bg_t, only_fg, original
 CFG.DATASET.IMAGENET9.BENCHMARK_TEST = "original"  # choices: mixed_rand, mixed_next, mixed_same, no_fg, only_bg_b, only_bg_t, only_fg, original
 
+CFG.DATASET.UCF101 = CN()
+CFG.DATASET.UCF101.VIDEO_PATH = "/mnt/cephfs/home/common/datasets/UCF101/UCF-101-jpg"
+CFG.DATASET.UCF101.ANNOTATION_PATH = (
+    "/mnt/cephfs/home/common/datasets/UCF101/ucf101_01.json"
+)
+CFG.DATASET.UCF101.BIAS_TYPE = "indoor_outdoor"
+CFG.DATASET.UCF101.BIAS_TH = 0.00
+
 CFG.DATASET.JIGSAW_TOXIC_COMMENTS = CN()
 CFG.DATASET.JIGSAW_TOXIC_COMMENTS.ROOT = "./data/jigsaw_toxic_comments/data"
 CFG.DATASET.JIGSAW_TOXIC_COMMENTS.BIAS = "bias"

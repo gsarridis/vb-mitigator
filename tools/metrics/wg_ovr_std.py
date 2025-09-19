@@ -2,10 +2,10 @@ import numpy as np
 from itertools import product
 from collections import defaultdict
 
-wg_ovr_dict = {"best": "high", "performance": "overall"}
+wg_ovr_std_dict = {"best": "high", "performance": "overall"}
 
 
-def wg_ovr(data):
+def wg_ovr_std(data):
     groups = defaultdict(lambda: {"correct": 0, "total": 0})
     targets = data["targets"]
     predictions = data["predictions"]
@@ -27,11 +27,13 @@ def wg_ovr(data):
     print(accuracies)
     worst_group_acc = min(accuracies.values(), default=None)
     avg_group_acc = sum(accuracies.values()) / len(accuracies) if accuracies else None
-
+    std_group_acc = np.std(list(accuracies.values()), ddof=0) if accuracies else None
     out = {
         "worst_group_accuracy": round(worst_group_acc, 3),
         "overall": round(avg_group_acc, 3),
+        "std": round(float(std_group_acc), 3) if std_group_acc is not None else None,
     }
+
     return out
 
 
@@ -43,4 +45,5 @@ if __name__ == "__main__":
         "background": np.array([0, 0, 0, 0, 1, 1, 1, 1, 1, 0]),
         "object": np.array([1, 1, 0, 0, 1, 1, 0, 0, 1, 0]),
     }
-    _ = wg_ovr(data_dict)
+    out = wg_ovr_std(data_dict)
+    print(out)

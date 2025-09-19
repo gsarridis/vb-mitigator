@@ -1,0 +1,24 @@
+EXPERIMENT:
+  NAME: "end"
+  TAG: "dev_in_out"
+  PROJECT: "ucf101_baselines"
+DATASET:
+  TYPE: "ucf101"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "end"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 40
+  LR: 0.001
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-5
+  SCHEDULER:
+    LR_DECAY_STAGES: [20, 30]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet3d18"
+METRIC: "wg_ovr_analytic"
+LOG:
+  SAVE_CRITERION: "test"

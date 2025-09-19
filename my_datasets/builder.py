@@ -3,6 +3,7 @@ from my_datasets.chexpert_nih import get_chexpert_nih_loader
 from my_datasets.cifar100 import get_cifar100_loaders
 from my_datasets.imagenet9 import get_background_challenge_data, get_imagenet9l
 from my_datasets.speech_accent_archive import get_speech_accent_dataloaders
+from my_datasets.ucf101 import get_ucf101
 from my_datasets.urbancars import get_urbancars_loader
 from my_datasets.urbansounds import get_urbansounds_dataloaders
 from my_datasets.urbansounds58 import (
@@ -1325,6 +1326,173 @@ def get_dataset(cfg):
         dataset["target2name"] = {
             0: "negative",
             1: "positive",
+        }
+        if (
+            method_name == "mavias"
+            or method_name == "erm_tags"
+            or metric_name == "wg_ovr_tags"
+            or method_name == "mhmavias"
+        ):
+            raise NotImplementedError(
+                "this is a text dataset - cannot extract tags like images. Needs a new implementation."
+            )
+    elif dataset_name == "ucf101":
+        if method_name == "groupdro":
+
+            train_loader, train_dataset = get_ucf101(
+                cfg.DATASET.UCF101.VIDEO_PATH,
+                cfg.DATASET.UCF101.ANNOTATION_PATH,
+                batch_size=cfg.SOLVER.BATCH_SIZE,
+                split="train",
+                sampler="weighted",
+                bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+                bias_th=cfg.DATASET.UCF101.BIAS_TH,
+            )
+        else:
+            train_loader, train_dataset = get_ucf101(
+                cfg.DATASET.UCF101.VIDEO_PATH,
+                cfg.DATASET.UCF101.ANNOTATION_PATH,
+                batch_size=cfg.SOLVER.BATCH_SIZE,
+                split="train",
+                bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+                bias_th=cfg.DATASET.UCF101.BIAS_TH,
+            )
+
+        val_loader, val_dataset = get_ucf101(
+            cfg.DATASET.UCF101.VIDEO_PATH,
+            cfg.DATASET.UCF101.ANNOTATION_PATH,
+            batch_size=cfg.SOLVER.BATCH_SIZE,
+            split="val",
+            bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+            bias_th=cfg.DATASET.UCF101.BIAS_TH,
+        )
+
+        test_loader, test_dataset = get_ucf101(
+            cfg.DATASET.UCF101.VIDEO_PATH,
+            cfg.DATASET.UCF101.ANNOTATION_PATH,
+            batch_size=cfg.SOLVER.BATCH_SIZE,
+            split="test",
+            bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+            bias_th=cfg.DATASET.UCF101.BIAS_TH,
+        )
+
+        dataset = {}
+        dataset["num_class"] = 101
+        dataset["num_groups"] = 101 * 14
+        dataset["biases"] = ["bias"]
+        dataset["dataloaders"] = {
+            "train": train_loader,
+            "val": val_loader,
+            "test": val_loader,
+        }
+        dataset["sets"] = {
+            "train": train_dataset,
+            "val": val_dataset,
+            "test": val_loader,
+        }
+        dataset["root"] = None
+        dataset["target2name"] = {
+            0: "ApplyEyeMakeup",
+            1: "ApplyLipstick",
+            2: "Archery",
+            3: "BabyCrawling",
+            4: "BalanceBeam",
+            5: "BandMarching",
+            6: "BaseballPitch",
+            7: "Basketball",
+            8: "BasketballDunk",
+            9: "BenchPress",
+            10: "Biking",
+            11: "Billiards",
+            12: "BlowDryHair",
+            13: "BlowingCandles",
+            14: "BodyWeightSquats",
+            15: "Bowling",
+            16: "BoxingPunchingBag",
+            17: "BoxingSpeedBag",
+            18: "BreastStroke",
+            19: "BrushingTeeth",
+            20: "CleanAndJerk",
+            21: "CliffDiving",
+            22: "CricketBowling",
+            23: "CricketShot",
+            24: "CuttingInKitchen",
+            25: "Diving",
+            26: "Drumming",
+            27: "Fencing",
+            28: "FieldHockeyPenalty",
+            29: "FloorGymnastics",
+            30: "FrisbeeCatch",
+            31: "FrontCrawl",
+            32: "GolfSwing",
+            33: "Haircut",
+            34: "Hammering",
+            35: "HammerThrow",
+            36: "HandstandPushups",
+            37: "HandstandWalking",
+            38: "HeadMassage",
+            39: "HighJump",
+            40: "HorseRace",
+            41: "HorseRiding",
+            42: "HulaHoop",
+            43: "IceDancing",
+            44: "JavelinThrow",
+            45: "JugglingBalls",
+            46: "JumpingJack",
+            47: "JumpRope",
+            48: "Kayaking",
+            49: "Knitting",
+            50: "LongJump",
+            51: "Lunges",
+            52: "MilitaryParade",
+            53: "Mixing",
+            54: "MoppingFloor",
+            55: "Nunchucks",
+            56: "ParallelBars",
+            57: "PizzaTossing",
+            58: "PlayingCello",
+            59: "PlayingDaf",
+            60: "PlayingDhol",
+            61: "PlayingFlute",
+            62: "PlayingGuitar",
+            63: "PlayingPiano",
+            64: "PlayingSitar",
+            65: "PlayingTabla",
+            66: "PlayingViolin",
+            67: "PoleVault",
+            68: "PommelHorse",
+            69: "PullUps",
+            70: "Punch",
+            71: "PushUps",
+            72: "Rafting",
+            73: "RockClimbingIndoor",
+            74: "RopeClimbing",
+            75: "Rowing",
+            76: "SalsaSpin",
+            77: "ShavingBeard",
+            78: "Shotput",
+            79: "SkateBoarding",
+            80: "Skiing",
+            81: "Skijet",
+            82: "SkyDiving",
+            83: "SoccerJuggling",
+            84: "SoccerPenalty",
+            85: "StillRings",
+            86: "SumoWrestling",
+            87: "Surfing",
+            88: "Swing",
+            89: "TableTennisShot",
+            90: "TaiChi",
+            91: "TennisSwing",
+            92: "ThrowDiscus",
+            93: "TrampolineJumping",
+            94: "Typing",
+            95: "UnevenBars",
+            96: "VolleyballSpiking",
+            97: "WalkingWithDog",
+            98: "WallPushups",
+            99: "WritingOnBoard",
+            100: "YoYo",
         }
         if (
             method_name == "mavias"

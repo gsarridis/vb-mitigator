@@ -10,6 +10,7 @@ from .classification_head import Classifier
 from .lstm_classifier import LSTM_Attn_Classifier
 from .lstm_classifier_mfcc import LSTM_Attn_Classifier_MFCC
 from .cnn_classifier_mfcc import CNNModel
+from .resnet3d import VResNet18
 
 models_dict = {
     "simple_conv": SimpleConvNet,
@@ -29,4 +30,5 @@ models_dict = {
     "lstm_classifier_mfcc": LSTM_Attn_Classifier_MFCC,
     "cnn_classifier_mfcc": CNNModel,
     "resnet34": ResNet34,
+    "resnet3d18": VResNet18,
 }

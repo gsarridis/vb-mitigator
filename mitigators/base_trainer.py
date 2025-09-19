@@ -88,7 +88,7 @@ class BaseTrainer:
         self._metric_specific_setups()
         self._basic_eval_setups()
         self._method_specific_setups()
-        # self._setup_resume()
+        self._setup_resume()
         show_cfg(cfg, self.logger)
 
     def _setup_resume(self):
@@ -700,7 +700,21 @@ class BaseTrainer:
         self._save_checkpoint(tag="latest")
 
     def eval(self):
-        self.load_checkpoint(self.cfg.MODEL.PATH)
+        # self.load_checkpoint(self.cfg.MODEL.PATH)
         test_performance = self._validate_epoch(stage="test")
         test_log_dict = self.build_log_dict(test_performance, stage="test")
         print(log_msg(f"Test performance: {test_log_dict}", "EVAL", self.logger))
+
+        # === Save full_results DataFrame to CSV if present ===
+        if "full_results" in test_performance:
+            df = test_performance["full_results"]
+            df.rename(index=self.target2name, inplace=True)
+            assert hasattr(df, "to_csv"), "full_results must be a pandas DataFrame"
+
+            # Pick save directory
+            save_path = os.path.join(
+                self.log_path, f"test_full_results_{self.cfg.EXPERIMENT.SEED}"
+            )
+
+            df.to_csv(save_path, index=True)  # keep index for clarity
+            print(log_msg(f"Saved full results to {save_path}", "EVAL", self.logger))
