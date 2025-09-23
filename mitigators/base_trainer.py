@@ -288,6 +288,10 @@ class BaseTrainer:
                 all_data["ba_groups"] = self.ba_groups
             performance = get_performance[self.cfg.METRIC](all_data)
             performance["loss"] = np.mean(losses)
+            if "full_results" in performance:
+                df = performance["full_results"]
+                df.rename(index=self.target2name, inplace=True)
+                performance["full_results"] = df
         return performance
 
     def _val_iter_tags(self, batch):
@@ -563,7 +567,8 @@ class BaseTrainer:
             import wandb
 
             wandb.log({"current lr": self.current_lr})
-            wandb.log(log_dict)
+            # wandb.log(log_dict)
+            wandb.log({k: v for k, v in log_dict.items() if isinstance(v, (int, float))})
         if update_cpkt:
             if self.cfg.LOG.WANDB:
                 wandb.run.summary["best_performance"] = self.best_performance
@@ -574,6 +579,7 @@ class BaseTrainer:
             self.log_path, f"out{self.cfg.EXPERIMENT.SEED}.log"
         )
         log_keys = ["epoch", "lr"] + list(log_dict.keys())
+        log_keys = ["epoch", "lr"] + [k for k, v in log_dict.items() if isinstance(v, (int, float, str))]
         column_width = (
             max(len(key) for key in log_keys) + 2
         )  # Adjust column width dynamically
@@ -595,8 +601,10 @@ class BaseTrainer:
                 value = log_dict[key]
                 if isinstance(value, (int, float)):  # Format numbers
                     row += f"{value:<{column_width}.4f}"
-                else:  # Format strings and other non-numeric values
-                    row += f"{str(value):<{column_width}}"
+                # else:  # Format strings and other non-numeric values
+                #     row += f"{str(value):<{column_width}}"
+                elif isinstance(value, str):  # Format strings only
+                    row += f"{value:<{column_width}}"
             writer.write(row + os.linesep)
 
         # Optional: Write to CSV for visualization
@@ -608,8 +616,18 @@ class BaseTrainer:
                 csv_file.write(",".join(log_keys) + os.linesep)
 
         with open(csv_file_path, "a", encoding="utf-8") as csv_file:
-            row = [self.current_epoch, self.current_lr] + list(log_dict.values())
+            # row = [self.current_epoch, self.current_lr] + list(log_dict.values())
+            row = [self.current_epoch, self.current_lr]
+            row += [log_dict[k] for k in log_dict if isinstance(log_dict[k], (int, float, str))]
             csv_file.write(",".join(map(str, row)) + os.linesep)
+
+        # Save DataFrames separately per epoch
+        for key, value in log_dict.items():
+            if isinstance(value, pd.DataFrame):
+                df_path = os.path.join(self.log_path, f"{key}_epoch{self.current_epoch}_seed_{self.cfg.EXPERIMENT.SEED}.csv")
+                value.to_csv(df_path, index=True)
+
+                
 
     def _update_best(self, log_dict):
         if (
@@ -660,43 +678,51 @@ class BaseTrainer:
 
     def train(self):
         start_epoch = self.current_epoch + 1
-        for epoch in range(
-            start_epoch,
-            min(
+        end_epoch = min(
                 start_epoch + self.cfg.EXPERIMENT.EPOCH_STEPS,
                 self.cfg.SOLVER.EPOCHS + 1,
-            ),
+            )
+        for epoch in range(
+            start_epoch,
+            end_epoch,
         ):
             self.current_epoch = epoch
             log_dict = self._train_epoch()
+
+            # Decide if we should run evaluation this epoch
+            do_eval = ((epoch - 1) % self.cfg.EXPERIMENT.EVAL_STEP == 0) or (epoch == end_epoch - 1)
             # log_dict = {}
-            if self.cfg.LOG.TRAIN_PERFORMANCE:
+            if do_eval:
+                if self.cfg.LOG.TRAIN_PERFORMANCE:
+                    if self.cfg.METRIC == "wg_ovr_tags":
+                        raise ValueError(
+                            f"the self.cfg.LOG.TRAIN_PERFORMANCE should be False for wg_ovr_tags metric, you gave {self.cfg.LOG.TRAIN_PERFORMANCE}"
+                        )
+                    train_performance = self._validate_epoch(stage="train")
+                    train_log_dict = self.build_log_dict(train_performance, stage="train")
+                    log_dict.update(train_log_dict)
+                if self.cfg.LOG.SAVE_CRITERION == "val":
+                    if self.cfg.METRIC == "wg_ovr_tags":
+                        raise ValueError(
+                            f"the self.cfg.LOG.SAVE_CRITERION should be test for wg_ovr_tags metric, you gave {self.cfg.LOG.SAVE_CRITERION}"
+                        )
+                    val_performance = self._validate_epoch(stage="val")
+                    val_log_dict = self.build_log_dict(val_performance, stage="val")
+                    log_dict.update(val_log_dict)
                 if self.cfg.METRIC == "wg_ovr_tags":
-                    raise ValueError(
-                        f"the self.cfg.LOG.TRAIN_PERFORMANCE should be False for wg_ovr_tags metric, you gave {self.cfg.LOG.TRAIN_PERFORMANCE}"
-                    )
-                train_performance = self._validate_epoch(stage="train")
-                train_log_dict = self.build_log_dict(train_performance, stage="train")
-                log_dict.update(train_log_dict)
-            if self.cfg.LOG.SAVE_CRITERION == "val":
-                if self.cfg.METRIC == "wg_ovr_tags":
-                    raise ValueError(
-                        f"the self.cfg.LOG.SAVE_CRITERION should be test for wg_ovr_tags metric, you gave {self.cfg.LOG.SAVE_CRITERION}"
-                    )
-                val_performance = self._validate_epoch(stage="val")
-                val_log_dict = self.build_log_dict(val_performance, stage="val")
-                log_dict.update(val_log_dict)
-            if self.cfg.METRIC == "wg_ovr_tags":
-                test_performance = self._validate_epoch_tags(stage="test")
+                    test_performance = self._validate_epoch_tags(stage="test")
+                else:
+                    test_performance = self._validate_epoch(stage="test")
+                test_log_dict = self.build_log_dict(test_performance, stage="test")
+                log_dict.update(test_log_dict)
+                update_cpkt = self._update_best(log_dict)
+                if update_cpkt:
+                    self._save_checkpoint(tag="best")
+                self._log_epoch(log_dict, update_cpkt)
             else:
-                test_performance = self._validate_epoch(stage="test")
-            test_log_dict = self.build_log_dict(test_performance, stage="test")
-            log_dict.update(test_log_dict)
-            update_cpkt = self._update_best(log_dict)
-            if update_cpkt:
-                self._save_checkpoint(tag="best")
+                self._log_epoch(log_dict, False)
             self._save_checkpoint(tag=f"current_{self.cfg.EXPERIMENT.SEED}")
-            self._log_epoch(log_dict, update_cpkt)
+            
         self._save_checkpoint(tag="latest")
 
     def eval(self):
@@ -708,7 +734,7 @@ class BaseTrainer:
         # === Save full_results DataFrame to CSV if present ===
         if "full_results" in test_performance:
             df = test_performance["full_results"]
-            df.rename(index=self.target2name, inplace=True)
+            # df.rename(index=self.target2name, inplace=True)
             assert hasattr(df, "to_csv"), "full_results must be a pandas DataFrame"
 
             # Pick save directory

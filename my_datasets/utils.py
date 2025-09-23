@@ -411,7 +411,8 @@ def get_sampling_weights(targets, *bias_targets_list):
     num_classes = targets.max().item() + 1
 
     num_bias_categories = [
-        bias_targets.max().item() + 1 for bias_targets in bias_targets_list
+        torch.tensor(bias_targets).max().item() + 1
+        for bias_targets in bias_targets_list
     ]
 
     # Calculate total number of groups
@@ -423,7 +424,7 @@ def get_sampling_weights(targets, *bias_targets_list):
     # Count samples per group
     for idx in range(len(targets)):
         target_class = targets[idx].item()
-        bias_indices = [bias_targets[idx].item() for bias_targets in bias_targets_list]
+        bias_indices = [torch.tensor(bias_targets)[idx].item() for bias_targets in bias_targets_list]
 
         # Compute unique group ID
         group_id = target_class
@@ -441,7 +442,7 @@ def get_sampling_weights(targets, *bias_targets_list):
     # Assign weights to samples
     for idx in range(len(targets)):
         target_class = targets[idx].item()
-        bias_indices = [bias_targets[idx].item() for bias_targets in bias_targets_list]
+        bias_indices = [torch.tensor(bias_targets)[idx].item() for bias_targets in bias_targets_list]
 
         # Compute unique group ID
         group_id = target_class

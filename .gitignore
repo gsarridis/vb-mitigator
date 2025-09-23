@@ -13,3 +13,4 @@ data/biased_mnist/pickles/
 /output/
 /slurm/
 /tmp/
+/coco/
