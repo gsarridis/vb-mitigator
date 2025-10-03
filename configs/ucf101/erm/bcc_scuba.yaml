@@ -1,0 +1,25 @@
+EXPERIMENT:
+  NAME: "erm"
+  TAG: "bcc_in_out_scuba"
+  PROJECT: "ucf101_baselines"
+DATASET:
+  TYPE: "ucf101"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "erm_bcc"
+SOLVER:
+  BATCH_SIZE: 32
+  EPOCHS: 40
+  LR: 0.001
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-5
+  SCHEDULER:
+    LR_DECAY_STAGES: [20, 30]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet3d50"
+METRIC: "acc"
+LOG:
+  SAVE_CRITERION: "test"
+  TRAIN_PERFORMANCE: True

@@ -27,7 +27,7 @@ CFG.EXPERIMENT.GPU = "cuda:0"  # or cpu
 CFG.EXPERIMENT.SEED = 1
 CFG.EXPERIMENT.EVAL = False
 CFG.EXPERIMENT.EPOCH_STEPS = sys.maxsize
-CFG.EXPERIMENT.EVAL_STEP = 10
+CFG.EXPERIMENT.EVAL_STEP = 1
 CFG.EXPERIMENT.PLACEHOLDER_STEPS = sys.maxsize
 CFG.EXPERIMENT.PROGRESS_BAR = True
 # Model
@@ -125,10 +125,14 @@ CFG.DATASET.IMAGENET9.BENCHMARK_VAL = "mixed_rand"  # choices: mixed_rand, mixed
 CFG.DATASET.IMAGENET9.BENCHMARK_TEST = "original"  # choices: mixed_rand, mixed_next, mixed_same, no_fg, only_bg_b, only_bg_t, only_fg, original
 
 CFG.DATASET.UCF101 = CN()
-CFG.DATASET.UCF101.VIDEO_PATH = "/var/local/storage/isarridis/UCF101/UCF-101-jpg"
+CFG.DATASET.UCF101.VIDEO_PATH = "/mnt/cephfs/home/common/datasets/UCF101/UCF-101-jpg"
 CFG.DATASET.UCF101.ANNOTATION_PATH = (
-    "/var/local/storage/isarridis/UCF101/ucf101_01.json"
+    "/mnt/cephfs/home/common/datasets/UCF101/ucf101_01.json"
 )
+CFG.DATASET.UCF101.ANNOTATION_PATH_SCUBA = "/mnt/cephfs/home/gsarridis/projects/StillMix/main_network/mmaction2/data/UCF101-24/lists_generated/testlist01.txt"
+CFG.DATASET.UCF101.VIDEO_PATH_SCUBA = "/mnt/cephfs/home/gsarridis/projects/StillMix/main_network/mmaction2/data/UCF101-24/generated"
+CFG.DATASET.UCF101.TEST_BENCHMARK = "scuba"
+
 CFG.DATASET.UCF101.BIAS_TYPE = "indoor_outdoor"
 CFG.DATASET.UCF101.BIAS_TH = 0.00
 

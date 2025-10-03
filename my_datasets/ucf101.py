@@ -1,3 +1,4 @@
+import sys
 import torch
 import torch.utils.data as data
 from PIL import Image
@@ -6,6 +7,8 @@ import math
 import functools
 import json
 import copy
+
+import torchvision
 
 from .utils import LoopPadding, VideoID, load_value_file
 from .utils import (
@@ -70,6 +73,22 @@ def video_loader(video_dir_path, frame_indices, image_loader):
 def get_default_video_loader():
     image_loader = get_default_image_loader()
     return functools.partial(video_loader, image_loader=image_loader)
+
+
+def scuba_loader(frame_indices, image_loader):
+    video = []
+    for i in frame_indices:
+        if os.path.exists(i):
+            video.append(image_loader(i))
+        else:
+            return video
+
+    return video
+
+
+def get_scuba_video_loader():
+    image_loader = get_default_image_loader()
+    return functools.partial(scuba_loader, image_loader=image_loader)
 
 
 def load_annotation_data(data_file_path):
@@ -238,6 +257,210 @@ def make_dataset(
     return dataset, idx_to_class, targets, biases
 
 
+import os
+
+
+import copy
+import torchvision.transforms as transforms
+
+
+def make_dataset_scuba(
+    root_path,
+    annotation_path,
+    sample_duration=16,
+    step=2,
+):
+    dataset = []
+    targets = []
+    idx_to_class = {}
+
+    with open(annotation_path, "r") as f:
+        lines = f.readlines()
+
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        video_id, n_frames, label = line.split()
+        n_frames = int(n_frames)
+        label = int(label)
+
+        # extract class name (after "v_" and before "_g")
+        class_name = video_id.split("_g")[0][2:]
+        idx_to_class[label] = class_name
+
+        # full path prefix
+        video_dir = os.path.join(root_path, video_id)
+
+        sample = {"video_id": video_id, "path": video_dir, "label": label}
+
+        # sliding window over frames
+        # for j in range(1, min(n_frames + 1, sample_duration), step):
+        frame_indices = list(range(1, min(n_frames + 1, 1 + sample_duration)))
+        if len(frame_indices) < sample_duration:
+            continue  # skip incomplete clips
+
+        sample_j = copy.deepcopy(sample)
+        sample_j["frame_indices"] = frame_indices
+
+        # construct absolute paths to frames
+        frame_paths = [
+            os.path.join(video_dir, f"frame{idx:06d}.jpg") for idx in frame_indices
+        ]
+
+        dataset.append(frame_paths)
+        targets.append(label)
+        # clip_len = 32
+        # frame_interval = 2
+        # num_clips = 10
+
+        # # total length in frames that one clip spans
+        # total_clip_span = clip_len * frame_interval  # 64 frames
+
+        # # ensure video has at least one frame
+        # if n_frames >= 1:
+        #     avg_interval = max((n_frames - total_clip_span + 1) / float(num_clips), 0)
+
+        #     for clip_idx in range(num_clips):
+        #         # deterministic start index for test mode
+        #         if n_frames > total_clip_span - 1:
+        #             start = int(clip_idx * avg_interval + avg_interval / 2) + 1
+        #         else:
+        #             start = 1  # if video is too short, start at first frame
+
+        #         # frame indices with spacing
+        #         frame_indices = [start + i * frame_interval for i in range(clip_len)]
+
+        #         # pad by repeating the last frame if indices exceed n_frames
+        #         frame_indices = [
+        #             idx if idx <= n_frames else n_frames for idx in frame_indices
+        #         ]
+
+        #         # ensure exactly clip_len frames
+        #         assert (
+        #             len(frame_indices) == clip_len
+        #         ), f"Got {len(frame_indices)} frames instead of {clip_len}"
+
+        #         sample_j = copy.deepcopy(sample)
+        #         sample_j["frame_indices"] = frame_indices
+
+        #         frame_paths = [
+        #             os.path.join(video_dir, f"frame{idx:06d}.jpg")
+        #             for idx in frame_indices
+        #         ]
+
+        #         dataset.append(frame_paths)
+        #         targets.append(label)
+    return dataset, idx_to_class, targets, targets
+
+
+class UCF101Scuba(data.Dataset):
+    """
+    Args:
+        root (string): Root directory path.
+        spatial_transform (callable, optional): A function/transform that  takes in an PIL image
+            and returns a transformed version. E.g, ``transforms.RandomCrop``
+        temporal_transform (callable, optional): A function/transform that  takes in a list of frame indices
+            and returns a transformed version
+        target_transform (callable, optional): A function/transform that takes in the
+            target and transforms it.
+        loader (callable, optional): A function to load an video given its path and frame indices.
+     Attributes:
+        classes (list): List of the class names.
+        class_to_idx (dict): Dict with items (class_name, class_index).
+        imgs (list): List of (image path, class_index) tuples
+    """
+
+    def __init__(
+        self,
+        root_path,
+        annotation_path,
+        subset,
+        n_samples_for_each_video=1,
+        spatial_transform=None,
+        temporal_transform=None,
+        target_transform=None,
+        sample_duration=16,
+        get_loader=get_scuba_video_loader,
+        vis=False,
+        bias_type="coarse",
+        bias_th=0.0,
+    ):
+        self.data, self.class_names, self.targets, self.biases = make_dataset_scuba(
+            root_path, annotation_path, sample_duration
+        )
+
+        self.spatial_transform = spatial_transform
+        self.temporal_transform = temporal_transform
+        self.target_transform = target_transform
+        self.vis = vis
+        self.loader = get_loader()
+
+    def __getitem__(self, index):
+        """
+        Args:
+            index (int): Index
+        Returns:
+            tuple: (image, target) where target is class_index of the target class.
+        """
+        # path = self.data[index]["video"]
+        if self.temporal_transform is not None:
+            self.data[index] = self.temporal_transform(self.data[index])
+        len_data = len(self.data[index])
+        clip = self.loader(self.data[index])
+
+        while len(clip) < len_data:
+            clip.append(
+                clip[-1].copy() if isinstance(clip[-1], Image.Image) else clip[-1]
+            )
+
+        # print(len(clip))
+        if self.spatial_transform is not None:
+            self.spatial_transform.randomize_parameters()
+            clip = [self.spatial_transform(img) for img in clip]
+
+        # # --- DEBUG: save frames as images ---
+        # debug_dir = f"./debug_clip_{index}"
+        # os.makedirs(debug_dir, exist_ok=True)
+
+        # for i, frame in enumerate(clip):
+
+        #     # Unnormalize
+        #     mean = torch.tensor(
+        #         [110.63666788 / 255, 103.16065604 / 255, 96.29023126 / 255]
+        #     ).view(3, 1, 1)
+        #     std = torch.tensor(
+        #         [38.7568578 / 255, 37.88248729 / 255, 40.02898126 / 255]
+        #     ).view(3, 1, 1)
+
+        #     x_unnorm = frame * std + mean
+
+        #     # Convert to [0,255]
+        #     x_unnorm = (x_unnorm * 255.0).clamp(0, 255).byte()
+
+        #     # C x H x W -> H x W x C
+        #     x_img = x_unnorm.permute(1, 2, 0)
+        #     print(x_img.shape)
+        #     # Save
+        #     img = Image.fromarray(x_img.numpy())
+        #     img.save(os.path.join(debug_dir, f"frame_{i:03d}.jpg"))
+
+        # print(f"Saved {len(clip)} frames for sample {index} into {debug_dir}")
+        # sys.exit(0)  # kill the script after saving
+
+        clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
+
+        return {
+            "index": index,
+            "inputs": clip,
+            "targets": self.targets[index],
+            "bias": self.targets[index],
+        }
+
+    def __len__(self):
+        return len(self.data)
+
+
 class UCF101(data.Dataset):
     """
     Args:
@@ -298,20 +521,44 @@ class UCF101(data.Dataset):
         frame_indices = self.data[index]["frame_indices"]
         if self.temporal_transform is not None:
             frame_indices = self.temporal_transform(frame_indices)
+
         clip = self.loader(path, frame_indices)
+
         if self.spatial_transform is not None:
             self.spatial_transform.randomize_parameters()
             clip = [self.spatial_transform(img) for img in clip]
+
+        # # --- DEBUG: save frames as images ---
+        # debug_dir = f"./debug_clip_{index}"
+        # os.makedirs(debug_dir, exist_ok=True)
+
+        # for i, frame in enumerate(clip):
+
+        #     # Unnormalize
+        #     mean = torch.tensor(
+        #         [110.63666788 / 255, 103.16065604 / 255, 96.29023126 / 255]
+        #     ).view(3, 1, 1)
+        #     std = torch.tensor(
+        #         [38.7568578 / 255, 37.88248729 / 255, 40.02898126 / 255]
+        #     ).view(3, 1, 1)
+
+        #     x_unnorm = frame * std + mean
+
+        #     # Convert to [0,255]
+        #     x_unnorm = (x_unnorm * 255.0).clamp(0, 255).byte()
+
+        #     # C x H x W -> H x W x C
+        #     x_img = x_unnorm.permute(1, 2, 0)
+        #     print(x_img.shape)
+        #     # Save
+        #     img = Image.fromarray(x_img.numpy())
+        #     img.save(os.path.join(debug_dir, f"frame_{i:03d}.jpg"))
+
+        # print(f"Saved {len(clip)} frames for sample {index} into {debug_dir}")
+        # sys.exit(0)  # kill the script after saving
+
         clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
 
-        # target = self.data[index]
-        # if self.target_transform is not None:
-        #     target = self.target_transform(target)
-
-        # if self.vis:
-        #     return clip, target, path, frame_indices
-        # else:
-        # return clip, target
         return {
             "index": index,
             "inputs": clip,
@@ -333,6 +580,7 @@ def get_ucf101(
     sampler=None,
     bias_type="coarse",
     bias_th=0.0,
+    version="original",
 ) -> None:
 
     initial_scale = 1.0
@@ -420,27 +668,47 @@ def get_ucf101(
     elif split == "test":
         spatial_transform = Compose(
             [
-                Scale(int(sample_size / 1.0)),
-                CornerCrop(sample_size, "c"),
+                Scale(sample_size),
+                CenterCrop(sample_size),
                 ToTensor(norm_value),
                 norm_method,
             ]
         )
         temporal_transform = LoopPadding(sample_duration)
         target_transform = VideoID()
-
-        test_dataset = UCF101(
-            video_path,
-            annotation_path,
-            "testing",
-            0,
-            spatial_transform,
-            temporal_transform,
-            target_transform,
-            sample_duration=sample_duration,
-            bias_type=bias_type,
-            bias_th=bias_th,
-        )
+        if version == "original":
+            test_dataset = UCF101(
+                video_path,
+                annotation_path,
+                "validation",
+                3,
+                spatial_transform,
+                temporal_transform,
+                target_transform,
+                sample_duration=sample_duration,
+                vis=False,
+                bias_type=bias_type,
+                bias_th=0.0,
+            )
+        elif version == "scuba":
+            temporal_transform = LoopPadding(32)
+            target_transform = ClassLabel()
+            test_dataset = UCF101Scuba(
+                video_path,
+                annotation_path,
+                "testing",
+                0,
+                spatial_transform,
+                temporal_transform,
+                target_transform,
+                sample_duration=sample_duration,
+                bias_type=bias_type,
+                bias_th=bias_th,
+            )
+        else:
+            raise ValueError(
+                f"version should be either original or scuba. You gave {version}"
+            )
 
         test_loader = torch.utils.data.DataLoader(
             test_dataset,

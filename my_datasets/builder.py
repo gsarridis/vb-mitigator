@@ -1366,16 +1366,33 @@ def get_dataset(cfg):
             bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
             bias_th=cfg.DATASET.UCF101.BIAS_TH,
         )
-
-        test_loader, test_dataset = get_ucf101(
-            cfg.DATASET.UCF101.VIDEO_PATH,
-            cfg.DATASET.UCF101.ANNOTATION_PATH,
-            batch_size=cfg.SOLVER.BATCH_SIZE,
-            split="test",
-            bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
-            bias_th=cfg.DATASET.UCF101.BIAS_TH,
-        )
-
+        if cfg.DATASET.UCF101.TEST_BENCHMARK == "original":
+            test_loader, test_dataset = get_ucf101(
+                cfg.DATASET.UCF101.VIDEO_PATH,
+                cfg.DATASET.UCF101.ANNOTATION_PATH,
+                batch_size=cfg.SOLVER.BATCH_SIZE,
+                split="test",
+                bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+                bias_th=cfg.DATASET.UCF101.BIAS_TH,
+            )
+        elif cfg.DATASET.UCF101.TEST_BENCHMARK == "scuba":
+            test_loader, test_dataset = get_ucf101(
+                cfg.DATASET.UCF101.VIDEO_PATH_SCUBA,
+                cfg.DATASET.UCF101.ANNOTATION_PATH_SCUBA,
+                batch_size=cfg.SOLVER.BATCH_SIZE,
+                split="test",
+                bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+                bias_th=cfg.DATASET.UCF101.BIAS_TH,
+                version=cfg.DATASET.UCF101.TEST_BENCHMARK,
+            )
+            # test_loader, test_dataset = get_ucf101(
+            #     cfg.DATASET.UCF101.VIDEO_PATH,
+            #     cfg.DATASET.UCF101.ANNOTATION_PATH,
+            #     batch_size=cfg.SOLVER.BATCH_SIZE,
+            #     split="test",
+            #     bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
+            #     bias_th=cfg.DATASET.UCF101.BIAS_TH,
+            # )
         dataset = {}
         dataset["num_class"] = 101
         dataset["num_groups"] = 101 * 14
@@ -1383,12 +1400,12 @@ def get_dataset(cfg):
         dataset["dataloaders"] = {
             "train": train_loader,
             "val": val_loader,
-            "test": val_loader,
+            "test": test_loader,
         }
         dataset["sets"] = {
             "train": train_dataset,
             "val": val_dataset,
-            "test": val_loader,
+            "test": test_dataset,
         }
         dataset["root"] = None
         dataset["target2name"] = {

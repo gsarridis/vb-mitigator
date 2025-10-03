@@ -74,12 +74,10 @@ class SimpleConvNet(nn.Module):
         return logits, logits2
 
 
-
-
 class SimpleConvNetMultiHead(nn.Module):
     def __init__(self, num_classes=10, pretrained=False, **kwargs):
         super(SimpleConvNetMultiHead, self).__init__()
-        kernel_size=7
+        kernel_size = 7
         padding = kernel_size // 2
 
         layer1 = [
@@ -109,15 +107,15 @@ class SimpleConvNetMultiHead(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.dim_in = 128
 
-        self.fc1 = nn.Linear(16, num_classes) 
-        self.fc2 = nn.Linear(32, num_classes)  
-        self.fc3 = nn.Linear(64, num_classes)  
-        self.fc4 = nn.Linear(128, num_classes) 
+        self.fc1 = nn.Linear(16, num_classes)
+        self.fc2 = nn.Linear(32, num_classes)
+        self.fc3 = nn.Linear(64, num_classes)
+        self.fc4 = nn.Linear(128, num_classes)
 
-        self.pr1 = nn.Linear(768,16)
-        self.pr2 = nn.Linear(768,32)
-        self.pr3 = nn.Linear(768,64)
-        self.pr4 = nn.Linear(768,128)
+        self.pr1 = nn.Linear(768, 16)
+        self.pr2 = nn.Linear(768, 32)
+        self.pr3 = nn.Linear(768, 64)
+        self.pr4 = nn.Linear(768, 128)
 
         print(f"SimpleConvNet: kernel_size {kernel_size}")
         for m in self.modules():
@@ -138,32 +136,34 @@ class SimpleConvNetMultiHead(nn.Module):
             feat = F.normalize(feat, dim=1)
         logits = self.fc4(feat)
         return logits, feat
-    
+
     def mavias_forward(self, x, f, norm=False):
-        
+
         x = self.layer1(x)
         feat1 = F.adaptive_avg_pool2d(x, (1, 1)).view(x.size(0), -1)
         logits1 = self.fc1(feat1)
         clogits1 = self.fc1(self.pr1(f))
-        
+
         x = self.layer2(x)
         feat2 = F.adaptive_avg_pool2d(x, (1, 1)).view(x.size(0), -1)
         logits2 = self.fc2(feat2)
         clogits2 = self.fc2(self.pr2(f))
-        
+
         x = self.layer3(x)
         feat3 = F.adaptive_avg_pool2d(x, (1, 1)).view(x.size(0), -1)
         logits3 = self.fc3(feat3)
         clogits3 = self.fc3(self.pr3(f))
 
-
         x = self.layer4(x)
         # feat5 = F.adaptive_avg_pool2d(x, (1, 1)).view(x.size(0), -1)
-        feat4= self.avgpool(x)
+        feat4 = self.avgpool(x)
         feat4 = feat4.squeeze(-1).squeeze(-1)
         logits4 = self.fc4(feat4)
         clogits4 = self.fc4((self.pr4(f)))
 
-        return [logits1, logits2, logits3, logits4], [clogits1, clogits2, clogits3, clogits4]
-
-    
+        return [logits1, logits2, logits3, logits4], [
+            clogits1,
+            clogits2,
+            clogits3,
+            clogits4,
+        ]

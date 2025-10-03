@@ -12,7 +12,7 @@ SOLVER:
   LR: 0.001
   TYPE: "Adam"
   SCHEDULER:
-    LR_DECAY_STAGES: [26 53]
+    LR_DECAY_STAGES: [26, 53]
     LR_DECAY_RATE: 0.1
 MODEL:
   TYPE: "simple_conv"

@@ -5,17 +5,218 @@ import torch
 import logging
 import numpy as np
 import random
+import torch
+from torch.optim.optimizer import Optimizer, required
+import torch.nn.functional as F
+import torch
+from torch.optim import Optimizer
+
+
+class AdamP(Optimizer):
+    def __init__(
+        self,
+        params,
+        lr=1e-3,
+        betas=(0.9, 0.999),
+        eps=1e-8,
+        weight_decay=0,
+        amsgrad=False,
+        p_norm=0.5,
+    ):
+        if not 0.0 <= lr:
+            raise ValueError("Invalid learning rate: {}".format(lr))
+        if not 0.0 <= eps:
+            raise ValueError("Invalid epsilon value: {}".format(eps))
+        if not 0.0 <= betas[0] < 1.0:
+            raise ValueError("Invalid beta parameter at index 0: {}".format(betas[0]))
+        if not 0.0 <= betas[1] < 1.0:
+            raise ValueError("Invalid beta parameter at index 1: {}".format(betas[1]))
+        if not 0.0 <= weight_decay:
+            raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
+        if not 0.0 <= p_norm:
+            raise ValueError("Invalid p_norm value: {}".format(p_norm))
+
+        defaults = dict(
+            lr=lr,
+            betas=betas,
+            eps=eps,
+            weight_decay=weight_decay,
+            amsgrad=amsgrad,
+            p_norm=p_norm,
+        )
+        super(AdamP, self).__init__(params, defaults)
+
+    def step(self, closure=None):
+        """Performs a single optimization step."""
+        loss = None
+        if closure is not None:
+            with torch.enable_grad():
+                loss = closure()
+
+        for group in self.param_groups:
+            for p in group["params"]:
+                if p.grad is None:
+                    continue
+                grad = p.grad.data
+                if grad.is_sparse:
+                    raise RuntimeError(
+                        "AdamP does not support sparse gradients, please consider SparseAdam instead"
+                    )
+                amsgrad = group["amsgrad"]
+
+                state = self.state[p]
+
+                # State initialization
+                if len(state) == 0:
+                    state["step"] = 0
+                    state["exp_avg"] = torch.zeros_like(
+                        p.data, memory_format=torch.preserve_format
+                    )
+                    state["exp_avg_sq"] = torch.zeros_like(
+                        p.data, memory_format=torch.preserve_format
+                    )
+                    if amsgrad:
+                        state["max_exp_avg_sq"] = torch.zeros_like(
+                            p.data, memory_format=torch.preserve_format
+                        )
+
+                exp_avg, exp_avg_sq = state["exp_avg"], state["exp_avg_sq"]
+                if amsgrad:
+                    max_exp_avg_sq = state["max_exp_avg_sq"]
+                beta1, beta2 = group["betas"]
+                p_norm = group["p_norm"]
+
+                state["step"] += 1
+                bias_correction1 = 1 - beta1 ** state["step"]
+                bias_correction2 = 1 - beta2 ** state["step"]
+
+                if group["weight_decay"] != 0:
+                    grad = grad.add(p.data, alpha=group["weight_decay"])
+
+                # Decay the first and second moment running average
+                exp_avg.mul_(beta1).add_(grad, alpha=1 - beta1)
+                exp_avg_sq.mul_(beta2).addcmul_(grad, grad, value=1 - beta2)
+
+                # The core change: using p_norm to control steepness sensitivity
+                if amsgrad:
+                    torch.max(max_exp_avg_sq, exp_avg_sq, out=max_exp_avg_sq)
+                    denom = (
+                        max_exp_avg_sq.pow(p_norm) / (bias_correction2**p_norm)
+                    ).add_(group["eps"])
+                else:
+                    denom = (
+                        exp_avg_sq.pow(p_norm) / (bias_correction2**p_norm)
+                    ).add_(group["eps"])
+
+                step_size = group["lr"] / bias_correction1
+
+                p.data.addcdiv_(exp_avg, denom, value=-step_size)
+
+        return loss
+
+
+class ConsistencyOptimizer(Optimizer):
+    """
+    A custom PyTorch optimizer that modulates the learning rate based on the
+    directional consistency of gradients.
+
+    For each parameter, it maintains a running average of the gradient direction.
+    The effective learning rate is then scaled by the cosine similarity between
+    the current gradient and its historical average. This promotes faster learning
+    of features with stable, consistent gradients, and slower learning of
+    unstable or "spurious" features.
+
+    Args:
+        params (iterable): An iterable of parameters to optimize or dicts defining
+                           parameter groups.
+        lr (float, optional): The base learning rate.
+        consistency_decay (float, optional): The decay rate for the gradient
+                                             direction moving average.
+    """
+
+    def __init__(self, params, lr=required, consistency_decay=0.9):
+        if lr is not required and lr < 0.0:
+            raise ValueError("Invalid learning rate: {}".format(lr))
+        if not 0.0 <= consistency_decay < 1.0:
+            raise ValueError(
+                "Invalid consistency decay rate: {}".format(consistency_decay)
+            )
+
+        defaults = dict(lr=lr, consistency_decay=consistency_decay)
+        super(ConsistencyOptimizer, self).__init__(params, defaults)
+
+    def __setstate__(self, state):
+        super(ConsistencyOptimizer, self).__setstate__(state)
+
+    @torch.no_grad()
+    def step(self, closure=None):
+        """
+        Performs a single optimization step.
+
+        Args:
+            closure (callable, optional): A closure that reevaluates the model
+                                          and returns the loss.
+        """
+        loss = None
+        if closure is not None:
+            with torch.enable_grad():
+                loss = closure()
+
+        for group in self.param_groups:
+            for p in group["params"]:
+                if p.grad is None:
+                    continue
+
+                grad = p.grad
+                state = self.state[p]
+
+                # State initialization for the consistency average
+                if "consistency_average" not in state:
+                    state["consistency_average"] = torch.zeros_like(
+                        p, memory_format=torch.preserve_format
+                    )
+
+                consistency_average = state["consistency_average"]
+                consistency_decay = group["consistency_decay"]
+
+                # Update the running average of the gradient direction
+                consistency_average.mul_(consistency_decay).add_(
+                    grad, alpha=1 - consistency_decay
+                )
+
+                # Compute the cosine similarity between the current gradient and the average
+                # This serves as our "consistency score"
+                # Use a small epsilon to avoid division by zero
+                # The cosine similarity is naturally between -1 and 1. We want a score
+                # from 0 to 1, where 1 means high consistency.
+                cos_sim = F.cosine_similarity(
+                    grad.flatten(), consistency_average.flatten(), dim=0, eps=1e-8
+                )
+
+                # Clamp the score to be non-negative.
+                consistency_score = torch.clamp(cos_sim, min=0.0)
+
+                # Modulate the learning rate based on the consistency score
+                # The effective learning rate is base_lr * consistency_score
+                effective_lr = group["lr"] * (1 - consistency_score)
+
+                # Perform the parameter update using the modulated learning rate
+                p.add_(-effective_lr * grad)
+
+        return loss
+
 
 # this function guarantees reproductivity
 # other packages also support seed options, you can add to this function
 def seed_everything(seed):
-	random.seed(seed)
-	os.environ['PYTHONHASHSEED'] = str(seed)
-	np.random.seed(seed)
-	torch.manual_seed(seed)
-	torch.cuda.manual_seed_all(seed)
-	torch.backends.cudnn.deterministic = True
-	torch.backends.cudnn.benchmark = False
+    random.seed(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
 
 def setup_logger(log_file):
     logger = logging.getLogger()
