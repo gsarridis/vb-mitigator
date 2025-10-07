@@ -598,7 +598,7 @@ def get_ucf101(
     bias_th=0.0,
     version="original",
 ) -> None:
-
+    bias_th = bias_th*100
     initial_scale = 1.0
     n_scales = 5
     scale_step = 0.84089641525

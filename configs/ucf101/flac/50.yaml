@@ -1,0 +1,33 @@
+EXPERIMENT:
+  NAME: flac
+  TAG: dev_in_out_50
+  PROJECT: ucf101_baselines
+DATASET:
+  TYPE: ucf101
+  BIASES:
+  - bias
+  UCF101:
+    BIAS_TH: 0.5
+MITIGATOR:
+  TYPE: flac
+  FLAC:
+    BCC_PATH: ./output/ucf101_baselines/bcc_in_out/erm/latest
+    LOSS:
+      ALPHA: 100.0
+      CE_WEIGHT: 1.0
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 40
+  LR: 0.001
+  TYPE: SGD
+  WEIGHT_DECAY: 1e-5
+  SCHEDULER:
+    LR_DECAY_STAGES:
+    - 20
+    - 30
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: resnet3d18
+METRIC: wg_ovr_analytic
+LOG:
+  SAVE_CRITERION: test
