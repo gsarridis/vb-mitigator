@@ -414,10 +414,19 @@ class UCF101Scuba(data.Dataset):
                 clip[-1].copy() if isinstance(clip[-1], Image.Image) else clip[-1]
             )
 
-        # print(len(clip))
         if self.spatial_transform is not None:
             self.spatial_transform.randomize_parameters()
             clip = [self.spatial_transform(img) for img in clip]
+
+        # print(len(clip))
+        # clip = [
+        #     transforms.ToTensor()(frame) if isinstance(frame, Image.Image) else frame
+        #     for frame in clip
+        # ]
+
+        # clip = torch.stack(clip, dim=0)
+        # if self.spatial_transform is not None:
+        #     clip = self.spatial_transform(clip)
 
         # # --- DEBUG: save frames as images ---
         # debug_dir = f"./debug_clip_{index}"
@@ -523,10 +532,17 @@ class UCF101(data.Dataset):
             frame_indices = self.temporal_transform(frame_indices)
 
         clip = self.loader(path, frame_indices)
+        # clip = [
+        #     transforms.ToTensor()(frame) if isinstance(frame, Image.Image) else frame
+        #     for frame in clip
+        # ]
 
         if self.spatial_transform is not None:
             self.spatial_transform.randomize_parameters()
             clip = [self.spatial_transform(img) for img in clip]
+        # clip = torch.stack(clip, dim=0)
+        # if self.spatial_transform is not None:
+        #     clip = self.spatial_transform(clip)
 
         # # --- DEBUG: save frames as images ---
         # debug_dir = f"./debug_clip_{index}"
@@ -591,15 +607,18 @@ def get_ucf101(
         scales.append(scales[-1] * scale_step)
     mean = [110.63666788 / 255, 103.16065604 / 255, 96.29023126 / 255]
     std = [38.7568578 / 255, 37.88248729 / 255, 40.02898126 / 255]
-    sample_size = 112
-    sample_duration = 16
+    sample_size = 224
+    sample_duration = 32
     norm_value = 1
     crop_method = MultiScaleCornerCrop(scales, sample_size)
     norm_method = Normalize(mean, std)
-    spatial_transform = Compose(
-        [crop_method, RandomHorizontalFlip(), ToTensor(norm_value), norm_method]
-    )
+    if transform == None:
+        spatial_transform = Compose(
+            [crop_method, RandomHorizontalFlip(), ToTensor(norm_value), norm_method]
+        )
 
+    else:
+        spatial_transform = transform
     temporal_transform = TemporalRandomCrop(sample_duration)
     target_transform = ClassLabel()
 
@@ -613,6 +632,7 @@ def get_ucf101(
             target_transform=target_transform,
             bias_type=bias_type,
             bias_th=bias_th,
+            sample_duration=sample_duration,
         )
 
         if sampler == "weighted":
@@ -632,14 +652,19 @@ def get_ucf101(
         return train_loader, train_dataset
 
     elif split == "val":
-        spatial_transform = Compose(
-            [
-                Scale(sample_size),
-                CenterCrop(sample_size),
-                ToTensor(norm_value),
-                norm_method,
-            ]
-        )
+        if transform == None:
+            spatial_transform = Compose(
+                [
+                    Scale(sample_size),
+                    CenterCrop(sample_size),
+                    ToTensor(norm_value),
+                    norm_method,
+                ]
+            )
+
+        else:
+            spatial_transform = transform
+
         temporal_transform = LoopPadding(sample_duration)
         target_transform = ClassLabel()
 
@@ -666,14 +691,19 @@ def get_ucf101(
 
         return val_loader, val_dataset
     elif split == "test":
-        spatial_transform = Compose(
-            [
-                Scale(sample_size),
-                CenterCrop(sample_size),
-                ToTensor(norm_value),
-                norm_method,
-            ]
-        )
+        if transform == None:
+            spatial_transform = Compose(
+                [
+                    Scale(sample_size),
+                    CenterCrop(sample_size),
+                    ToTensor(norm_value),
+                    norm_method,
+                ]
+            )
+
+        else:
+            spatial_transform = transform
+
         temporal_transform = LoopPadding(sample_duration)
         target_transform = VideoID()
         if version == "original":

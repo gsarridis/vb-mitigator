@@ -85,7 +85,7 @@ class VResNet50(nn.Module):
 
     def badd_forward(self, x, f, m, norm=False):
         x = self.extractor(x)
-        feat = F.adaptive_avg_pool3d(feat, 1)
+        feat = F.adaptive_avg_pool3d(x, 1)
         feat = torch.flatten(x, 1)
         if norm:
             feat = F.normalize(feat, dim=1)
@@ -96,7 +96,7 @@ class VResNet50(nn.Module):
 
     def mavias_forward(self, x, f, norm=False):
         x = self.extractor(x)
-        feat = F.adaptive_avg_pool3d(feat, 1)
+        feat = F.adaptive_avg_pool3d(x, 1)
         feat = torch.flatten(x, 1)
         if norm:
             feat = F.normalize(feat, dim=1)

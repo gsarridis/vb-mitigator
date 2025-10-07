@@ -50,7 +50,7 @@ CFG.SOLVER.SCHEDULER = CN()
 CFG.SOLVER.SCHEDULER.TYPE = "MultiStepLR"
 CFG.SOLVER.SCHEDULER.LR_DECAY_STAGES = [150, 180, 210]
 CFG.SOLVER.SCHEDULER.LR_DECAY_RATE = 0.1
-
+CFG.SOLVER.SCHEDULER.LINEAR_WARMUP = 0.0
 # Log
 CFG.LOG = CN()
 CFG.LOG.TENSORBOARD_FREQ = 500
@@ -130,7 +130,10 @@ CFG.DATASET.UCF101.ANNOTATION_PATH = (
     "/mnt/cephfs/home/common/datasets/UCF101/ucf101_01.json"
 )
 CFG.DATASET.UCF101.ANNOTATION_PATH_SCUBA = "/mnt/cephfs/home/gsarridis/projects/StillMix/main_network/mmaction2/data/UCF101-24/lists_generated/testlist01.txt"
-CFG.DATASET.UCF101.VIDEO_PATH_SCUBA = "/mnt/cephfs/home/gsarridis/projects/StillMix/main_network/mmaction2/data/UCF101-24/generated"
+# CFG.DATASET.UCF101.VIDEO_PATH_SCUBA = "/mnt/cephfs/home/gsarridis/projects/StillMix/main_network/mmaction2/data/UCF101-24/generated"
+CFG.DATASET.UCF101.VIDEO_PATH_SCUBA = (
+    "/mnt/cephfs/home/common/datasets/UCF101/scuba/generated_videos"
+)
 CFG.DATASET.UCF101.TEST_BENCHMARK = "scuba"
 
 CFG.DATASET.UCF101.BIAS_TYPE = "indoor_outdoor"

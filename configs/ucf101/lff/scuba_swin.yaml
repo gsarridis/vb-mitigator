@@ -1,19 +1,15 @@
 EXPERIMENT:
-  NAME: "flac"
-  TAG: "dev_in_out_scuba"
+  NAME: "lff"
+  TAG: "dev_in_out_scuba_swin"
   PROJECT: "ucf101_baselines"
 DATASET:
   TYPE: "ucf101"
   BIASES: ["bias"]
+  NUM_WORKERS: 0
 MITIGATOR:
-  TYPE: "flac"
-  FLAC: 
-    BCC_PATH: "./output/ucf101_baselines/bcc_in_out_scuba/erm/latest"
-    LOSS:
-      ALPHA: 100.0
-      CE_WEIGHT: 1.0
+  TYPE: "lff"
 SOLVER:
-  BATCH_SIZE: 64
+  BATCH_SIZE: 16
   EPOCHS: 40
   LR: 0.001
   TYPE: "SGD"
@@ -22,7 +18,7 @@ SOLVER:
     LR_DECAY_STAGES: [20, 30]
     LR_DECAY_RATE: 0.1
 MODEL:
-  TYPE: "resnet3d50"
+  TYPE: "swin_t3d"
 METRIC: "acc"
 LOG:
   SAVE_CRITERION: "test"

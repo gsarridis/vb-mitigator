@@ -23,6 +23,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from torch.utils.data import DataLoader
 from .imagenet import ImageNet
+import torchvision
 
 
 def get_dataset(cfg):
@@ -1337,6 +1338,12 @@ def get_dataset(cfg):
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
     elif dataset_name == "ucf101":
+        if cfg.MODEL.TYPE == "swin_t3d":
+            transforms = (
+                torchvision.models.video.Swin3D_T_Weights.KINETICS400_V1.transforms()
+            )
+        else:
+            transforms = None
         if method_name == "groupdro":
 
             train_loader, train_dataset = get_ucf101(
@@ -1347,6 +1354,7 @@ def get_dataset(cfg):
                 sampler="weighted",
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
+                transform=transforms,
             )
         else:
             train_loader, train_dataset = get_ucf101(
@@ -1356,6 +1364,7 @@ def get_dataset(cfg):
                 split="train",
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
+                transform=transforms,
             )
 
         val_loader, val_dataset = get_ucf101(
@@ -1365,6 +1374,7 @@ def get_dataset(cfg):
             split="val",
             bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
             bias_th=cfg.DATASET.UCF101.BIAS_TH,
+            transform=transforms,
         )
         if cfg.DATASET.UCF101.TEST_BENCHMARK == "original":
             test_loader, test_dataset = get_ucf101(
@@ -1374,6 +1384,7 @@ def get_dataset(cfg):
                 split="test",
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
+                transform=transforms,
             )
         elif cfg.DATASET.UCF101.TEST_BENCHMARK == "scuba":
             test_loader, test_dataset = get_ucf101(
@@ -1384,6 +1395,7 @@ def get_dataset(cfg):
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
                 version=cfg.DATASET.UCF101.TEST_BENCHMARK,
+                transform=transforms,
             )
             # test_loader, test_dataset = get_ucf101(
             #     cfg.DATASET.UCF101.VIDEO_PATH,

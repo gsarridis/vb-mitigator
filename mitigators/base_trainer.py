@@ -21,6 +21,7 @@ from tools.utils import (
 from configs.cfg import show_cfg
 from ram.models import ram_plus
 import mitigators.losses as losses
+from mitigators.schedulers import CosineAnnealingWarmupRestarts
 
 
 class BaseTrainer:
@@ -141,6 +142,12 @@ class BaseTrainer:
                 lr=self.cfg.SOLVER.LR,
                 weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
             )
+        elif self.cfg.SOLVER.TYPE == "AdamW":
+            self.optimizer = torch.optim.AdamW(
+                parameters,
+                lr=self.cfg.SOLVER.LR,
+                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
+            )
         else:
             raise ValueError(f"Unsupported optimizer type: {self.cfg.SOLVER.TYPE}")
 
@@ -165,21 +172,35 @@ class BaseTrainer:
         self.model.eval()
 
     def _setup_scheduler(self):
+        train_data_len = len(self.sets["train"])
         if self.cfg.SOLVER.SCHEDULER.TYPE == "StepLR":
             self.scheduler = torch.optim.lr_scheduler.StepLR(
                 self.optimizer,
-                step_size=self.cfg.SOLVER.SCHEDULER.STEP_SIZE,
+                step_size=int(self.cfg.SOLVER.SCHEDULER.STEP_SIZE * train_data_len),
                 gamma=self.cfg.SOLVER.SCHEDULER.LR_DECAY_RATE,
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "MultiStepLR":
             self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
                 self.optimizer,
-                milestones=self.cfg.SOLVER.SCHEDULER.LR_DECAY_STAGES,
+                milestones=[
+                    int(x * train_data_len)
+                    for x in self.cfg.SOLVER.SCHEDULER.LR_DECAY_STAGES
+                ],
                 gamma=self.cfg.SOLVER.SCHEDULER.LR_DECAY_RATE,
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "CosineAnnealingLR":
             self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
                 self.optimizer, T_max=self.cfg.SOLVER.SCHEDULER.T_MAX
+            )
+        elif self.cfg.SOLVER.SCHEDULER.TYPE == "cosine_with_warmup":
+            self.scheduler = CosineAnnealingWarmupRestarts(
+                self.optimizer,
+                first_cycle_steps=int(self.cfg.SOLVER.EPOCHS * train_data_len),
+                min_lr=1e-7,
+                max_lr=self.cfg.SOLVER.LR,
+                warmup_steps=int(
+                    self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP * train_data_len
+                ),
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "None":
             return
@@ -198,6 +219,8 @@ class BaseTrainer:
         loss = self.criterion(outputs, targets)
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
+        print(self.scheduler.get_last_lr()[0])
         return {"train_cls_loss": loss}
 
     def _train_epoch(self):
@@ -231,7 +254,7 @@ class BaseTrainer:
             # Update avg_loss for each key in loss_dict
             for key, value in loss_dict.items():
                 avg_loss[key].update(value.item(), bsz)
-        self.scheduler.step()
+
         avg_loss = {key: value.avg for key, value in avg_loss.items()}
         return avg_loss
 

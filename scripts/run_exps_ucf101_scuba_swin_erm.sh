@@ -3,10 +3,9 @@
 #SBATCH -c4
 #SBATCH --mem=24G
 #SBATCH --gres shard:24
-#SBATCH --job-name="ucf101-bcc"
+#SBATCH --job-name="swin_t-erm"
 #SBATCH --output=slurm/slurm_%x_%A_%a.out
 #SBATCH --error=slurm/slurm_%x_%A_%a.err
-#SBATCH --array=0-0   # 12 methods × 5 seeds
 #SBATCH --time=10:00:00  
 
 # Environment setup
@@ -27,4 +26,4 @@ echo "GPUs Allocated: $CUDA_VISIBLE_DEVICES"
 echo "Running experiment: Dataset=$DATASET, Method=$METHOD, Seed=$SEED"
 echo "====================================="
 
-srun python tools/train.py --cfg ./configs/ucf101/erm/bcc_scuba_swin.yaml 
+srun python tools/train.py --cfg ./configs/ucf101/erm/scuba_swin.yaml 
