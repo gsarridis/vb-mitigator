@@ -220,7 +220,6 @@ class BaseTrainer:
         self._loss_backward(loss)
         self._optimizer_step()
         self.scheduler.step()
-        print(self.scheduler.get_last_lr()[0])
         return {"train_cls_loss": loss}
 
     def _train_epoch(self):
