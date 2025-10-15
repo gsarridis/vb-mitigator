@@ -1,5 +1,6 @@
 import ast
 import os
+import matplotlib.pyplot as plt
 
 import pandas as pd
 
@@ -86,6 +87,7 @@ class BaseTrainer:
         self._setup_criterion()
         self._setup_optimizer()
         self._setup_scheduler()
+        # self.test_lr_behavior()
         self._metric_specific_setups()
         self._basic_eval_setups()
         self._method_specific_setups()
@@ -176,14 +178,14 @@ class BaseTrainer:
         if self.cfg.SOLVER.SCHEDULER.TYPE == "StepLR":
             self.scheduler = torch.optim.lr_scheduler.StepLR(
                 self.optimizer,
-                step_size=int(self.cfg.SOLVER.SCHEDULER.STEP_SIZE * train_data_len),
+                step_size=int(self.cfg.SOLVER.SCHEDULER.STEP_SIZE * train_data_len / self.cfg.SOLVER.BATCH_SIZE),
                 gamma=self.cfg.SOLVER.SCHEDULER.LR_DECAY_RATE,
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "MultiStepLR":
             self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
                 self.optimizer,
                 milestones=[
-                    int(x * train_data_len)
+                    int(x * train_data_len / self.cfg.SOLVER.BATCH_SIZE)
                     for x in self.cfg.SOLVER.SCHEDULER.LR_DECAY_STAGES
                 ],
                 gamma=self.cfg.SOLVER.SCHEDULER.LR_DECAY_RATE,
@@ -195,11 +197,11 @@ class BaseTrainer:
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "cosine_with_warmup":
             self.scheduler = CosineAnnealingWarmupRestarts(
                 self.optimizer,
-                first_cycle_steps=int(self.cfg.SOLVER.EPOCHS * train_data_len),
+                first_cycle_steps=int(self.cfg.SOLVER.EPOCHS * train_data_len / self.cfg.SOLVER.BATCH_SIZE),
                 min_lr=1e-7,
                 max_lr=self.cfg.SOLVER.LR,
                 warmup_steps=int(
-                    self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP * train_data_len
+                    self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP * train_data_len / self.cfg.SOLVER.BATCH_SIZE
                 ),
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "None":
@@ -780,3 +782,48 @@ class BaseTrainer:
 
             df.to_csv(save_path, index=True)  # keep index for clarity
             print(log_msg(f"Saved full results to {save_path}", "EVAL", self.logger))
+
+
+    def test_lr_behavior(self):
+        """Simulate LR updates to visualize scheduler behavior."""
+
+
+        if not hasattr(self, "scheduler") or self.scheduler is None:
+            print("No scheduler initialized (type is 'None').")
+            return
+
+        lrs = []
+        steps = []
+
+        # Get the initial learning rate
+        for param_group in self.optimizer.param_groups:
+            lrs.append(param_group["lr"])
+        steps.append(0)
+
+        num_steps = int(self.cfg.SOLVER.EPOCHS *  len(self.sets["train"]) / self.cfg.SOLVER.BATCH_SIZE)
+        # Simulate training steps
+        for step in range(1, num_steps + 1):
+            self.scheduler.step()
+            current_lr = self.optimizer.param_groups[0]["lr"]
+            lrs.append(current_lr)
+            steps.append(step)
+
+        # Print a few sample values for debugging
+        print(f"Initial LR: {lrs[0]:.6f}, Final LR: {lrs[-1]:.6f}")
+        print(f"Scheduler Type: {self.cfg.SOLVER.SCHEDULER.TYPE}")
+
+        # Plot the LR curve
+        plt.figure(figsize=(8, 4))
+        plt.plot(steps, lrs, label=self.cfg.SOLVER.SCHEDULER.TYPE)
+        plt.xlabel("Step")
+        plt.ylabel("Learning Rate")
+        plt.title("Learning Rate Schedule")
+        plt.grid(True)
+        plt.legend()
+        plt.savefig("lr_visualization.png")
+        plt.show()
+        plt.close()
+
+        # Reinitialize scheduler (important if called multiple times)
+        self._setup_scheduler()
+        print(step[1000000000])

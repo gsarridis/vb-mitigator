@@ -6,7 +6,7 @@
 #SBATCH --job-name="ucf101"
 #SBATCH --output=slurm/slurm_%x_%A_%a.out
 #SBATCH --error=slurm/slurm_%x_%A_%a.err
-#SBATCH --array=0-35   # 12 methods × 5 seeds
+#SBATCH --array=0-0   # 12 methods × 5 seeds
 #SBATCH --time=03:00:00  # 3-hour slots
 # Environment setup
 
@@ -19,8 +19,8 @@ conda activate dl310
 
 # Define datasets and methods
 DATASETS=("ucf101")
-METHODS=("badd" "flac" "maviasb" "erm" "debian" "jtt" "lff" "sd" "di" "bb" "end" "groupdro")
-SEEDS=(0 1 2)
+METHODS=("erm")
+SEEDS=(1)
 
 
 # Compute indices from SLURM_ARRAY_TASK_ID
@@ -38,7 +38,7 @@ METHOD=${METHODS[$METHOD_IDX]}
 SEED=${SEEDS[$SEED_IDX]}
 
 # Set config file path
-CONFIG_PATH="configs/$DATASET/$METHOD/40.yaml"
+CONFIG_PATH="configs/$DATASET/$METHOD/scuba_swin.yaml"
 
 
 # Log system info

@@ -385,11 +385,12 @@ class UCF101Scuba(data.Dataset):
         vis=False,
         bias_type="coarse",
         bias_th=0.0,
+        def_transform=False,
     ):
         self.data, self.class_names, self.targets, self.biases = make_dataset_scuba(
             root_path, annotation_path, sample_duration
         )
-
+        self.def_transform = def_transform
         self.spatial_transform = spatial_transform
         self.temporal_transform = temporal_transform
         self.target_transform = target_transform
@@ -414,50 +415,23 @@ class UCF101Scuba(data.Dataset):
                 clip[-1].copy() if isinstance(clip[-1], Image.Image) else clip[-1]
             )
 
-        if self.spatial_transform is not None:
-            self.spatial_transform.randomize_parameters()
-            clip = [self.spatial_transform(img) for img in clip]
 
-        # print(len(clip))
-        # clip = [
-        #     transforms.ToTensor()(frame) if isinstance(frame, Image.Image) else frame
-        #     for frame in clip
-        # ]
+        if self.def_transform:
+            clip = [
+                transforms.ToTensor()(frame) if isinstance(frame, Image.Image) else frame
+                for frame in clip
+            ]
 
-        # clip = torch.stack(clip, dim=0)
-        # if self.spatial_transform is not None:
-        #     clip = self.spatial_transform(clip)
+            clip = torch.stack(clip, dim=0)
+            if self.spatial_transform is not None:
+                clip = self.spatial_transform(clip)
+        else:
+            if self.spatial_transform is not None:
+                self.spatial_transform.randomize_parameters()
+                clip = [self.spatial_transform(img) for img in clip]
+            clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
 
-        # # --- DEBUG: save frames as images ---
-        # debug_dir = f"./debug_clip_{index}"
-        # os.makedirs(debug_dir, exist_ok=True)
-
-        # for i, frame in enumerate(clip):
-
-        #     # Unnormalize
-        #     mean = torch.tensor(
-        #         [110.63666788 / 255, 103.16065604 / 255, 96.29023126 / 255]
-        #     ).view(3, 1, 1)
-        #     std = torch.tensor(
-        #         [38.7568578 / 255, 37.88248729 / 255, 40.02898126 / 255]
-        #     ).view(3, 1, 1)
-
-        #     x_unnorm = frame * std + mean
-
-        #     # Convert to [0,255]
-        #     x_unnorm = (x_unnorm * 255.0).clamp(0, 255).byte()
-
-        #     # C x H x W -> H x W x C
-        #     x_img = x_unnorm.permute(1, 2, 0)
-        #     print(x_img.shape)
-        #     # Save
-        #     img = Image.fromarray(x_img.numpy())
-        #     img.save(os.path.join(debug_dir, f"frame_{i:03d}.jpg"))
-
-        # print(f"Saved {len(clip)} frames for sample {index} into {debug_dir}")
-        # sys.exit(0)  # kill the script after saving
-
-        clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
+            
 
         return {
             "index": index,
@@ -501,6 +475,7 @@ class UCF101(data.Dataset):
         vis=False,
         bias_type="coarse",
         bias_th=0.0,
+        def_transform=False
     ):
         self.data, self.class_names, self.targets, self.biases = make_dataset(
             root_path,
@@ -511,7 +486,8 @@ class UCF101(data.Dataset):
             bias_type=bias_type,
             bias_th=bias_th,
         )
-
+        print(len(self.data))
+        self.def_transform = def_transform
         self.spatial_transform = spatial_transform
         self.temporal_transform = temporal_transform
         self.target_transform = target_transform
@@ -532,48 +508,24 @@ class UCF101(data.Dataset):
             frame_indices = self.temporal_transform(frame_indices)
 
         clip = self.loader(path, frame_indices)
-        # clip = [
-        #     transforms.ToTensor()(frame) if isinstance(frame, Image.Image) else frame
-        #     for frame in clip
-        # ]
 
-        if self.spatial_transform is not None:
-            self.spatial_transform.randomize_parameters()
-            clip = [self.spatial_transform(img) for img in clip]
-        # clip = torch.stack(clip, dim=0)
-        # if self.spatial_transform is not None:
-        #     clip = self.spatial_transform(clip)
 
-        # # --- DEBUG: save frames as images ---
-        # debug_dir = f"./debug_clip_{index}"
-        # os.makedirs(debug_dir, exist_ok=True)
+        if self.def_transform:
+            clip = [
+                transforms.ToTensor()(frame) if isinstance(frame, Image.Image) else frame
+                for frame in clip
+            ]
+            clip = torch.stack(clip, dim=0)
+            if self.spatial_transform is not None:
+                clip = self.spatial_transform(clip)
+        else:
+            if self.spatial_transform is not None:
+                self.spatial_transform.randomize_parameters()
+                clip = [self.spatial_transform(img) for img in clip]
+            clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
+        
 
-        # for i, frame in enumerate(clip):
-
-        #     # Unnormalize
-        #     mean = torch.tensor(
-        #         [110.63666788 / 255, 103.16065604 / 255, 96.29023126 / 255]
-        #     ).view(3, 1, 1)
-        #     std = torch.tensor(
-        #         [38.7568578 / 255, 37.88248729 / 255, 40.02898126 / 255]
-        #     ).view(3, 1, 1)
-
-        #     x_unnorm = frame * std + mean
-
-        #     # Convert to [0,255]
-        #     x_unnorm = (x_unnorm * 255.0).clamp(0, 255).byte()
-
-        #     # C x H x W -> H x W x C
-        #     x_img = x_unnorm.permute(1, 2, 0)
-        #     print(x_img.shape)
-        #     # Save
-        #     img = Image.fromarray(x_img.numpy())
-        #     img.save(os.path.join(debug_dir, f"frame_{i:03d}.jpg"))
-
-        # print(f"Saved {len(clip)} frames for sample {index} into {debug_dir}")
-        # sys.exit(0)  # kill the script after saving
-
-        clip = torch.stack(clip, 0).permute(1, 0, 2, 3)
+            
 
         return {
             "index": index,
@@ -597,6 +549,7 @@ def get_ucf101(
     bias_type="coarse",
     bias_th=0.0,
     version="original",
+    sample_duration=16
 ) -> None:
     bias_th = bias_th*100
     initial_scale = 1.0
@@ -607,8 +560,8 @@ def get_ucf101(
         scales.append(scales[-1] * scale_step)
     mean = [110.63666788 / 255, 103.16065604 / 255, 96.29023126 / 255]
     std = [38.7568578 / 255, 37.88248729 / 255, 40.02898126 / 255]
-    sample_size = 224
-    sample_duration = 32
+    sample_size = 112
+    # sample_duration = 32
     norm_value = 1
     crop_method = MultiScaleCornerCrop(scales, sample_size)
     norm_method = Normalize(mean, std)
@@ -616,9 +569,11 @@ def get_ucf101(
         spatial_transform = Compose(
             [crop_method, RandomHorizontalFlip(), ToTensor(norm_value), norm_method]
         )
+        def_transform = False
 
     else:
         spatial_transform = transform
+        def_transform = True
     temporal_transform = TemporalRandomCrop(sample_duration)
     target_transform = ClassLabel()
 
@@ -633,6 +588,7 @@ def get_ucf101(
             bias_type=bias_type,
             bias_th=bias_th,
             sample_duration=sample_duration,
+            def_transform=def_transform
         )
 
         if sampler == "weighted":
@@ -680,6 +636,7 @@ def get_ucf101(
             vis=False,
             bias_type=bias_type,
             bias_th=bias_th,
+            def_transform=def_transform
         )
         val_loader = torch.utils.data.DataLoader(
             val_dataset,
@@ -719,6 +676,7 @@ def get_ucf101(
                 vis=False,
                 bias_type=bias_type,
                 bias_th=0.0,
+                def_transform=def_transform
             )
         elif version == "scuba":
             temporal_transform = LoopPadding(32)
@@ -734,6 +692,7 @@ def get_ucf101(
                 sample_duration=sample_duration,
                 bias_type=bias_type,
                 bias_th=bias_th,
+                def_transform=def_transform
             )
         else:
             raise ValueError(

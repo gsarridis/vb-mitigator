@@ -1355,6 +1355,7 @@ def get_dataset(cfg):
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
                 transform=transforms,
+                sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
             )
         else:
             train_loader, train_dataset = get_ucf101(
@@ -1365,6 +1366,7 @@ def get_dataset(cfg):
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
                 transform=transforms,
+                sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
             )
 
         val_loader, val_dataset = get_ucf101(
@@ -1375,6 +1377,7 @@ def get_dataset(cfg):
             bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
             bias_th=cfg.DATASET.UCF101.BIAS_TH,
             transform=transforms,
+            sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
         )
         if cfg.DATASET.UCF101.TEST_BENCHMARK == "original":
             test_loader, test_dataset = get_ucf101(
@@ -1385,6 +1388,7 @@ def get_dataset(cfg):
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
                 transform=transforms,
+                sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
             )
         elif cfg.DATASET.UCF101.TEST_BENCHMARK == "scuba":
             test_loader, test_dataset = get_ucf101(
@@ -1396,6 +1400,7 @@ def get_dataset(cfg):
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
                 version=cfg.DATASET.UCF101.TEST_BENCHMARK,
                 transform=transforms,
+                sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
             )
             # test_loader, test_dataset = get_ucf101(
             #     cfg.DATASET.UCF101.VIDEO_PATH,
