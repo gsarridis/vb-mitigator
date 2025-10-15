@@ -675,7 +675,7 @@ def get_ucf101(
                 sample_duration=sample_duration,
                 vis=False,
                 bias_type=bias_type,
-                bias_th=0.0,
+                bias_th=bias_th,
                 def_transform=def_transform
             )
         elif version == "scuba":
@@ -691,7 +691,7 @@ def get_ucf101(
                 target_transform,
                 sample_duration=sample_duration,
                 bias_type=bias_type,
-                bias_th=bias_th,
+                bias_th=0.0,
                 def_transform=def_transform
             )
         else:
