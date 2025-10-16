@@ -7,7 +7,7 @@ import math
 import functools
 import json
 import copy
-
+import random
 import torchvision
 
 from .utils import LoopPadding, VideoID, load_value_file
@@ -30,6 +30,89 @@ from .utils import (
 )
 from torch.utils.data.sampler import WeightedRandomSampler
 
+import csv
+import torch
+import torch.nn as nn
+# import torch.nn.functional as F
+import torchvision.transforms.functional as TF
+import random
+from typing import Union
+from torchvision.transforms.functional import InterpolationMode
+
+class VideoClassificationTrain(nn.Module):
+    def __init__(
+        self,
+        *,
+        crop_size: tuple[int, int],
+        resize_size: Union[tuple[int], tuple[int, int]],
+        mean: tuple[float, ...] = (0.43216, 0.394666, 0.37645),
+        std: tuple[float, ...] = (0.22803, 0.22145, 0.216989),
+        interpolation: InterpolationMode = InterpolationMode.BILINEAR,
+        hflip_prob: float = 0.5,
+    ) -> None:
+        super().__init__()
+        self.crop_size = list(crop_size)
+        self.resize_size = list(resize_size)
+        self.mean = list(mean)
+        self.std = list(std)
+        self.interpolation = interpolation
+        self.hflip_prob = hflip_prob
+
+    def forward(self, vid: torch.Tensor) -> torch.Tensor:
+        need_squeeze = False
+        if vid.ndim < 5:
+            vid = vid.unsqueeze(dim=0)
+            need_squeeze = True
+
+        N, T, C, H, W = vid.shape
+        vid = vid.view(-1, C, H, W)
+
+        # Resize first (as in inference)
+        vid = TF.resize(vid, self.resize_size, interpolation=self.interpolation, antialias=False)
+        
+        # === Random crop ===
+        i, j, h, w = transforms.RandomCrop.get_params(vid, output_size=self.crop_size)
+        
+        vid = TF.crop(vid, i, j, h, w)
+
+        # === Random horizontal flip ===
+        if random.random() < self.hflip_prob:
+            vid = TF.hflip(vid)
+
+        # Convert dtype + normalize (same as inference)
+        vid = TF.convert_image_dtype(vid, torch.float)
+        vid = TF.normalize(vid, mean=self.mean, std=self.std)
+
+        # Reshape back to (N, T, C, H, W) and permute
+        H, W = self.crop_size
+        vid = vid.view(N, T, C, H, W)
+        vid = vid.permute(0, 2, 1, 3, 4)  # (N, T, C, H, W) → (N, C, T, H, W)
+        # print(vid.shape)
+        if need_squeeze:
+            vid = vid.squeeze(dim=0)
+        return vid
+    
+
+def save_dataset_to_csv(dataset, csv_path):
+    """
+    Save the dataset list of dicts to a CSV file.
+    """
+    # Define the header
+    fieldnames = ["video", "segment_start", "segment_end", "frame_indices", "label", "bias", "video_id"]
+
+    with open(csv_path, mode="w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for sample in dataset:
+            writer.writerow({
+                "video": sample["video"],
+                "segment_start": sample["segment"][0],
+                "segment_end": sample["segment"][1],
+                "frame_indices": ",".join(map(str, sample["frame_indices"])),
+                "label": sample.get("label", -1),
+                "bias": sample.get("bias", -1),
+                "video_id": sample["video_id"],
+            })
 
 def pil_loader(path):
     # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
@@ -151,6 +234,7 @@ def make_dataset(
     sample_duration,
     bias_type="coarse",
     bias_th=0.0,
+    frame_sampling_step = 2
 ):
     targets = []
     biases = []
@@ -230,30 +314,60 @@ def make_dataset(
             sample["bias"] = -1
 
         if n_samples_for_each_video == 1:
-            sample["frame_indices"] = list(range(1, n_frames + 1))
+            # end = min(n_frames + 1, sample_duration * frame_sampling_step)
+            # sample["frame_indices"] = list(range(1, end, frame_sampling_step))
+            sample["frame_indices"] = list(range(1, n_frames + 1, frame_sampling_step))
             dataset.append(sample)
             targets.append(sample["label"])
             biases.append(sample["bias"])
         else:
-            if n_samples_for_each_video > 1:
-                step = max(
-                    1,
-                    math.ceil(
-                        (n_frames - 1 - sample_duration)
-                        / (n_samples_for_each_video - 1)
-                    ),
-                )
-            else:
-                step = sample_duration
-            for j in range(1, n_frames, step):
-                sample_j = copy.deepcopy(sample)
-                sample_j["frame_indices"] = list(
-                    range(j, min(n_frames + 1, j + sample_duration))
-                )
-                dataset.append(sample_j)
-                targets.append(sample_j["label"])
-                biases.append(sample_j["bias"])
+            # ✅ Compute how many full samples fit in the video
+            total_possible_samples = n_frames // (sample_duration * frame_sampling_step)
+            num_samples = min(total_possible_samples, n_samples_for_each_video)
 
+            # ✅ Skip if not enough frames for even one full sample
+            if num_samples == 0:
+                continue
+
+            # ✅ Generate consecutive, non-overlapping segments
+            for s in range(num_samples):
+                begin_t = s * sample_duration * frame_sampling_step + 1
+                end_t = min((s + 1) * sample_duration * frame_sampling_step, n_frames)
+                frame_indices = list(range(begin_t, end_t + 1, frame_sampling_step))
+                if len(frame_indices) == 0:
+                    continue
+
+                # Duplicate base sample and update segment info
+                new_sample = sample.copy()
+                new_sample["segment"] = [begin_t, end_t]
+                new_sample["frame_indices"] = frame_indices
+                new_sample["video_id"] = f"{sample['video_id']}"
+
+                dataset.append(new_sample)
+                targets.append(new_sample["label"])
+                biases.append(new_sample["bias"])
+            
+            # if n_samples_for_each_video > 1:
+            #     step = max(
+            #         1,
+            #         math.ceil(
+            #             (n_frames - 1 - sample_duration)
+            #             / (n_samples_for_each_video - 1)
+            #         ),
+            #     )
+            # else:
+            #     step = sample_duration
+            # for j in range(1, n_frames, step):
+            #     sample_j = copy.deepcopy(sample)
+            #     sample_j["frame_indices"] = list(
+            #         range(j, min(n_frames + 1, j + sample_duration))
+            #     )
+            #     dataset.append(sample_j)
+            #     targets.append(sample_j["label"])
+            #     biases.append(sample_j["bias"])
+    csv_path = f"dataset_{random.random()}"
+    save_dataset_to_csv(dataset, csv_path)
+    print(f"Dataset saved to {csv_path}")
     return dataset, idx_to_class, targets, biases
 
 
@@ -296,7 +410,7 @@ def make_dataset_scuba(
 
         # sliding window over frames
         # for j in range(1, min(n_frames + 1, sample_duration), step):
-        frame_indices = list(range(1, min(n_frames + 1, 1 + sample_duration)))
+        frame_indices = list(range(1, min(n_frames + 1, 1 + (sample_duration*step),step)))
         if len(frame_indices) < sample_duration:
             continue  # skip incomplete clips
 
@@ -574,7 +688,8 @@ def get_ucf101(
     else:
         spatial_transform = transform
         def_transform = True
-    temporal_transform = TemporalRandomCrop(sample_duration)
+    temporal_transform = Compose(
+            [LoopPadding(sample_duration), TemporalRandomCrop(sample_duration)])
     target_transform = ClassLabel()
 
     if split == "train":

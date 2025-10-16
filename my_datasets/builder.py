@@ -3,7 +3,7 @@ from my_datasets.chexpert_nih import get_chexpert_nih_loader
 from my_datasets.cifar100 import get_cifar100_loaders
 from my_datasets.imagenet9 import get_background_challenge_data, get_imagenet9l
 from my_datasets.speech_accent_archive import get_speech_accent_dataloaders
-from my_datasets.ucf101 import get_ucf101
+from my_datasets.ucf101 import get_ucf101, VideoClassificationTrain
 from my_datasets.urbancars import get_urbancars_loader
 from my_datasets.urbansounds import get_urbansounds_dataloaders
 from my_datasets.urbansounds58 import (
@@ -1342,8 +1342,12 @@ def get_dataset(cfg):
             transforms = (
                 torchvision.models.video.Swin3D_T_Weights.KINETICS400_V1.transforms()
             )
+            transforms_train = VideoClassificationTrain(crop_size=[224, 224], resize_size=[256], mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            # print("=== Inference Transforms ===")
+            # print(transforms)
         else:
             transforms = None
+            transforms_train = None
         if method_name == "groupdro":
 
             train_loader, train_dataset = get_ucf101(
@@ -1354,7 +1358,7 @@ def get_dataset(cfg):
                 sampler="weighted",
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
-                transform=transforms,
+                transform=transforms_train,
                 sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
             )
         else:
@@ -1365,7 +1369,7 @@ def get_dataset(cfg):
                 split="train",
                 bias_type=cfg.DATASET.UCF101.BIAS_TYPE,
                 bias_th=cfg.DATASET.UCF101.BIAS_TH,
-                transform=transforms,
+                transform=transforms_train,
                 sample_duration=cfg.DATASET.UCF101.SAMPLE_DURATION
             )
 
