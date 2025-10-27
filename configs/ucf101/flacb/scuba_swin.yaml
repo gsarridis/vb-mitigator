@@ -1,5 +1,5 @@
 EXPERIMENT:
-  NAME: "lff"
+  NAME: "flacb"
   TAG: "dev_in_out_scuba_swin"
   PROJECT: "ucf101_baselines"
 DATASET:
@@ -10,11 +10,16 @@ DATASET:
   BIASES: ["bias"]
   NUM_WORKERS: 4
 MITIGATOR:
-  TYPE: "lff"
+  TYPE: "flacb"
+  FLACB: 
+    BCC_PATH: "./output/ucf101_baselines/dev_in_out_scuba_swin/erm/best"
+    LOSS:
+      ALPHA: 100.0
+      CE_WEIGHT: 1.0
 SOLVER:
-  BATCH_SIZE: 16
+  BATCH_SIZE: 32
   EPOCHS: 30
-  LR: 0.0000125
+  LR: 0.000025
   TYPE: "AdamW"
   WEIGHT_DECAY:  0.01
   SCHEDULER:

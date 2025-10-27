@@ -145,11 +145,45 @@ class BaseTrainer:
                 weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
             )
         elif self.cfg.SOLVER.TYPE == "AdamW":
-            self.optimizer = torch.optim.AdamW(
-                parameters,
-                lr=self.cfg.SOLVER.LR,
-                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
-            )
+            # Separate parameters according to MMEngine's paramwise_cfg
+            decay = []
+            no_decay = []
+            backbone = []
+
+            abs_counter = 0
+            rel_counter = 0
+            norm_counter = 0
+            backbone_counter = 0
+            for name, param in self.model.named_parameters():
+                if not param.requires_grad:
+                    continue
+
+                # Parameters that should NOT have weight decay
+                if any(nd in name for nd in ['absolute_pos_embed', 'relative_position_bias_table', 'norm']):
+                    if 'absolute_pos_embed' in name:
+                        abs_counter +=1
+                    elif 'relative_position_bias_table' in name:
+                        rel_counter +=1
+                    elif 'norm' in name:
+                        norm_counter +=1
+                    no_decay.append(param)
+
+                # Backbone parameters → lower LR
+                elif 'extractor' in name:
+                    backbone.append(param)
+                    backbone_counter += 1
+
+                # Everything else
+                else:
+                    decay.append(param)
+
+            # Build the optimizer
+            self.optimizer = torch.optim.AdamW([
+                {'params': decay, 'lr': self.cfg.SOLVER.LR, 'weight_decay': self.cfg.SOLVER.WEIGHT_DECAY},
+                {'params': no_decay, 'lr': self.cfg.SOLVER.LR, 'weight_decay': 0.0},
+                {'params': backbone, 'lr': self.cfg.SOLVER.LR * 0.1, 'weight_decay': self.cfg.SOLVER.WEIGHT_DECAY}
+            ], betas=(0.9, 0.999))
+            print(f"abs: {abs_counter}, rel: {rel_counter}, norm: {norm_counter}, backbone: {backbone_counter}")
         else:
             raise ValueError(f"Unsupported optimizer type: {self.cfg.SOLVER.TYPE}")
 
@@ -198,7 +232,7 @@ class BaseTrainer:
             self.scheduler = CosineAnnealingWarmupRestarts(
                 self.optimizer,
                 first_cycle_steps=int(self.cfg.SOLVER.EPOCHS * train_data_len / self.cfg.SOLVER.BATCH_SIZE),
-                min_lr=1e-7,
+                min_lr=1e-10,
                 max_lr=self.cfg.SOLVER.LR,
                 warmup_steps=int(
                     self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP * train_data_len / self.cfg.SOLVER.BATCH_SIZE

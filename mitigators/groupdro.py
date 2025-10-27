@@ -28,6 +28,7 @@ class GroupDROTrainer(BaseTrainer):
         self.biases = dataset["biases"]
         self.dataloaders = dataset["dataloaders"]
         self.data_root = dataset["root"]
+        self.sets = dataset["sets"]
         self.target2name = dataset["target2name"]
         self.ba_groups = dataset["ba_groups"] if "ba_groups" in dataset else None
         self.num_group = dataset["num_groups"]
@@ -66,6 +67,7 @@ class GroupDROTrainer(BaseTrainer):
         loss = group_loss @ self.adv_probs
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss}
 
     def _save_checkpoint(self, tag):

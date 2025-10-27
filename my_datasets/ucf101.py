@@ -387,18 +387,21 @@ def make_dataset_scuba(
     dataset = []
     targets = []
     idx_to_class = {}
-
+    print(annotation_path)
     with open(annotation_path, "r") as f:
         lines = f.readlines()
 
     for line in lines:
         line = line.strip()
+        # print(line)
         if not line:
             continue
         video_id, n_frames, label = line.split()
+        # print(video_id)
         n_frames = int(n_frames)
         label = int(label)
-
+        #to match with the labels of the original dataset
+        label -= 1
         # extract class name (after "v_" and before "_g")
         class_name = video_id.split("_g")[0][2:]
         idx_to_class[label] = class_name
@@ -407,10 +410,10 @@ def make_dataset_scuba(
         video_dir = os.path.join(root_path, video_id)
 
         sample = {"video_id": video_id, "path": video_dir, "label": label}
-
+        # print(sample)
         # sliding window over frames
         # for j in range(1, min(n_frames + 1, sample_duration), step):
-        frame_indices = list(range(1, min(n_frames + 1, 1 + (sample_duration*step),step)))
+        frame_indices = list(range(1, min(n_frames + 1, 1 + (sample_duration*step)),step))
         if len(frame_indices) < sample_duration:
             continue  # skip incomplete clips
 
@@ -465,6 +468,8 @@ def make_dataset_scuba(
 
         #         dataset.append(frame_paths)
         #         targets.append(label)
+    print(f"scuba statistics: size={len(dataset)}")
+    # print(dataset[111111111111])
     return dataset, idx_to_class, targets, targets
 
 
@@ -501,6 +506,7 @@ class UCF101Scuba(data.Dataset):
         bias_th=0.0,
         def_transform=False,
     ):
+        print("loading scuba...")
         self.data, self.class_names, self.targets, self.biases = make_dataset_scuba(
             root_path, annotation_path, sample_duration
         )
@@ -665,6 +671,7 @@ def get_ucf101(
     version="original",
     sample_duration=16
 ) -> None:
+    print(f"loading {split} ({version})")
     bias_th = bias_th*100
     initial_scale = 1.0
     n_scales = 5

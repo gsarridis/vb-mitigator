@@ -128,6 +128,7 @@ class ERMDevTrainer(BaseTrainer):
         loss = mi_loss + loss_ce
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss_ce, "train_dis_loss": mi_loss}
 
     def _val_iter(self, batch, part):

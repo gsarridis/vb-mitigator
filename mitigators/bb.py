@@ -54,4 +54,5 @@ class BBTrainer(BaseTrainer):
             loss += self.criterion_train2(outputs, targets, biases)
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss}

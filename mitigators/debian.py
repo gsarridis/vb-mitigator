@@ -17,6 +17,7 @@ class DebiANTrainer(BaseTrainer):
         self.biases = dataset["biases"]
         self.dataloaders = dataset["dataloaders"]
         self.data_root = dataset["root"]
+        self.sets = dataset["sets"]
         self.target2name = dataset["target2name"]
         self.ba_groups = dataset["ba_groups"] if "ba_groups" in dataset else None
         dataset2 = get_dataset(self.cfg)
@@ -43,7 +44,7 @@ class DebiANTrainer(BaseTrainer):
                 momentum=self.cfg.SOLVER.MOMENTUM,
                 weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
             )
-        elif self.cfg.SOLVER.TYPE == "Adam":
+        elif self.cfg.SOLVER.TYPE == "Adam" or self.cfg.SOLVER.TYPE == "AdamW":
             self.optimizer_bias_discover_net = torch.optim.Adam(
                 self.bias_discover_net.parameters(),
                 lr=self.cfg.SOLVER.LR,
@@ -103,6 +104,7 @@ class DebiANTrainer(BaseTrainer):
         ce_loss.backward()
         self.optimizer.step()
         self.optimizer.zero_grad(set_to_none=True)
+        self.scheduler.step()
 
         ### bias discover net
 
@@ -188,7 +190,7 @@ class DebiANTrainer(BaseTrainer):
             # Update avg_loss for each key in loss_dict
             for key, value in loss_dict.items():
                 avg_loss[key].update(value.item(), bsz)
-        self.scheduler.step()
+        # self.scheduler.step()
         avg_loss = {key: value.avg for key, value in avg_loss.items()}
         return avg_loss
 

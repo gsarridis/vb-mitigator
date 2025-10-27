@@ -79,4 +79,5 @@ class BAddTrainer(BaseTrainer):
         loss = loss_cl
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss_cl}

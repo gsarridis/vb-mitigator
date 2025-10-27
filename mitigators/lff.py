@@ -43,7 +43,7 @@ class LfFTrainer(BaseTrainer):
                 momentum=self.cfg.SOLVER.MOMENTUM,
                 weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
             )
-        elif self.cfg.SOLVER.TYPE == "Adam":
+        elif self.cfg.SOLVER.TYPE == "Adam" or self.cfg.SOLVER.TYPE == "AdamW":
             self.optimizer_bias_discover_net = torch.optim.Adam(
                 self.bias_discover_net.parameters(),
                 lr=self.cfg.SOLVER.LR,
@@ -102,6 +102,7 @@ class LfFTrainer(BaseTrainer):
         self._loss_backward(loss)
         self.optimizer.step()
         self.optimizer_bias_discover_net.step()
+        self.scheduler.step()
 
         return {"train_cls_loss": ce_loss, "train_gce_loss": gce_loss }
     

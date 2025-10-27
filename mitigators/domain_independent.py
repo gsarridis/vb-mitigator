@@ -14,6 +14,7 @@ class DomainIndependentTrainer(BaseTrainer):
         self.num_class = dataset["num_class"]
         self.biases = dataset["biases"]
         self.dataloaders = dataset["dataloaders"]
+        self.sets = dataset["sets"]
         self.data_root = dataset["root"]
         self.target2name = dataset["target2name"]
         self.ba_groups = dataset["ba_groups"] if "ba_groups" in dataset else None
@@ -47,4 +48,5 @@ class DomainIndependentTrainer(BaseTrainer):
         loss = self.criterion(logits, targets)
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss}

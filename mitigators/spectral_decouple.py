@@ -26,7 +26,7 @@ class SpectralDecoupleTrainer(BaseTrainer):
                 momentum=self.cfg.SOLVER.MOMENTUM,
                 weight_decay=0.0,
             )
-        elif self.cfg.SOLVER.TYPE == "Adam":
+        elif self.cfg.SOLVER.TYPE == "Adam"  or self.cfg.SOLVER.TYPE == "AdamW":
             self.optimizer = torch.optim.Adam(
                 self.model.parameters(),
                 lr=self.cfg.SOLVER.LR,
@@ -49,6 +49,7 @@ class SpectralDecoupleTrainer(BaseTrainer):
         loss = ce_loss + self.cfg.MITIGATOR.SD.COEF * logits_norm
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": ce_loss, "train_norm": logits_norm}
     
 

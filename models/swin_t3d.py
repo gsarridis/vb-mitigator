@@ -35,7 +35,7 @@ class SwinTransformer3D(nn.Module):
         return logits, feat
 
     def badd_forward(self, x, f, m, norm=False):
-        x = self.extractor(x)
+        feat = self.extractor(x)
         if norm:
             feat = F.normalize(feat, dim=1)
         total_f = torch.sum(torch.stack(f), dim=0)
@@ -44,7 +44,7 @@ class SwinTransformer3D(nn.Module):
         return logits
 
     def mavias_forward(self, x, f, norm=False):
-        x = self.extractor(x)
+        feat = self.extractor(x)
         if norm:
             feat = F.normalize(feat, dim=1)
             f = F.normalize(f, dim=1)

@@ -109,4 +109,5 @@ class FLACBTrainer(BaseTrainer):
         loss = self.cfg.MITIGATOR.FLACB.LOSS.CE_WEIGHT * loss_cl + loss_flac
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss_cl, "train_flac_loss": loss_flac}

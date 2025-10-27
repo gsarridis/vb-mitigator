@@ -38,4 +38,5 @@ class EndTrainer(BaseTrainer):
         loss = self.criterion(outputs, targets)
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": ce_loss, "train_end_loss": end_loss}

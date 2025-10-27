@@ -13,6 +13,7 @@ class ERMBCCTrainer(BaseTrainer):
         loss = self.criterion(outputs, targets)
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss}
 
     def _val_iter(self, batch):

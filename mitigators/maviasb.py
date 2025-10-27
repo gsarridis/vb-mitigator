@@ -64,22 +64,7 @@ class MAVIASBTrainer(BaseTrainer):
         self.proj_net.to(self.device)
 
     def _setup_optimizer(self):
-        parameters = [p for p in self.model.parameters() if p.requires_grad]
-        if self.cfg.SOLVER.TYPE == "SGD":
-            self.optimizer = torch.optim.SGD(
-                parameters,
-                lr=self.cfg.SOLVER.LR,
-                momentum=self.cfg.SOLVER.MOMENTUM,
-                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
-            )
-        elif self.cfg.SOLVER.TYPE == "Adam":
-            self.optimizer = torch.optim.Adam(
-                parameters,
-                lr=self.cfg.SOLVER.LR,
-                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
-            )
-        else:
-            raise ValueError(f"Unsupported optimizer type: {self.cfg.SOLVER.TYPE}")
+        super()._setup_optimizer()
         parameters_projection = self.proj_net.parameters()
 
         if self.cfg.MITIGATOR.MAVIASB.PROJNET.OPTIM.TYPE == "SGD":
@@ -125,6 +110,7 @@ class MAVIASBTrainer(BaseTrainer):
 
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
 
         return {"train_cls_loss": ce_loss, "train_norm_loss": norm_loss}
 

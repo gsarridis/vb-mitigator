@@ -116,4 +116,5 @@ class FLACTrainer(BaseTrainer):
         self.optimizer.zero_grad()
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": loss_cl, "train_flac_loss": loss_flac}

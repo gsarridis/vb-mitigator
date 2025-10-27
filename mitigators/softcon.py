@@ -169,6 +169,7 @@ class SoftConTrainer(BaseTrainer):
 
         self._loss_backward(loss)
         self._optimizer_step()
+        self.scheduler.step()
         return {"train_cls_loss": ce_loss, "train_con_loss": con_loss}
 
     def _train_epoch(self):
@@ -186,7 +187,6 @@ class SoftConTrainer(BaseTrainer):
             # Update avg_loss for each key in loss_dict
             for key, value in loss_dict.items():
                 avg_loss[key].update(value.item(), bsz)
-        self.scheduler.step()
         avg_loss = {key: value.avg for key, value in avg_loss.items()}
         return avg_loss
 

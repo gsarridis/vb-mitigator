@@ -15,8 +15,6 @@ from .jtt import JTTTrainer
 from .softcon import SoftConTrainer
 from .erm_bcc import ERMBCCTrainer
 from .maviasb import MAVIASBTrainer
-from .flac_aida import FLACAIDATrainer
-from .recurrent import RecurrentTrainer
 from .erm_dev import ERMDevTrainer
 
 method_to_trainer = {
@@ -37,7 +35,5 @@ method_to_trainer = {
     "softcon": SoftConTrainer,
     "erm_bcc": ERMBCCTrainer,
     "maviasb": MAVIASBTrainer,
-    "flac_aida": FLACAIDATrainer,
-    "recurrent": RecurrentTrainer,
     "erm_dev": ERMDevTrainer,
 }
