@@ -1,0 +1,139 @@
+# ============================================
+# Tag Extraction Configuration
+# ============================================
+#
+# This config is for extracting comprehensive tags from images
+# and classifying them as relevant or irrelevant to the task.
+#
+# Usage:
+#   python -m tag_extraction.integration --config tag_extraction_config.yaml
+#
+# Or integrate with vb-mitigator by adding TAG_EXTRACTION section to your config.
+
+# ============================================
+# Example 1: Car Type Classification
+# ============================================
+
+EXPERIMENT:
+  NAME: "tag_extraction"
+  TAG: "car_classification"
+  PROJECT: "sae_debiasing"
+
+
+DATASET:
+  TYPE: "urbancars"
+  ROOT: "./data/urbancars"
+  BIASES: ["bj_cooc_obj"]
+  URBANCARS:
+    IMAGE_SIZE: 224
+
+MODEL:
+  # Not used for tag extraction, but required by framework
+  TYPE: "resnet50"
+  PRETRAINED: True
+
+MITIGATOR:
+  TYPE: "tag_extraction"  # Use tag extraction as a preprocessing step
+  
+  TAG_EXTRACTION:
+    # ---- Task Description ----
+    # This is the most important setting!
+    # The LLM uses this to determine what's relevant vs irrelevant
+    TASK_DESCRIPTION: "car type classification - distinguishing between different types/models of cars"
+    
+    # ---- VLM Settings ----
+    # VLM extracts comprehensive tags from each image
+    VLM_MODEL: "llava"  # Options: llava, qwen-vl, internvl
+    VLM_MODEL_PATH: "llava-hf/llava-1.5-7b-hf" #"llava-hf/llava-1.5-7b-hf" "Qwen/Qwen2-VL-7B-Instruct"
+    VLM_DEVICE: "cuda"
+    VLM_BATCH_SIZE: 1
+    
+    # ========================================
+    # LLM Settings (tag → relevant/irrelevant)
+    # ========================================
+    # Option 1: Ollama (local, free)
+    # LLM_MODEL: "local"
+    # LLM_MODEL_PATH: "meta-llama/Meta-Llama-3-8B-Instruct"
+    # LLM_BASE_URL: ""  # Default: http://localhost:11434
+    
+    # Option 2: OpenAI (better quality, paid)
+    # LLM_MODEL: "gpt-4"
+    # LLM_API_KEY:
+    
+    # Option 3: Local HuggingFace model
+    # LLM_MODEL: "local"
+    # LLM_MODEL_PATH: "meta-llama/Meta-Llama-3-8B-Instruct"
+
+    LLM_TAG_BATCH_SIZE: 100  # Tags per LLM call
+    
+    # ========================================
+    # Processing
+    # ========================================
+    MIN_TAG_FREQUENCY: 5  # Ignore rare tags
+    
+    # ========================================
+    # Human Review (optional)
+    # ========================================
+    ENABLE_HUMAN_REVIEW: False
+    # If True, creates tag_relevance_review.json for manual editing
+    # Then re-run with RESUME_FROM_STAGE: 4 to apply changes
+    
+    # ========================================
+    # Resume (for interrupted runs)
+    # ========================================
+    RESUME_FROM_STAGE: 1
+    # 1 = Start fresh (extract tags)
+    # 2 = Skip extraction (aggregate vocabulary)
+    # 3 = Skip aggregation (classify relevance)
+    # 4 = Skip classification (apply mapping)
+    
+    # ========================================
+    # Output
+    # ========================================
+    OUTPUT_DIR: ""  # Default: {DATASET.ROOT}/tag_extraction_output
+
+SOLVER:
+  BATCH_SIZE: 64
+
+# ============================================
+# Example 2: Bird Species Classification (Waterbirds)
+# ============================================
+
+# MITIGATOR:
+#   TAG_EXTRACTION:
+#     TASK_DESCRIPTION: "bird species classification - distinguishing between different species of birds"
+#     VLM_MODEL: "llava"
+#     VLM_MODEL_PATH: "llava-hf/llava-1.5-13b-hf"  # Larger model for better quality
+#     LLM_MODEL: "gpt-4"  # Use GPT-4 for best classification
+#     LLM_API_KEY: 
+#     MIN_TAG_FREQUENCY: 10
+#     ENABLE_HUMAN_REVIEW: True  # Review before training
+
+# ---
+
+# ============================================
+# Example 3: Facial Attribute Recognition (CelebA)
+# ============================================
+
+# MITIGATOR:
+#   TAG_EXTRACTION:
+#     TASK_DESCRIPTION: "facial attribute recognition - identifying attributes like smiling, eyeglasses, hair color from faces"
+#     VLM_MODEL: "qwen-vl"  # Qwen-VL might be better for faces
+#     VLM_MODEL_PATH: "Qwen/Qwen-VL-Chat"
+#     LLM_MODEL: "llama3"
+#     MIN_TAG_FREQUENCY: 20  # Higher threshold for larger dataset
+#     ENABLE_HUMAN_REVIEW: True
+
+# ---
+
+# ============================================
+# Example 4: Scene Classification (Places365)
+# ============================================
+
+# MITIGATOR:
+#   TAG_EXTRACTION:
+#     TASK_DESCRIPTION: "scene classification - identifying the type of place or scene in an image"
+#     VLM_MODEL: "internvl"
+#     VLM_MODEL_PATH: "OpenGVLab/InternVL-Chat-V1-5"
+#     LLM_MODEL: "gpt-4"
+#     MIN_TAG_FREQUENCY: 50
