@@ -1,0 +1,17 @@
+{
+  "model_name": "PE-Core-bigG-14-448",
+  "pretrained_tag": "meta",
+  "model_id": "PE-Core-bigG-14-448_meta",
+  "arch_family": "Other",
+  "patch_size": null,
+  "image_size": 448,
+  "training_data": "meta",
+  "quickgelu": false,
+  "total_params_M": 2419.3,
+  "top1_accuracy": 74.242,
+  "top5_accuracy": 94.33,
+  "total_images": 50000,
+  "load_time_s": 375.9,
+  "classifier_time_s": 52.4,
+  "eval_time_s": 1976.5
+}

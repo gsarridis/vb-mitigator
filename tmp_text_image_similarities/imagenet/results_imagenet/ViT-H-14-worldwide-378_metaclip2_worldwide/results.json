@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-H-14-worldwide-378",
+  "pretrained_tag": "metaclip2_worldwide",
+  "model_id": "ViT-H-14-worldwide-378_metaclip2_worldwide",
+  "arch_family": "ViT",
+  "vit_size": "H",
+  "patch_size": 14,
+  "image_size": 378,
+  "training_data": "MetaCLIP",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 1859.4,
+  "top1_accuracy": 82.254,
+  "top5_accuracy": 96.66,
+  "total_images": 50000,
+  "load_time_s": 220.2,
+  "classifier_time_s": 39.5,
+  "eval_time_s": 502.3
+}

@@ -1,0 +1,17 @@
+{
+  "model_name": "MobileCLIP-B",
+  "pretrained_tag": "datacompdr_lt",
+  "model_id": "MobileCLIP-B_datacompdr_lt",
+  "arch_family": "MobileCLIP",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "total_params_M": 149.8,
+  "top1_accuracy": 77.19,
+  "top5_accuracy": 95.61,
+  "total_images": 50000,
+  "load_time_s": 12.7,
+  "classifier_time_s": 7.3,
+  "eval_time_s": 47.6
+}

@@ -1,0 +1,76 @@
+# Configuration for SAE (Sparse Autoencoder) Analysis on UTKFace
+# This mitigator trains an SAE on features from a pretrained ERM model
+# and analyzes monosemantic neurons to understand learned representations
+
+EXPERIMENT:
+  NAME: "sae"
+  TAG: "urbancars_analysis"
+  PROJECT: "urbancars_sae"
+  EVAL_STEP: 1
+  EPOCH_STEPS: 1  # Not used in SAE - we have our own training loop
+
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+  URBANCARS:
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+
+MITIGATOR:
+  TYPE: "sae"
+  SAE:
+    # Path to pretrained ERM model checkpoint
+    CHECKPOINT_PATH: "outputs/utkface_baselines/race_clip/erm/latest"  # Set this to your ERM checkpoint, e.g., "outputs/utkface_baselines/erm/best.pth"
+    PRETRAINED_SAE_PATH: "./outputs/sae_combined_training/openclip_vit_b_32/sae_combined/sae_checkpoints/ae.pt"
+
+    # SAE Architecture
+    TYPE: "batch_topk"  # Options: "standard", "topk", "batch_topk", "jumprelu"
+    EXPANSION_FACTOR: 2  # Dictionary size = feature_dim * expansion_factor
+    
+    # Training parameters
+    STEPS: 10000
+    BATCH_SIZE: 256
+    LR: 0.0001
+    WARMUP_STEPS: 500
+    
+    # Standard SAE specific
+    L1_PENALTY: 0.1
+    RESAMPLE_STEPS: 250  # Set to 0 to disable resampling
+    
+    # TopK SAE specific
+    K: 32
+    AUXK_ALPHA: 0.03
+    
+    # JumpReLU SAE specific
+    BANDWIDTH: 0.001
+    SPARSITY_PENALTY: 0.1
+    
+    # Analysis parameters
+    TOP_K_IMAGES: 32  # Number of top activating images to save per neuron #100 for 83bca and 82wg
+    NUM_VISUALIZE: 20  # Number of neurons to generate visualizations for
+
+    # Clustering parameters
+    CLUSTERING:
+      ENABLED: True  # Whether to perform clustering analysis
+      N_CLUSTERS: -1  # Number of clusters (-1 = use number of data groups)
+      PERPLEXITY: 30  # t-SNE perplexity
+      UMAP_NEIGHBORS: 15  # UMAP n_neighbors
+      UMAP_MIN_DIST: 0.1  # UMAP min_dist
+
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 1  # Not used
+  LR: 0.001
+  TYPE: "Adam"
+  SCHEDULER:
+    TYPE: "None"
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"
+  TRAIN_PERFORMANCE: False

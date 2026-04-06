@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-H-14",
+  "pretrained_tag": "laion2b_s32b_b79k",
+  "model_id": "ViT-H-14_laion2b_s32b_b79k",
+  "arch_family": "ViT",
+  "vit_size": "H",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 986.1,
+  "top1_accuracy": 77.928,
+  "top5_accuracy": 95.234,
+  "total_images": 50000,
+  "load_time_s": 51.7,
+  "classifier_time_s": 65.6,
+  "eval_time_s": 286.4
+}

@@ -1,0 +1,19 @@
+{
+  "model_name": "roberta-ViT-B-32",
+  "pretrained_tag": "laion2b_s12b_b32k",
+  "model_id": "roberta-ViT-B-32_laion2b_s12b_b32k",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 32,
+  "image_size": 224,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 212.7,
+  "top1_accuracy": 61.75,
+  "top5_accuracy": 87.306,
+  "total_images": 50000,
+  "load_time_s": 17.1,
+  "classifier_time_s": 19.7,
+  "eval_time_s": 67.7
+}

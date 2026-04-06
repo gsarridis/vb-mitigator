@@ -1,0 +1,20 @@
+{
+  "model_name": "RN50",
+  "pretrained_tag": "yfcc15m",
+  "model_id": "RN50_yfcc15m",
+  "arch_family": "ResNet",
+  "resnet_depth": 50,
+  "resnet_multiplier": "x1",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "YFCC-15M",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 102.0,
+  "top1_accuracy": 32.356,
+  "top5_accuracy": 57.12,
+  "total_images": 50000,
+  "load_time_s": 13.5,
+  "classifier_time_s": 10.9,
+  "eval_time_s": 56.9
+}

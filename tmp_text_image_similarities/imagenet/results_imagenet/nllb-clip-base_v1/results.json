@@ -1,0 +1,18 @@
+{
+  "model_name": "nllb-clip-base",
+  "pretrained_tag": "v1",
+  "model_id": "nllb-clip-base_v1",
+  "arch_family": "Other",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "v1",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 501.9,
+  "top1_accuracy": 24.306,
+  "top5_accuracy": 45.176,
+  "total_images": 50000,
+  "load_time_s": 35.2,
+  "classifier_time_s": 23.5,
+  "eval_time_s": 57.2
+}

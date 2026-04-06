@@ -1,0 +1,18 @@
+{
+  "model_name": "ViTamin-XL-336",
+  "pretrained_tag": "datacomp1b",
+  "model_id": "ViTamin-XL-336_datacomp1b",
+  "arch_family": "ViT",
+  "vit_size": null,
+  "patch_size": null,
+  "image_size": 336,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "total_params_M": 924.8,
+  "top1_accuracy": 82.676,
+  "top5_accuracy": 96.782,
+  "total_images": 50000,
+  "load_time_s": 17.9,
+  "classifier_time_s": 55.1,
+  "eval_time_s": 302.0
+}

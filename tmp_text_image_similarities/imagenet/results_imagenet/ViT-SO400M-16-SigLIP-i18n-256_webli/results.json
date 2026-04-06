@@ -1,0 +1,18 @@
+{
+  "model_name": "ViT-SO400M-16-SigLIP-i18n-256",
+  "pretrained_tag": "webli",
+  "model_id": "ViT-SO400M-16-SigLIP-i18n-256_webli",
+  "arch_family": "ViT",
+  "vit_size": null,
+  "patch_size": null,
+  "image_size": 256,
+  "training_data": "WebLI",
+  "quickgelu": false,
+  "total_params_M": 1127.4,
+  "top1_accuracy": 80.648,
+  "top5_accuracy": 96.116,
+  "total_images": 50000,
+  "load_time_s": 141.8,
+  "classifier_time_s": 43.5,
+  "eval_time_s": 114.7
+}

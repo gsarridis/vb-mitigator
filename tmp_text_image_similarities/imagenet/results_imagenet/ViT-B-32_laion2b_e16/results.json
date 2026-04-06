@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-B-32",
+  "pretrained_tag": "laion2b_e16",
+  "model_id": "ViT-B-32_laion2b_e16",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 32,
+  "image_size": 224,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 151.3,
+  "top1_accuracy": 65.652,
+  "top5_accuracy": 89.378,
+  "total_images": 50000,
+  "load_time_s": 24.4,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 55.9
+}

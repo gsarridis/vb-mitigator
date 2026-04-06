@@ -1,0 +1,20 @@
+{
+  "model_name": "RN50-quickgelu",
+  "pretrained_tag": "cc12m",
+  "model_id": "RN50-quickgelu_cc12m",
+  "arch_family": "ResNet",
+  "resnet_depth": 50,
+  "resnet_multiplier": "x1",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "CC-12M",
+  "quickgelu": true,
+  "embed_dim": 1024,
+  "total_params_M": 102.0,
+  "top1_accuracy": 36.448,
+  "top5_accuracy": 64.404,
+  "total_images": 50000,
+  "load_time_s": 17.7,
+  "classifier_time_s": 8.9,
+  "eval_time_s": 77.9
+}

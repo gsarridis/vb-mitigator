@@ -1,0 +1,17 @@
+{
+  "model_name": "nllb-clip-base-siglip",
+  "pretrained_tag": "v1",
+  "model_id": "nllb-clip-base-siglip_v1",
+  "arch_family": "SigLIP",
+  "patch_size": null,
+  "image_size": 384,
+  "training_data": "v1",
+  "quickgelu": false,
+  "total_params_M": 507.5,
+  "top1_accuracy": 37.526,
+  "top5_accuracy": 61.078,
+  "total_images": 50000,
+  "load_time_s": 33.1,
+  "classifier_time_s": 23.4,
+  "eval_time_s": 85.5
+}

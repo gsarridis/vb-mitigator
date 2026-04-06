@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-bigG-14",
+  "pretrained_tag": "metaclip_fullcc",
+  "model_id": "ViT-bigG-14_metaclip_fullcc",
+  "arch_family": "ViT",
+  "vit_size": "bigG",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "MetaCLIP",
+  "quickgelu": false,
+  "embed_dim": 1280,
+  "total_params_M": 2539.6,
+  "top1_accuracy": 80.594,
+  "top5_accuracy": 96.03,
+  "total_images": 50000,
+  "load_time_s": 36.7,
+  "classifier_time_s": 129.8,
+  "eval_time_s": 769.2
+}

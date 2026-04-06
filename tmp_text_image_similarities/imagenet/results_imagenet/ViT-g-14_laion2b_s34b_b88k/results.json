@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-g-14",
+  "pretrained_tag": "laion2b_s34b_b88k",
+  "model_id": "ViT-g-14_laion2b_s34b_b88k",
+  "arch_family": "ViT",
+  "vit_size": "g",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 1366.7,
+  "top1_accuracy": 78.452,
+  "top5_accuracy": 95.304,
+  "total_images": 50000,
+  "load_time_s": 72.7,
+  "classifier_time_s": 65.4,
+  "eval_time_s": 449.3
+}

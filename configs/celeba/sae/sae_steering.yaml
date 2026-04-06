@@ -1,0 +1,64 @@
+# SAE Steering Configuration for UTKFace with OpenCLIP
+#
+# This config trains a model that:
+# 1. Uses OpenCLIP as frozen backbone
+# 2. Applies SAE to extract sparse features
+# 3. Suppresses polysemantic neurons (neurons that fire for multiple classes)
+# 4. Keeps only monosemantic neurons (neurons specific to one class)
+# 5. Trains a classification head on the filtered features
+#
+# The intuition is that polysemantic neurons may encode spurious correlations
+# or bias-related features, while monosemantic neurons encode clean class-relevant features.
+
+EXPERIMENT:
+  NAME: "sae_steering"
+  TAG: "openclip_purity100"
+  PROJECT: "celeba_sae_steering"
+
+DATASET:
+  TYPE: "celeba"
+  BIASES: ["gender"]
+  CELEBA:
+    BIAS: "gender"
+    TARGET: "blonde"
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+
+MITIGATOR:
+  TYPE: "sae_steering"
+  SAE_STEERING:
+    # Paths to SAE outputs (from running SAE analysis)
+    SAE_CHECKPOINT_PATH: "outputs/celeba_sae/makeup_analysis/sae/sae_checkpoints/ae.pt"  # e.g., "outputs/utkface_sae/sae/sae_checkpoints/ae.pt"
+    SAE_ANALYSIS_PATH: "outputs/celeba_sae/makeup_analysis/sae/analysis_results.json"    # e.g., "outputs/utkface_sae/sae/analysis_results.json"
+    
+    # Purity threshold for keeping neurons
+    # 1.0 = only keep neurons where 100% of top-k images are from same class
+    PURITY_THRESHOLD: 0.9
+    
+    # Value for suppressed neurons (0.0 = fully suppress)
+    SUPPRESSION_VALUE: 0.0
+    
+    # Feature handling
+    USE_SAE_FEATURES: True  # Decode back to original space
+    USE_DECODE: False
+
+# Model configuration (OpenCLIP backbone)
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True
+
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 10
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [3, 6]
+    LR_DECAY_RATE: 0.1
+
+
+METRIC: "wg_ovr"  # Worst-group accuracy (for fairness evaluation)
+
+LOG:
+  PREFIX: "./outputs"

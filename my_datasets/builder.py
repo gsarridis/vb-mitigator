@@ -2,13 +2,9 @@ from my_datasets.celeba import get_celeba
 from my_datasets.chexpert_nih import get_chexpert_nih_loader
 from my_datasets.cifar100 import get_cifar100_loaders
 from my_datasets.imagenet9 import get_background_challenge_data, get_imagenet9l
-from my_datasets.speech_accent_archive import get_speech_accent_dataloaders
 from my_datasets.ucf101 import get_ucf101
 from my_datasets.urbancars import get_urbancars_loader
-from my_datasets.urbansounds import get_urbansounds_dataloaders
-from my_datasets.urbansounds58 import (
-    get_urbansounds_dataloaders as get_urbansounds58_dataloaders,
-)
+from my_datasets.sae_combined_dataset import get_sae_combined_dataloaders
 
 from .biased_mnist import get_color_mnist
 from .fb_biased_mnist import get_color_mnist as get_fb_color_mnist
@@ -882,7 +878,7 @@ def get_dataset(cfg):
             root=cfg.DATASET.URBANCARS.ROOT,
             batch_size=cfg.SOLVER.BATCH_SIZE,
             image_size=cfg.DATASET.URBANCARS.IMAGE_SIZE,
-            split="test",
+            split="val",
         )
 
         test_loader, test_dataset = get_urbancars_loader(
@@ -908,7 +904,10 @@ def get_dataset(cfg):
         }
 
         # Create a dictionary mapping index to class name
-        dataset["target2name"] = {0: "urban_car", 1: "country_car"}
+        dataset["target2name"] = {
+            0: "compact car, sports car, or luxury vehicle",
+            1: "truck, SUV, or rugged vehicle",
+        }
 
         dataset["root"] = cfg.DATASET.URBANCARS.ROOT
         if (
@@ -1100,6 +1099,8 @@ def get_dataset(cfg):
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
     elif dataset_name == "speech_accent_archive":
+        from my_datasets.speech_accent_archive import get_speech_accent_dataloaders
+
         if method_name == "groupdro":
             (
                 train_loader,
@@ -1159,6 +1160,8 @@ def get_dataset(cfg):
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
     elif dataset_name == "urbansounds":
+        from my_datasets.urbansounds import get_urbansounds_dataloaders
+
         if method_name == "groupdro":
             (
                 train_loader,
@@ -1226,6 +1229,10 @@ def get_dataset(cfg):
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
     elif dataset_name == "urbansounds58":
+        from my_datasets.urbansounds58 import (
+            get_urbansounds_dataloaders as get_urbansounds58_dataloaders,
+        )
+
         if method_name == "groupdro":
             (
                 train_loader,
@@ -1532,4 +1539,43 @@ def get_dataset(cfg):
             raise NotImplementedError(
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
+    elif dataset_name == "sae_combined":
+        # train_loader, train_dataset = get_sae_combined_dataloaders(cfg, transforms=None)
+        train_loader, train_dataset = get_sae_combined_dataloaders(
+            cfg,
+            # get_transform(image_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.IMG_SIZE),
+        )
+        dataset = {}
+        dataset["num_class"] = 2
+        dataset["num_groups"] = 2
+        dataset["biases"] = ["none"]
+        dataset["dataloaders"] = {
+            "train": train_loader,
+            "val": train_loader,
+            "test": train_loader,
+        }
+        dataset["sets"] = {
+            "train": train_dataset,
+            "val": train_dataset,
+            "test": train_dataset,
+        }
+        dataset["root"] = "./data/sae_combined"
+        dataset["target2name"] = {
+            0: "none",
+            1: "none",
+        }
+
+        if (
+            method_name == "mavias"
+            or method_name == "erm_tags"
+            or metric_name == "wg_ovr_tags"
+            or method_name == "mhmavias"
+        ):
+            # tag_train_loader, _ = get_sae_combined_dataloaders(
+            #     cfg,
+            #     get_transform(image_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.IMG_SIZE),
+            # )
+
+            dataset["dataloaders"]["tag_train"] = train_loader
+            dataset["dataloaders"]["tag_test"] = train_loader
     return dataset

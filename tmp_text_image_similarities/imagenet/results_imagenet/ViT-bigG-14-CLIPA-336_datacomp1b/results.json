@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-bigG-14-CLIPA-336",
+  "pretrained_tag": "datacomp1b",
+  "model_id": "ViT-bigG-14-CLIPA-336_datacomp1b",
+  "arch_family": "ViT",
+  "vit_size": "bigG",
+  "patch_size": 14,
+  "image_size": 336,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "embed_dim": 1280,
+  "total_params_M": 2517.8,
+  "top1_accuracy": 82.876,
+  "top5_accuracy": 96.94,
+  "total_images": 50000,
+  "load_time_s": 131.6,
+  "classifier_time_s": 31.6,
+  "eval_time_s": 999.4
+}

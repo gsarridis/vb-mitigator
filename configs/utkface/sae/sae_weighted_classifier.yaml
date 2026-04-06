@@ -1,0 +1,64 @@
+# SAE Weighted Classifier Configuration for UTKFace
+#
+# Two modes available:
+#
+# 1. PURITY mode (training-free):
+#    - Weight each neuron by its class purity score
+#    - Neurons with 100% purity contribute more than 90% purity
+#    - No learning required
+#
+# 2. LEARNABLE mode (minimal learning):
+#    - Learn one weight per neuron (very few parameters)
+#    - Initialized with purity values
+#    - Robust to overfitting due to minimal parameters
+#
+# Both are simpler and more robust than dense classification layers.
+
+EXPERIMENT:
+  NAME: "sae_weighted_classifier"
+  TAG: "learnable_purity_init"
+  PROJECT: "utkface_sae_weighted"
+
+DATASET:
+  TYPE: "utkface"
+  UTKFACE:
+    BIAS: "race"
+    IMAGE_SIZE: 224
+
+MITIGATOR:
+  TYPE: "sae_weighted_classifier"
+  SAE_WEIGHTED_CLASSIFIER:
+    # Paths to SAE outputs
+    SAE_CHECKPOINT_PATH: "outputs/utkface_sae/race_analysis/sae/sae_checkpoints/ae.pt"  # e.g., "outputs/utkface_sae/sae/sae_checkpoints/ae.pt"
+    SAE_ANALYSIS_PATH: "outputs/utkface_sae/race_analysis/sae/analysis_results.json"    # e.g., "outputs/utkface_sae/sae/analysis_results.json"
+    
+    # Include neurons with purity >= 0.8 (lower threshold since we weight by purity)
+    PURITY_THRESHOLD: 0.5
+    
+    # Weight mode: 'purity' (no learning) or 'learnable' (per-neuron weights)
+    WEIGHT_MODE: "purity"
+    
+    # Initialize learnable weights with purity values
+    INIT_WITH_PURITY: True
+    
+    # Temperature and bias learning
+    TEMPERATURE: 2.0
+    LEARN_TEMPERATURE: True
+    LEARN_CLASS_BIAS: True
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True
+
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 10  # Fewer epochs needed due to minimal parameters
+  LR: 0.01    # Can use higher LR with few parameters
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.01
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"

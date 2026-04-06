@@ -1,0 +1,1105 @@
+
+================================================================================
+VLM ROBUSTNESS ANALYSIS V3 - DUAL WG + GAP
+================================================================================
+Generated: 2026-03-26 18:56:20
+Output: paper_analysis_v3
+
+This version generates BOTH WG accuracy and Gap plots for all factors.
+
+--------------------------------------------------------------------------------
+DATA LOADING: ImageNet
+--------------------------------------------------------------------------------
+File: ./imagenet/results_imagenet/master_results.csv
+Models: 194
+
+### Data Summary
+Training objectives: {'CLIP': 152, 'SigLIP2': 15, 'SigLIP': 11, 'CLIPA': 7, 'EVA': 5, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'EVA': 5, 'PE': 5, 'CoCa': 4, 'MobileCLIP': 4, 'NLLB-SigLIP': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+
+--------------------------------------------------------------------------------
+DATA LOADING: UrbanCars
+--------------------------------------------------------------------------------
+File: ./urbancars/results/master_results.csv
+Models: 194
+
+### Data Summary
+Training objectives: {'CLIP': 152, 'SigLIP2': 15, 'SigLIP': 11, 'CLIPA': 7, 'EVA': 5, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'PE': 5, 'EVA': 5, 'MobileCLIP': 4, 'NLLB-SigLIP': 4, 'CoCa': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Gap (Avg-WG) range: 3.90pp - 50.50pp
+Gap (Avg-WG) mean: 20.36pp
+
+--------------------------------------------------------------------------------
+DATA LOADING: CelebA
+--------------------------------------------------------------------------------
+File: ./celeba/results_celeba/master_results.csv
+Models: 194
+
+### Data Summary
+Training objectives: {'CLIP': 152, 'SigLIP2': 15, 'SigLIP': 11, 'CLIPA': 7, 'EVA': 5, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'PE': 5, 'EVA': 5, 'MobileCLIP': 4, 'CoCa': 4, 'NLLB-SigLIP': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Gap (Avg-WG) range: 0.70pp - 69.30pp
+Gap (Avg-WG) mean: 12.76pp
+
+================================================================================
+ANALYSIS: IMAGENET
+================================================================================
+
+### Top-1 Accuracy
+N: 194
+Mean: 67.5806
+Std: 19.2690
+Min: 2.6940
+Max: 84.9560
+
+### Top 15 Models
+
+                           model_id training_objective arch_family  total_params_M  image_size  top1_accuracy
+0     ViT-gopt-16-SigLIP2-384_webli            SigLIP2     SigLIP2          1871.9         384          84.96
+1     ViT-gopt-16-SigLIP2-256_webli            SigLIP2     SigLIP2          1871.4         256          84.46
+2      ViT-H-14-378-quickgelu_dfn5b               CLIP        CLIP           986.7         378          84.33
+3   ViT-SO400M-16-SigLIP2-512_webli            SigLIP2     SigLIP2          1136.6         512          84.28
+4   ViT-SO400M-16-SigLIP2-384_webli            SigLIP2     SigLIP2          1136.0         384          84.18
+5   ViT-SO400M-14-SigLIP2-378_webli            SigLIP2     SigLIP2          1136.0         378          84.09
+6        ViT-L-16-SigLIP2-512_webli            SigLIP2     SigLIP2           882.3         512          83.50
+7             PE-Core-L-14-336_meta               CLIP          PE           671.1         336          83.48
+8          ViT-H-14-quickgelu_dfn5b               CLIP        CLIP           986.1         224          83.40
+9   ViT-SO400M-16-SigLIP2-256_webli            SigLIP2     SigLIP2          1135.7         256          83.28
+10       ViT-L-16-SigLIP2-384_webli            SigLIP2     SigLIP2           881.9         384          83.23
+11      ViT-SO400M-14-SigLIP2_webli            SigLIP2     SigLIP2          1135.5         224          83.18
+12   ViT-SO400M-14-SigLIP-384_webli             SigLIP      SigLIP           878.0         384          83.09
+13   ViT-SO400M-14-SigLIP-378_webli             SigLIP      SigLIP           878.0         378          83.09
+14               ViT-H-14-378_dfn5b               CLIP        CLIP           986.7         378          83.07
+
+
+================================================================================
+ANALYSIS: URBANCARS
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Worst-Group Accuracy (%)
+N: 194
+Mean: 57.9010
+Std: 17.3182
+Min: 1.6000
+Max: 86.4000
+Median: 61.6000
+
+### Accuracy Gap: Avg - WG (pp)
+N: 194
+Mean: 20.3624
+Std: 10.6883
+Min: 3.9000
+Max: 50.5000
+Median: 18.3000
+
+--------------------------------------------------------------------------------
+FACTOR: Training Objective (UrbanCars)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Training Objective
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+SigLIP                            67.85    15.19    11
+CLIPA                             65.14    10.72     7
+SigLIP2                           60.05    17.41    15
+EVA                               59.84     9.69     5
+CLIP                              56.73    17.30   152
+CoCa                              52.00    34.17     4
+
+### Gap (Avg-WG) by Training Objective
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+SigLIP                            17.13    10.36    11
+CLIPA                             19.24     8.65     7
+EVA                               19.70     7.35     5
+CLIP                              20.21    10.52   152
+CoCa                              22.72    17.67     4
+SigLIP2                           24.41    13.03    15
+
+--------------------------------------------------------------------------------
+FACTOR: Training Data (UrbanCars)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Training Data
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+DFNDR-2b                          78.74     5.01     7
+DFN-5b                            77.00    10.08     4
+MetaCLIP-5.4b                     70.24     6.31     5
+LAION-A-900m                      66.67     4.03     3
+WebLI-10b                         63.15    17.80    30
+DFN-2b                            62.80    10.78     4
+LAION-2b                          62.23    16.22    23
+DataComp-1b                       62.01     9.18    29
+CommonPool-1b                     62.00     7.65     6
+CommonPool-12.8b                  60.80     7.20     3
+LAION-400m                        60.27     8.83    12
+Merged-2b                         57.00     8.45     4
+CommonCrawl-2.5b                  54.08    18.69    10
+MetaCLIP2-2.5b                    49.73    17.30     6
+OpenAI-400m                       48.72    15.60    19
+MetaCLIP-400m                     47.47    25.37     6
+YFCC-15m                          47.40     6.00     4
+CommonPool-128m                   40.67     3.56     6
+CommonPool-13m                    21.20     8.20     6
+
+### Gap (Avg-WG) by Training Data
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+DFNDR-2b                           7.79     3.63     7
+DFN-5b                            10.48     7.98     4
+LAION-A-900m                      13.67     3.66     3
+MetaCLIP-5.4b                     13.76     5.23     5
+CommonPool-1b                     16.40     6.43     6
+YFCC-15m                          17.72     4.54     4
+LAION-400m                        18.47     6.53    12
+LAION-2b                          18.59     9.89    23
+CommonPool-128m                   18.67     2.86     6
+DFN-2b                            19.27     7.81     4
+DataComp-1b                       19.36     7.41    29
+CommonPool-12.8b                  21.03     4.91     3
+WebLI-10b                         21.12    13.13    30
+Merged-2b                         21.68     6.78     4
+CommonCrawl-2.5b                  23.44    14.74    10
+OpenAI-400m                       25.40    10.82    19
+MetaCLIP-400m                     26.38    16.19     6
+MetaCLIP2-2.5b                    30.20    13.36     6
+CommonPool-13m                    30.28     8.25     6
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (UrbanCars)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Architecture
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+MobileCLIP2                       80.13     3.73     6
+PE                                70.24     6.31     5
+SigLIP                            67.85    15.19    11
+CLIPA                             65.14    10.72     7
+ConvNeXt                          61.93     9.34    12
+NLLB-SigLIP                       61.80    27.37     4
+ViTamin                           60.85     8.09    15
+MobileCLIP                        60.60    10.62     4
+SigLIP2                           60.05    17.41    15
+EVA                               59.84     9.69     5
+CLIP                              53.29    18.30    85
+CoCa                              52.00    34.17     4
+ResNet                            50.80    13.73    16
+
+### Gap (Avg-WG) by Architecture
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+MobileCLIP2                        7.12     3.47     6
+PE                                13.76     5.23     5
+SigLIP                            17.13    10.36    11
+ConvNeXt                          19.00     7.97    12
+MobileCLIP                        19.17     7.33     4
+CLIPA                             19.24     8.65     7
+EVA                               19.70     7.35     5
+NLLB-SigLIP                       19.72    20.03     4
+ViTamin                           20.13     6.92    15
+ResNet                            21.25     9.15    16
+CLIP                              21.70    11.01    85
+CoCa                              22.72    17.67     4
+SigLIP2                           24.41    13.03    15
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution (UrbanCars)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Resolution
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+>400                              64.57     8.39     7
+241-300                           62.46    14.32    29
+301-400                           62.44    15.23    38
+<=240                             54.97    18.50   120
+
+### Gap (Avg-WG) by Resolution
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+241-300                           19.26    11.11    29
+301-400                           20.33    11.17    38
+>400                              20.51     5.47     7
+<=240                             20.63    10.79   120
+
+--------------------------------------------------------------------------------
+FACTOR: Params Bucket (UrbanCars)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Params Bucket
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+>1B                               60.48    14.14    30
+200-500M                          59.88    16.75    52
+500M-1B                           58.33    20.51    34
+<200M                             55.41    17.40    78
+
+### Gap (Avg-WG) by Params Bucket
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+<200M                             18.21     8.85    78
+200-500M                          20.79    10.67    52
+>1B                               22.41    10.95    30
+500M-1B                           22.83    13.65    34
+
+--------------------------------------------------------------------------------
+NUMERIC: Parameters (M) (UrbanCars)
+--------------------------------------------------------------------------------
+Parameters (M) → WG Acc: ρ=+0.0514, p=0.476913 (ns)
+Parameters (M) → Gap: ρ=+0.1728, p=0.015952 (*)
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (UrbanCars)
+--------------------------------------------------------------------------------
+Image Size → WG Acc: ρ=+0.1936, p=0.006846 (**)
+Image Size → Gap: ρ=-0.0292, p=0.686502 (ns)
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (UrbanCars)
+--------------------------------------------------------------------------------
+Patch Size → WG Acc: ρ=-0.1414, p=0.049297 (*)
+Patch Size → Gap: ρ=+0.0375, p=0.603984 (ns)
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (UrbanCars)
+--------------------------------------------------------------------------------
+Tokens → WG Acc: ρ=+0.1837, p=0.010353 (*)
+Tokens → Gap: ρ=-0.0408, p=0.572550 (ns)
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (M) (UrbanCars)
+--------------------------------------------------------------------------------
+Data Size (M) → WG Acc: ρ=+0.3868, p=0.000000 (***)
+Data Size (M) → Gap: ρ=-0.1695, p=0.018157 (*)
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Top 15 by WG Accuracy (highest)
+
+                                               model_id training_objective       arch_family  total_params_M  image_size  worst_group_accuracy  accuracy_gap
+0                        ViT-SO400M-14-SigLIP-384_webli             SigLIP            SigLIP           878.0         384                  86.4           5.0
+1                            ViT-SO400M-14-SigLIP_webli             SigLIP            SigLIP           877.4         224                  86.4           4.4
+4                              ViT-H-14-quickgelu_dfn5b               CLIP              CLIP           986.1         224                  84.8           5.2
+12                               MobileCLIP2-S3_dfndr2b               CLIP       MobileCLIP2           248.9         256                  84.0           4.4
+7                                ViT-B-16-SigLIP2_webli            SigLIP2           SigLIP2           375.2         224                  83.2           6.2
+8                              MobileCLIP2-L-14_dfndr2b               CLIP       MobileCLIP2           427.6         224                  82.4           7.0
+11                           ViT-B-16-SigLIP2-256_webli            SigLIP2           SigLIP2           375.2         256                  82.4           6.3
+20                               MobileCLIP2-S4_dfndr2b               CLIP       MobileCLIP2           445.4         256                  82.4           4.8
+25                                   ViT-H-14-378_dfn5b               CLIP              CLIP           986.7         378                  82.4           4.2
+2                        ViT-SO400M-14-SigLIP-378_webli             SigLIP            SigLIP           878.0         378                  81.6           9.1
+21                                MobileCLIP2-B_dfndr2b               CLIP       MobileCLIP2           149.8         224                  80.8           6.2
+17                  ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP            SigLIP          1127.4         256                  80.0           7.3
+10  xlm-roberta-large-ViT-H-14_frozen_laion5b_s13b_b90k               CLIP  XLM-RoBERTa-CLIP          1193.0         224                  79.2           9.9
+23                           ViT-B-32-SigLIP2-256_webli            SigLIP2           SigLIP2           376.9         256                  79.2           7.5
+28                            ViT-H-14-CLIPA_datacomp1b              CLIPA             CLIPA           968.2         224                  79.2           6.7
+
+
+### Top 15 by Gap (lowest = most fair)
+
+                               model_id training_objective  arch_family  total_params_M  image_size  accuracy_gap  worst_group_accuracy
+86   ViT-B-32-quickgelu_metaclip_fullcc               CLIP         CLIP           151.3         224           3.9                  77.6
+25                   ViT-H-14-378_dfn5b               CLIP         CLIP           986.7         378           4.2                  82.4
+1            ViT-SO400M-14-SigLIP_webli             SigLIP       SigLIP           877.4         224           4.4                  86.4
+12               MobileCLIP2-S3_dfndr2b               CLIP  MobileCLIP2           248.9         256           4.4                  84.0
+20               MobileCLIP2-S4_dfndr2b               CLIP  MobileCLIP2           445.4         256           4.8                  82.4
+0        ViT-SO400M-14-SigLIP-384_webli             SigLIP       SigLIP           878.0         384           5.0                  86.4
+126            ViT-B-16_metaclip_fullcc               CLIP         CLIP           149.6         224           5.0                  72.8
+44       ViT-bigG-14_laion2b_s39b_b160k               CLIP         CLIP          2539.6         224           5.1                  78.4
+4              ViT-H-14-quickgelu_dfn5b               CLIP         CLIP           986.1         224           5.2                  84.8
+21                MobileCLIP2-B_dfndr2b               CLIP  MobileCLIP2           149.8         224           6.2                  80.8
+7                ViT-B-16-SigLIP2_webli            SigLIP2      SigLIP2           375.2         224           6.2                  83.2
+11           ViT-B-16-SigLIP2-256_webli            SigLIP2      SigLIP2           375.2         256           6.3                  82.4
+50               MobileCLIP2-S0_dfndr2b               CLIP  MobileCLIP2            74.8         256           6.4                  76.8
+95   ViT-B-16_commonpool_l_clip_s1b_b8k               CLIP         CLIP           149.6         224           6.6                  74.4
+28            ViT-H-14-CLIPA_datacomp1b              CLIPA        CLIPA           968.2         224           6.7                  79.2
+
+
+--------------------------------------------------------------------------------
+FIGURE: WG vs Gap Landscape (UrbanCars)
+--------------------------------------------------------------------------------
+
+Pareto-optimal (high WG, low Gap): 3 models
+  ViT-SO400M-14-SigLIP_webli: WG=86.4%, Gap=4.4pp
+  ViT-H-14-378_dfn5b: WG=82.4%, Gap=4.2pp
+  ViT-B-32-quickgelu_metaclip_fullcc: WG=77.6%, Gap=3.9pp
+
+--------------------------------------------------------------------------------
+FIGURE: objective - WG Accuracy (UrbanCars)
+--------------------------------------------------------------------------------
+  CoCa: WG=52.00% ± 34.17%
+  CLIP: WG=56.73% ± 17.30%
+  EVA: WG=59.84% ± 9.69%
+  SigLIP2: WG=60.05% ± 17.41%
+  CLIPA: WG=65.14% ± 10.72%
+  SigLIP: WG=67.85% ± 15.19%
+
+--------------------------------------------------------------------------------
+FIGURE: objective - Gap (UrbanCars)
+--------------------------------------------------------------------------------
+  SigLIP: Gap=17.13pp ± 10.36pp
+  CLIPA: Gap=19.24pp ± 8.65pp
+  EVA: Gap=19.70pp ± 7.35pp
+  CLIP: Gap=20.21pp ± 10.52pp
+  CoCa: Gap=22.72pp ± 17.67pp
+  SigLIP2: Gap=24.41pp ± 13.03pp
+
+--------------------------------------------------------------------------------
+FIGURE: arch - WG Accuracy (UrbanCars)
+--------------------------------------------------------------------------------
+  ResNet: WG=50.80% ± 13.73%
+  CoCa: WG=52.00% ± 34.17%
+  CLIP: WG=53.29% ± 18.30%
+  EVA: WG=59.84% ± 9.69%
+  SigLIP2: WG=60.05% ± 17.41%
+  MobileCLIP: WG=60.60% ± 10.62%
+  ViTamin: WG=60.85% ± 8.09%
+  NLLB-SigLIP: WG=61.80% ± 27.37%
+  ConvNeXt: WG=61.93% ± 9.34%
+  CLIPA: WG=65.14% ± 10.72%
+  SigLIP: WG=67.85% ± 15.19%
+  PE: WG=70.24% ± 6.31%
+  MobileCLIP2: WG=80.13% ± 3.73%
+
+--------------------------------------------------------------------------------
+FIGURE: arch - Gap (UrbanCars)
+--------------------------------------------------------------------------------
+  MobileCLIP2: Gap=7.12pp ± 3.47pp
+  PE: Gap=13.76pp ± 5.23pp
+  SigLIP: Gap=17.13pp ± 10.36pp
+  ConvNeXt: Gap=19.00pp ± 7.97pp
+  MobileCLIP: Gap=19.17pp ± 7.33pp
+  CLIPA: Gap=19.24pp ± 8.65pp
+  EVA: Gap=19.70pp ± 7.35pp
+  NLLB-SigLIP: Gap=19.72pp ± 20.03pp
+  ViTamin: Gap=20.13pp ± 6.92pp
+  ResNet: Gap=21.25pp ± 9.15pp
+  CLIP: Gap=21.70pp ± 11.01pp
+  CoCa: Gap=22.72pp ± 17.67pp
+  SigLIP2: Gap=24.41pp ± 13.03pp
+
+--------------------------------------------------------------------------------
+FIGURE: data - WG Accuracy (UrbanCars)
+--------------------------------------------------------------------------------
+  CommonPool-13m: WG=21.20% ± 8.20%
+  CommonPool-128m: WG=40.67% ± 3.56%
+  YFCC-15m: WG=47.40% ± 6.00%
+  MetaCLIP-400m: WG=47.47% ± 25.37%
+  OpenAI-400m: WG=48.72% ± 15.60%
+  MetaCLIP2-2.5b: WG=49.73% ± 17.30%
+  CommonCrawl-2.5b: WG=54.08% ± 18.69%
+  Merged-2b: WG=57.00% ± 8.45%
+  LAION-400m: WG=60.27% ± 8.83%
+  CommonPool-12.8b: WG=60.80% ± 7.20%
+  CommonPool-1b: WG=62.00% ± 7.65%
+  DataComp-1b: WG=62.01% ± 9.18%
+  LAION-2b: WG=62.23% ± 16.22%
+  DFN-2b: WG=62.80% ± 10.78%
+  WebLI-10b: WG=63.15% ± 17.80%
+  LAION-A-900m: WG=66.67% ± 4.03%
+  MetaCLIP-5.4b: WG=70.24% ± 6.31%
+  DFN-5b: WG=77.00% ± 10.08%
+  DFNDR-2b: WG=78.74% ± 5.01%
+
+--------------------------------------------------------------------------------
+FIGURE: data - Gap (UrbanCars)
+--------------------------------------------------------------------------------
+  DFNDR-2b: Gap=7.79pp ± 3.63pp
+  DFN-5b: Gap=10.48pp ± 7.98pp
+  LAION-A-900m: Gap=13.67pp ± 3.66pp
+  MetaCLIP-5.4b: Gap=13.76pp ± 5.23pp
+  CommonPool-1b: Gap=16.40pp ± 6.43pp
+  YFCC-15m: Gap=17.72pp ± 4.54pp
+  LAION-400m: Gap=18.47pp ± 6.53pp
+  LAION-2b: Gap=18.59pp ± 9.89pp
+  CommonPool-128m: Gap=18.67pp ± 2.86pp
+  DFN-2b: Gap=19.27pp ± 7.81pp
+  DataComp-1b: Gap=19.36pp ± 7.41pp
+  CommonPool-12.8b: Gap=21.03pp ± 4.91pp
+  WebLI-10b: Gap=21.12pp ± 13.13pp
+  Merged-2b: Gap=21.68pp ± 6.78pp
+  CommonCrawl-2.5b: Gap=23.44pp ± 14.74pp
+  OpenAI-400m: Gap=25.40pp ± 10.82pp
+  MetaCLIP-400m: Gap=26.38pp ± 16.19pp
+  MetaCLIP2-2.5b: Gap=30.20pp ± 13.36pp
+  CommonPool-13m: Gap=30.28pp ± 8.25pp
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) vs WG (UrbanCars)
+--------------------------------------------------------------------------------
+Parameters (M) vs WG: ρ=0.0514, p=0.476913
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) vs Gap (UrbanCars)
+--------------------------------------------------------------------------------
+Parameters (M) vs Gap: ρ=0.1728, p=0.015952
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) vs WG (UrbanCars)
+--------------------------------------------------------------------------------
+Image Size (px) vs WG: ρ=0.1936, p=0.006846
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) vs Gap (UrbanCars)
+--------------------------------------------------------------------------------
+Image Size (px) vs Gap: ρ=-0.0292, p=0.686502
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) vs WG (UrbanCars)
+--------------------------------------------------------------------------------
+Patch Size (px) vs WG: ρ=-0.1414, p=0.049297
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) vs Gap (UrbanCars)
+--------------------------------------------------------------------------------
+Patch Size (px) vs Gap: ρ=0.0375, p=0.603984
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens vs WG (UrbanCars)
+--------------------------------------------------------------------------------
+Number of Tokens vs WG: ρ=0.1837, p=0.010353
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens vs Gap (UrbanCars)
+--------------------------------------------------------------------------------
+Number of Tokens vs Gap: ρ=-0.0408, p=0.572550
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) vs WG (UrbanCars)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs WG: ρ=0.3868, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) vs Gap (UrbanCars)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs Gap: ρ=-0.1695, p=0.018157
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (UrbanCars)
+--------------------------------------------------------------------------------
+
+Factor                        WG Acc ρ        Gap ρ
+-------------------------------------------------------
+total_params_M                 +0.1243      +0.1221
+image_size                     +0.1534      -0.0538
+patch_size_num                 -0.1299      -0.0266
+num_tokens                     +0.1559      +0.0045
+embed_dim                      +0.1001      +0.1200
+training_data_size_M           +0.5305      -0.2981
+
+--------------------------------------------------------------------------------
+MULTIVARIATE REGRESSION: UrbanCars
+--------------------------------------------------------------------------------
+
+### Regression: WG Accuracy
+R²: 0.2943
+Adj R²: 0.2638
+N: 194
+
+Variable                   Coef            p   Sig
+--------------------------------------------------
+Intercept               +59.717       0.0000   ***
+is_siglip                +2.962       0.7138      
+is_coca                  -9.047       0.2406      
+is_webli                -14.964       0.0742      
+is_datacomp              +1.745       0.5683      
+log_params_z             -2.267       0.0638      
+log_datasize_z          +11.295       0.0000   ***
+log_patchsize_z          -2.435       0.0360     *
+log_imgsize_z            +2.180       0.0954      
+
+### Regression: Gap
+R²: 0.1304
+Adj R²: 0.0928
+N: 194
+
+Variable                   Coef            p   Sig
+--------------------------------------------------
+Intercept               +19.400       0.0000   ***
+is_siglip                +1.690       0.7600      
+is_coca                  +3.680       0.4854      
+is_webli                 +4.671       0.4144      
+is_datacomp              -0.379       0.8564      
+log_params_z             +3.175       0.0002   ***
+log_datasize_z           -4.283       0.0000   ***
+log_patchsize_z          +0.802       0.3114      
+log_imgsize_z            -0.695       0.4365      
+
+--------------------------------------------------------------------------------
+VARIANCE PARTITIONING: UrbanCars
+--------------------------------------------------------------------------------
+
+### Variance Partitioning: WG Accuracy
+
+Factor                  Unique R²   % of Total
+--------------------------------------------------
+Architecture               0.0312        12.3%
+Scale                      0.0250         9.9%
+Data                       0.2146        84.7%
+Shared                    -0.0175        -6.9%
+TOTAL                      0.2533
+
+### Variance Partitioning: Gap
+
+Factor                  Unique R²   % of Total
+--------------------------------------------------
+Architecture               0.0239        20.2%
+Scale                      0.0721        60.9%
+Data                       0.0827        69.8%
+Shared                    -0.0602       -50.9%
+TOTAL                      0.1184
+
+================================================================================
+ANALYSIS: CELEBA
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: CelebA
+--------------------------------------------------------------------------------
+
+### Worst-Group Accuracy (%)
+N: 194
+Mean: 74.1475
+Std: 16.9186
+Min: 0.0000
+Max: 89.2495
+Median: 80.2778
+
+### Accuracy Gap: Avg - WG (pp)
+N: 194
+Mean: 12.7572
+Std: 12.9868
+Min: 0.7024
+Max: 69.2962
+Median: 9.4206
+
+--------------------------------------------------------------------------------
+FACTOR: Training Objective (CelebA)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Training Objective
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+SigLIP                            87.04     1.38    11
+SigLIP2                           86.43     0.61    15
+CLIPA                             85.78     1.43     7
+EVA                               78.84     5.10     5
+CLIP                              71.74    17.05   152
+CoCa                              57.88    38.39     4
+
+### Gap (Avg-WG) by Training Objective
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+SigLIP                             1.92     0.99    11
+CLIPA                              2.42     1.62     7
+SigLIP2                            2.64     0.97    15
+EVA                               11.06     6.02     5
+CLIP                              14.97    13.60   152
+CoCa                              16.76     8.10     4
+
+--------------------------------------------------------------------------------
+FACTOR: Training Data (CelebA)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Training Data
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+DFN-5b                            86.20     0.61     4
+WebLI-10b                         84.70     5.40    30
+MetaCLIP2-2.5b                    84.24     1.53     6
+CommonPool-12.8b                  82.10     2.21     3
+LAION-A-900m                      81.57     2.26     3
+DataComp-1b                       81.11     5.97    29
+LAION-400m                        78.98     4.83    12
+Merged-2b                         78.68     5.87     4
+DFNDR-2b                          78.02     2.35     7
+CommonCrawl-2.5b                  77.67     6.28    10
+LAION-2b                          75.97    21.12    23
+MetaCLIP-400m                     74.69     7.50     6
+DFN-2b                            73.33     7.79     4
+MetaCLIP-5.4b                     72.33     9.83     5
+OpenAI-400m                       70.61    18.24    19
+CommonPool-1b                     52.69     8.76     6
+CommonPool-13m                    44.44    12.43     6
+YFCC-15m                          41.60     9.28     4
+CommonPool-128m                   40.62    17.67     6
+
+### Gap (Avg-WG) by Training Data
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+DFN-5b                             3.05     0.90     4
+WebLI-10b                          4.18     5.19    30
+MetaCLIP2-2.5b                     4.23     2.47     6
+CommonPool-12.8b                   6.55     3.95     3
+LAION-A-900m                       7.82     4.16     3
+DataComp-1b                        8.32     6.75    29
+LAION-2b                          10.51    14.49    23
+LAION-400m                        10.70     5.83    12
+Merged-2b                         11.47     6.87     4
+CommonCrawl-2.5b                  12.61     6.91    10
+CommonPool-13m                    12.68     6.49     6
+DFNDR-2b                          13.98     2.21     7
+OpenAI-400m                       14.77     7.04    19
+MetaCLIP-400m                     15.08     9.41     6
+MetaCLIP-5.4b                     17.56    11.04     5
+DFN-2b                            18.82     8.49     4
+YFCC-15m                          28.28     9.37     4
+CommonPool-1b                     37.49     8.54     6
+CommonPool-128m                   39.25    25.33     6
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (CelebA)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Architecture
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+SigLIP                            87.04     1.38    11
+SigLIP2                           86.43     0.61    15
+CLIPA                             85.78     1.43     7
+MobileCLIP                        84.58     2.28     4
+ConvNeXt                          83.74     3.46    12
+ViTamin                           79.79     5.31    15
+EVA                               78.84     5.10     5
+MobileCLIP2                       78.80     1.24     6
+PE                                72.33     9.83     5
+NLLB-SigLIP                       71.81     4.14     4
+CLIP                              71.00    16.51    85
+CoCa                              57.88    38.39     4
+ResNet                            55.05    24.64    16
+
+### Gap (Avg-WG) by Architecture
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+SigLIP                             1.92     0.99    11
+CLIPA                              2.42     1.62     7
+SigLIP2                            2.64     0.97    15
+ConvNeXt                           4.49     4.65    12
+MobileCLIP                         6.63     2.39     4
+ViTamin                            9.28     6.25    15
+EVA                               11.06     6.02     5
+MobileCLIP2                       13.28     1.33     6
+CLIP                              15.31    13.41    85
+NLLB-SigLIP                       16.15     5.55     4
+CoCa                              16.76     8.10     4
+PE                                17.56    11.04     5
+ResNet                            25.20    17.44    16
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution (CelebA)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Resolution
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+241-300                           81.62     6.41    29
+301-400                           81.00     7.13    38
+>400                              72.55    32.26     7
+<=240                             70.27    18.57   120
+
+### Gap (Avg-WG) by Resolution
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+>400                               5.93     5.76     7
+241-300                            7.73     7.42    29
+301-400                            7.92     7.80    38
+<=240                             15.90    14.66   120
+
+--------------------------------------------------------------------------------
+FACTOR: Params Bucket (CelebA)
+--------------------------------------------------------------------------------
+
+### WG Accuracy by Params Bucket
+
+Level                             Mean%     Std%     N
+-------------------------------------------------------
+>1B                               81.58    12.13    30
+200-500M                          79.66    12.38    52
+500M-1B                           78.61    15.51    34
+<200M                             65.67    18.37    78
+
+### Gap (Avg-WG) by Params Bucket
+
+Level                           Mean pp   Std pp     N
+-------------------------------------------------------
+>1B                                7.42    12.71    30
+500M-1B                            7.93     7.15    34
+200-500M                           8.74     6.89    52
+<200M                             19.59    15.20    78
+
+--------------------------------------------------------------------------------
+NUMERIC: Parameters (M) (CelebA)
+--------------------------------------------------------------------------------
+Parameters (M) → WG Acc: ρ=+0.4794, p=0.000000 (***)
+Parameters (M) → Gap: ρ=-0.5054, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (CelebA)
+--------------------------------------------------------------------------------
+Image Size → WG Acc: ρ=+0.3233, p=0.000004 (***)
+Image Size → Gap: ρ=-0.3300, p=0.000003 (***)
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (CelebA)
+--------------------------------------------------------------------------------
+Patch Size → WG Acc: ρ=-0.1798, p=0.012097 (*)
+Patch Size → Gap: ρ=+0.1512, p=0.035390 (*)
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (CelebA)
+--------------------------------------------------------------------------------
+Tokens → WG Acc: ρ=+0.2852, p=0.000056 (***)
+Tokens → Gap: ρ=-0.2701, p=0.000140 (***)
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (M) (CelebA)
+--------------------------------------------------------------------------------
+Data Size (M) → WG Acc: ρ=+0.5271, p=0.000000 (***)
+Data Size (M) → Gap: ρ=-0.4187, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: CelebA
+--------------------------------------------------------------------------------
+
+### Top 15 by WG Accuracy (highest)
+
+                                model_id training_objective arch_family  total_params_M  image_size  worst_group_accuracy  accuracy_gap
+65        ViT-SO400M-14-SigLIP-384_webli             SigLIP      SigLIP           878.0         384                 89.25          1.23
+71        ViT-SO400M-14-SigLIP-378_webli             SigLIP      SigLIP           878.0         378                 88.33          2.04
+105            ViT-B-16-SigLIP-512_webli             SigLIP      SigLIP           203.8         512                 87.83          1.31
+104  ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP      SigLIP          1127.4         256                 87.75          1.43
+106       ViT-bigG-14_laion2b_s39b_b160k               CLIP        CLIP          2539.6         224                 87.64          1.43
+140           ViT-H-14-CLIPA-336_laion2b              CLIPA       CLIPA           968.6         336                 87.42          0.78
+98             ViT-B-16-SigLIP-256_webli             SigLIP      SigLIP           203.2         256                 87.42          1.90
+113            ViT-B-16-SigLIP-384_webli             SigLIP      SigLIP           203.4         384                 87.37          1.50
+125      ViT-SO400M-16-SigLIP2-384_webli            SigLIP2     SigLIP2          1136.0         384                 87.27          1.36
+130                ViT-B-16-SigLIP_webli             SigLIP      SigLIP           203.2         224                 87.27          1.23
+39               MobileCLIP-B_datacompdr               CLIP  MobileCLIP           149.8         224                 87.22          3.77
+60                ViT-B-16-SigLIP2_webli            SigLIP2     SigLIP2           375.2         224                 87.22          3.30
+144            ViT-L-14-CLIPA_datacomp1b              CLIPA       CLIPA           414.2         224                 87.12          0.95
+150        ViT-L-14-CLIPA-336_datacomp1b              CLIPA       CLIPA           414.5         336                 87.10          0.70
+129      ViT-SO400M-14-SigLIP2-378_webli            SigLIP2     SigLIP2          1136.0         378                 87.09          1.43
+
+
+### Top 15 by Gap (lowest = most fair)
+
+                                             model_id training_objective arch_family  total_params_M  image_size  accuracy_gap  worst_group_accuracy
+150                     ViT-L-14-CLIPA-336_datacomp1b              CLIPA       CLIPA           414.5         336          0.70                 87.10
+140                        ViT-H-14-CLIPA-336_laion2b              CLIPA       CLIPA           968.6         336          0.78                 87.42
+144                         ViT-L-14-CLIPA_datacomp1b              CLIPA       CLIPA           414.2         224          0.95                 87.12
+152    convnext_xxlarge_laion2b_s34b_b82k_augreg_soup               CLIP    ConvNeXt          1200.6         256          1.02                 86.72
+142         convnext_xxlarge_laion2b_s34b_b82k_augreg               CLIP    ConvNeXt          1200.6         256          1.10                 87.06
+160     ViT-bigG-14-worldwide-378_metaclip2_worldwide               CLIP        CLIP          3631.2         378          1.22                 85.97
+130                             ViT-B-16-SigLIP_webli             SigLIP      SigLIP           203.2         224          1.23                 87.27
+65                     ViT-SO400M-14-SigLIP-384_webli             SigLIP      SigLIP           878.0         384          1.23                 89.25
+148  convnext_xxlarge_laion2b_s34b_b82k_augreg_rewind               CLIP    ConvNeXt          1200.6         256          1.26                 86.64
+157                 convnext_base_laion400m_s13b_b51k               CLIP    ConvNeXt           151.5         224          1.26                 86.12
+155          convnext_base_w_laion2b_s13b_b82k_augreg               CLIP    ConvNeXt           179.4         256          1.29                 86.14
+105                         ViT-B-16-SigLIP-512_webli             SigLIP      SigLIP           203.8         512          1.31                 87.83
+154         ViT-bigG-14-worldwide_metaclip2_worldwide               CLIP        CLIP          3630.4         224          1.34                 86.14
+125                   ViT-SO400M-16-SigLIP2-384_webli            SigLIP2     SigLIP2          1136.0         384          1.36                 87.27
+104               ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP      SigLIP          1127.4         256          1.43                 87.75
+
+
+--------------------------------------------------------------------------------
+FIGURE: WG vs Gap Landscape (CelebA)
+--------------------------------------------------------------------------------
+
+Pareto-optimal (high WG, low Gap): 3 models
+  ViT-SO400M-14-SigLIP-384_webli: WG=89.2%, Gap=1.2pp
+  ViT-H-14-CLIPA-336_laion2b: WG=87.4%, Gap=0.8pp
+  ViT-L-14-CLIPA-336_datacomp1b: WG=87.1%, Gap=0.7pp
+
+--------------------------------------------------------------------------------
+FIGURE: objective - WG Accuracy (CelebA)
+--------------------------------------------------------------------------------
+  CoCa: WG=57.88% ± 38.39%
+  CLIP: WG=71.74% ± 17.05%
+  EVA: WG=78.84% ± 5.10%
+  CLIPA: WG=85.78% ± 1.43%
+  SigLIP2: WG=86.43% ± 0.61%
+  SigLIP: WG=87.04% ± 1.38%
+
+--------------------------------------------------------------------------------
+FIGURE: objective - Gap (CelebA)
+--------------------------------------------------------------------------------
+  SigLIP: Gap=1.92pp ± 0.99pp
+  CLIPA: Gap=2.42pp ± 1.62pp
+  SigLIP2: Gap=2.64pp ± 0.97pp
+  EVA: Gap=11.06pp ± 6.02pp
+  CLIP: Gap=14.97pp ± 13.60pp
+  CoCa: Gap=16.76pp ± 8.10pp
+
+--------------------------------------------------------------------------------
+FIGURE: arch - WG Accuracy (CelebA)
+--------------------------------------------------------------------------------
+  ResNet: WG=55.05% ± 24.64%
+  CoCa: WG=57.88% ± 38.39%
+  CLIP: WG=71.00% ± 16.51%
+  NLLB-SigLIP: WG=71.81% ± 4.14%
+  PE: WG=72.33% ± 9.83%
+  MobileCLIP2: WG=78.80% ± 1.24%
+  EVA: WG=78.84% ± 5.10%
+  ViTamin: WG=79.79% ± 5.31%
+  ConvNeXt: WG=83.74% ± 3.46%
+  MobileCLIP: WG=84.58% ± 2.28%
+  CLIPA: WG=85.78% ± 1.43%
+  SigLIP2: WG=86.43% ± 0.61%
+  SigLIP: WG=87.04% ± 1.38%
+
+--------------------------------------------------------------------------------
+FIGURE: arch - Gap (CelebA)
+--------------------------------------------------------------------------------
+  SigLIP: Gap=1.92pp ± 0.99pp
+  CLIPA: Gap=2.42pp ± 1.62pp
+  SigLIP2: Gap=2.64pp ± 0.97pp
+  ConvNeXt: Gap=4.49pp ± 4.65pp
+  MobileCLIP: Gap=6.63pp ± 2.39pp
+  ViTamin: Gap=9.28pp ± 6.25pp
+  EVA: Gap=11.06pp ± 6.02pp
+  MobileCLIP2: Gap=13.28pp ± 1.33pp
+  CLIP: Gap=15.31pp ± 13.41pp
+  NLLB-SigLIP: Gap=16.15pp ± 5.55pp
+  CoCa: Gap=16.76pp ± 8.10pp
+  PE: Gap=17.56pp ± 11.04pp
+  ResNet: Gap=25.20pp ± 17.44pp
+
+--------------------------------------------------------------------------------
+FIGURE: data - WG Accuracy (CelebA)
+--------------------------------------------------------------------------------
+  CommonPool-128m: WG=40.62% ± 17.67%
+  YFCC-15m: WG=41.60% ± 9.28%
+  CommonPool-13m: WG=44.44% ± 12.43%
+  CommonPool-1b: WG=52.69% ± 8.76%
+  OpenAI-400m: WG=70.61% ± 18.24%
+  MetaCLIP-5.4b: WG=72.33% ± 9.83%
+  DFN-2b: WG=73.33% ± 7.79%
+  MetaCLIP-400m: WG=74.69% ± 7.50%
+  LAION-2b: WG=75.97% ± 21.12%
+  CommonCrawl-2.5b: WG=77.67% ± 6.28%
+  DFNDR-2b: WG=78.02% ± 2.35%
+  Merged-2b: WG=78.68% ± 5.87%
+  LAION-400m: WG=78.98% ± 4.83%
+  DataComp-1b: WG=81.11% ± 5.97%
+  LAION-A-900m: WG=81.57% ± 2.26%
+  CommonPool-12.8b: WG=82.10% ± 2.21%
+  MetaCLIP2-2.5b: WG=84.24% ± 1.53%
+  WebLI-10b: WG=84.70% ± 5.40%
+  DFN-5b: WG=86.20% ± 0.61%
+
+--------------------------------------------------------------------------------
+FIGURE: data - Gap (CelebA)
+--------------------------------------------------------------------------------
+  DFN-5b: Gap=3.05pp ± 0.90pp
+  WebLI-10b: Gap=4.18pp ± 5.19pp
+  MetaCLIP2-2.5b: Gap=4.23pp ± 2.47pp
+  CommonPool-12.8b: Gap=6.55pp ± 3.95pp
+  LAION-A-900m: Gap=7.82pp ± 4.16pp
+  DataComp-1b: Gap=8.32pp ± 6.75pp
+  LAION-2b: Gap=10.51pp ± 14.49pp
+  LAION-400m: Gap=10.70pp ± 5.83pp
+  Merged-2b: Gap=11.47pp ± 6.87pp
+  CommonCrawl-2.5b: Gap=12.61pp ± 6.91pp
+  CommonPool-13m: Gap=12.68pp ± 6.49pp
+  DFNDR-2b: Gap=13.98pp ± 2.21pp
+  OpenAI-400m: Gap=14.77pp ± 7.04pp
+  MetaCLIP-400m: Gap=15.08pp ± 9.41pp
+  MetaCLIP-5.4b: Gap=17.56pp ± 11.04pp
+  DFN-2b: Gap=18.82pp ± 8.49pp
+  YFCC-15m: Gap=28.28pp ± 9.37pp
+  CommonPool-1b: Gap=37.49pp ± 8.54pp
+  CommonPool-128m: Gap=39.25pp ± 25.33pp
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) vs WG (CelebA)
+--------------------------------------------------------------------------------
+Parameters (M) vs WG: ρ=0.4794, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) vs Gap (CelebA)
+--------------------------------------------------------------------------------
+Parameters (M) vs Gap: ρ=-0.5054, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) vs WG (CelebA)
+--------------------------------------------------------------------------------
+Image Size (px) vs WG: ρ=0.3233, p=0.000004
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) vs Gap (CelebA)
+--------------------------------------------------------------------------------
+Image Size (px) vs Gap: ρ=-0.3300, p=0.000003
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) vs WG (CelebA)
+--------------------------------------------------------------------------------
+Patch Size (px) vs WG: ρ=-0.1798, p=0.012097
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) vs Gap (CelebA)
+--------------------------------------------------------------------------------
+Patch Size (px) vs Gap: ρ=0.1512, p=0.035390
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens vs WG (CelebA)
+--------------------------------------------------------------------------------
+Number of Tokens vs WG: ρ=0.2852, p=0.000056
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens vs Gap (CelebA)
+--------------------------------------------------------------------------------
+Number of Tokens vs Gap: ρ=-0.2701, p=0.000140
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) vs WG (CelebA)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs WG: ρ=0.5271, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) vs Gap (CelebA)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs Gap: ρ=-0.4187, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (CelebA)
+--------------------------------------------------------------------------------
+
+Factor                        WG Acc ρ        Gap ρ
+-------------------------------------------------------
+total_params_M                 +0.5355      -0.5217
+image_size                     +0.1623      -0.1500
+patch_size_num                 -0.2549      +0.1787
+num_tokens                     +0.2777      -0.2054
+embed_dim                      +0.4899      -0.4521
+training_data_size_M           +0.4300      -0.2456
+
+--------------------------------------------------------------------------------
+MULTIVARIATE REGRESSION: CelebA
+--------------------------------------------------------------------------------
+
+### Regression: WG Accuracy
+R²: 0.4304
+Adj R²: 0.4058
+N: 194
+
+Variable                   Coef            p   Sig
+--------------------------------------------------
+Intercept               +74.752       0.0000   ***
+is_siglip               +15.830       0.0265     *
+is_coca                 -20.521       0.0027    **
+is_webli                -19.810       0.0074    **
+is_datacomp              +4.612       0.0869      
+log_params_z             +3.032       0.0050    **
+log_datasize_z          +10.110       0.0000   ***
+log_patchsize_z          -0.992       0.3281      
+log_imgsize_z            +0.283       0.8045      
+
+### Regression: Gap
+R²: 0.2928
+Adj R²: 0.2622
+N: 194
+
+Variable                   Coef            p   Sig
+--------------------------------------------------
+Intercept               +13.610       0.0000   ***
+is_siglip               -15.361       0.0120     *
+is_coca                  +4.162       0.4715      
+is_webli                +12.115       0.0544      
+is_datacomp              -4.567       0.0478     *
+log_params_z             -3.399       0.0003   ***
+log_datasize_z           -3.719       0.0007   ***
+log_patchsize_z          +0.507       0.5588      
+log_imgsize_z            -0.967       0.3234      
+
+--------------------------------------------------------------------------------
+VARIANCE PARTITIONING: CelebA
+--------------------------------------------------------------------------------
+
+### Variance Partitioning: WG Accuracy
+
+Factor                  Unique R²   % of Total
+--------------------------------------------------
+Architecture               0.0012         0.3%
+Scale                      0.0249         6.9%
+Data                       0.1699        47.3%
+Shared                     0.1632        45.4%
+TOTAL                      0.3592
+
+### Variance Partitioning: Gap
+
+Factor                  Unique R²   % of Total
+--------------------------------------------------
+Architecture               0.0057         2.2%
+Scale                      0.0630        24.8%
+Data                       0.0382        15.0%
+Shared                     0.1474        58.0%
+TOTAL                      0.2543
+
+--------------------------------------------------------------------------------
+ROBUSTNESS METRICS: ImageNet vs UrbanCars
+--------------------------------------------------------------------------------
+Models in ImageNet: 194
+Models in UrbanCars: 194
+Overlapping models: 194
+
+### Statistics
+Mean ImageNet-WG gap: 9.68pp
+Mean Avg-WG gap: 20.36pp
+ImageNet vs WG correlation: ρ=0.2660, p=0.000177
+
+--------------------------------------------------------------------------------
+FIGURE: ImageNet vs UrbanCars WG
+--------------------------------------------------------------------------------
+Correlation: ρ=0.2660, p=0.000177
+
+--------------------------------------------------------------------------------
+FIGURE: ImageNet vs UrbanCars Gap
+--------------------------------------------------------------------------------
+ImageNet vs Gap correlation: ρ=0.0167, p=0.817651
+
+--------------------------------------------------------------------------------
+ROBUSTNESS METRICS: ImageNet vs CelebA
+--------------------------------------------------------------------------------
+Models in ImageNet: 194
+Models in CelebA: 194
+Overlapping models: 194
+
+### Statistics
+Mean ImageNet-WG gap: -6.57pp
+Mean Avg-WG gap: 12.76pp
+ImageNet vs WG correlation: ρ=0.6834, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: ImageNet vs CelebA WG
+--------------------------------------------------------------------------------
+Correlation: ρ=0.6834, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: ImageNet vs CelebA Gap
+--------------------------------------------------------------------------------
+ImageNet vs Gap correlation: ρ=-0.6113, p=0.000000

@@ -1,0 +1,17 @@
+{
+  "model_name": "convnext_large_d_320",
+  "pretrained_tag": "laion2b_s29b_b131k_ft_soup",
+  "model_id": "convnext_large_d_320_laion2b_s29b_b131k_ft_soup",
+  "arch_family": "ConvNeXt",
+  "patch_size": null,
+  "image_size": 320,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "total_params_M": 351.8,
+  "top1_accuracy": 76.846,
+  "top5_accuracy": 95.066,
+  "total_images": 50000,
+  "load_time_s": 19.4,
+  "classifier_time_s": 27.4,
+  "eval_time_s": 163.5
+}

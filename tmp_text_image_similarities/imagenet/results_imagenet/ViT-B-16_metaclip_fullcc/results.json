@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-B-16",
+  "pretrained_tag": "metaclip_fullcc",
+  "model_id": "ViT-B-16_metaclip_fullcc",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 16,
+  "image_size": 224,
+  "training_data": "MetaCLIP",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 149.6,
+  "top1_accuracy": 68.69,
+  "top5_accuracy": 91.762,
+  "total_images": 50000,
+  "load_time_s": 2.9,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 61.4
+}

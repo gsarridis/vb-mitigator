@@ -1,0 +1,1749 @@
+
+================================================================================
+VLM ROBUSTNESS ANALYSIS - COMPLETE REPORT
+================================================================================
+Generated: 2026-03-20 19:33:38
+Output: paper_analysis
+
+This report contains ALL numerical results for paper writing.
+
+--------------------------------------------------------------------------------
+DATA LOADING: UrbanCars
+--------------------------------------------------------------------------------
+File: ./urbancars/results/master_results.csv
+Models: 194
+
+### Data Summary
+Training objectives: {'Contrastive': 164, 'SigLIP': 26, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'PE': 5, 'EVA': 5, 'MobileCLIP': 4, 'NLLB-SigLIP': 4, 'CoCa': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Training data: {'WebLI-10b': 30, 'DataComp-1b': 29, 'LAION-2b': 23, 'OpenAI-400m': 19, 'LAION-400m': 12, 'CommonCrawl-2.5b': 10, 'DFNDR-2b': 7, 'MetaCLIP2-2.5b': 6, 'CommonPool-1b': 6, 'CommonPool-13m': 6, 'CommonPool-128m': 6, 'MetaCLIP-400m': 6, 'MetaCLIP-5.4b': 5, 'DFN-5b': 4, 'Merged-2b': 4, 'DFN-2b': 4, 'YFCC-15m': 4, 'LAION-A-900m': 3, 'CommonPool-12.8b': 3, 'LAION-5b': 2, 'CC-12m': 2, 'DataComp-12.8b': 1, 'DataComp-128m': 1, 'DataComp-13m': 1}
+Image sizes: [224, 240, 256, 288, 320, 336, 378, 384, 448, 512]
+Patch sizes: [14.0, 16.0, 32.0]
+Params range: 62.5 - 3631.2
+
+================================================================================
+ANALYSIS: URBANCARS
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Average Accuracy
+N: 194
+Mean: 0.7826
+Std: 0.0908
+Min: 0.5030
+Max: 0.9140
+Median: 0.8100
+P5: 0.5709
+P10: 0.6191
+P25: 0.7615
+P75: 0.8335
+P90: 0.8720
+P95: 0.8917
+
+### Worst-Group Accuracy
+N: 194
+Mean: 0.5790
+Std: 0.1732
+Min: 0.0160
+Max: 0.8640
+Median: 0.6160
+P5: 0.2052
+P10: 0.3464
+P25: 0.4880
+P75: 0.7040
+P90: 0.7760
+P95: 0.8108
+
+
+--------------------------------------------------------------------------------
+FACTOR: Data (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  WebLI-10b: n=30
+  DataComp-1b: n=29
+  LAION-2b: n=23
+  OpenAI-400m: n=19
+  LAION-400m: n=12
+  CommonCrawl-2.5b: n=10
+  DFNDR-2b: n=7
+  MetaCLIP2-2.5b: n=6
+  CommonPool-1b: n=6
+  CommonPool-13m: n=6
+  CommonPool-128m: n=6
+  MetaCLIP-400m: n=6
+  MetaCLIP-5.4b: n=5
+  DFN-5b: n=4
+  Merged-2b: n=4
+  DFN-2b: n=4
+  YFCC-15m: n=4
+  LAION-A-900m: n=3
+  CommonPool-12.8b: n=3
+  LAION-5b: n=2 [EXCLUDED]
+  CC-12m: n=2 [EXCLUDED]
+  DataComp-12.8b: n=1 [EXCLUDED]
+  DataComp-128m: n=1 [EXCLUDED]
+  DataComp-13m: n=1 [EXCLUDED]
+
+### Average Accuracy by Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFN-5b                                0.8748   0.0274   0.8400   0.9000   0.8795     4
+DFNDR-2b                              0.8653   0.0275   0.8220   0.8940   0.8720     7
+WebLI-10b                             0.8426   0.0526   0.7050   0.9140   0.8380    30
+MetaCLIP-5.4b                         0.8400   0.0406   0.7720   0.8790   0.8500     5
+DFN-2b                                0.8207   0.0305   0.7870   0.8610   0.8175     4
+CommonPool-12.8b                      0.8183   0.0232   0.7970   0.8430   0.8150     3
+DataComp-1b                           0.8138   0.0272   0.7600   0.8660   0.8170    29
+LAION-2b                              0.8082   0.0725   0.5030   0.8830   0.8240    23
+LAION-A-900m                          0.8033   0.0143   0.7910   0.8190   0.8000     3
+MetaCLIP2-2.5b                        0.7993   0.0426   0.7560   0.8680   0.7930     6
+LAION-400m                            0.7873   0.0290   0.7400   0.8300   0.7845    12
+Merged-2b                             0.7868   0.0280   0.7470   0.8100   0.7950     4
+CommonPool-1b                         0.7840   0.0245   0.7420   0.8100   0.7905     6
+CommonCrawl-2.5b                      0.7752   0.0555   0.6510   0.8340   0.7925    10
+OpenAI-400m                           0.7412   0.0601   0.5730   0.8210   0.7560    19
+MetaCLIP-400m                         0.7385   0.0922   0.6090   0.8310   0.7635     6
+YFCC-15m                              0.6512   0.0458   0.6070   0.6970   0.6505     4
+CommonPool-128m                       0.5933   0.0243   0.5650   0.6240   0.5950     6
+CommonPool-13m                        0.5148   0.0138   0.5050   0.5390   0.5075     6
+
+Kruskal-Wallis: H=105.7866, p=0.000000 (***)
+
+### Worst-Group Accuracy by Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFNDR-2b                              0.7874   0.0501   0.7040   0.8400   0.8080     7
+DFN-5b                                0.7700   0.1008   0.6240   0.8480   0.8040     4
+MetaCLIP-5.4b                         0.7024   0.0631   0.6320   0.7680   0.7200     5
+LAION-A-900m                          0.6667   0.0403   0.6240   0.7040   0.6720     3
+WebLI-10b                             0.6315   0.1780   0.2080   0.8640   0.6640    30
+DFN-2b                                0.6280   0.1078   0.5040   0.7600   0.6240     4
+LAION-2b                              0.6223   0.1622   0.0160   0.7840   0.6480    23
+DataComp-1b                           0.6201   0.0918   0.4240   0.7920   0.6320    29
+CommonPool-1b                         0.6200   0.0765   0.5280   0.7440   0.6120     6
+CommonPool-12.8b                      0.6080   0.0720   0.5360   0.6800   0.6080     3
+LAION-400m                            0.6027   0.0883   0.4720   0.7200   0.5960    12
+Merged-2b                             0.5700   0.0845   0.4640   0.6560   0.5800     4
+CommonCrawl-2.5b                      0.5408   0.1869   0.2080   0.7760   0.5640    10
+MetaCLIP2-2.5b                        0.4973   0.1730   0.3120   0.7680   0.4800     6
+OpenAI-400m                           0.4872   0.1560   0.1280   0.6640   0.5360    19
+MetaCLIP-400m                         0.4747   0.2537   0.1040   0.7200   0.5440     6
+YFCC-15m                              0.4740   0.0600   0.3920   0.5360   0.4840     4
+CommonPool-128m                       0.4067   0.0356   0.3600   0.4560   0.4000     6
+CommonPool-13m                        0.2120   0.0820   0.1520   0.3680   0.1840     6
+
+Kruskal-Wallis: H=66.5716, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=85
+  ResNet: n=16
+  ViTamin: n=15
+  SigLIP2: n=15
+  ConvNeXt: n=12
+  SigLIP: n=11
+  CLIPA: n=7
+  MobileCLIP2: n=6
+  PE: n=5
+  EVA: n=5
+  MobileCLIP: n=4
+  NLLB-SigLIP: n=4
+  CoCa: n=4
+  XLM-RoBERTa-CLIP: n=2 [EXCLUDED]
+  NNLB-CLIP: n=2 [EXCLUDED]
+  RoBERTa-CLIP: n=1 [EXCLUDED]
+
+### Average Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+MobileCLIP2                           0.8725   0.0217   0.8320   0.8940   0.8775     6
+SigLIP                                0.8498   0.0499   0.7470   0.9140   0.8400    11
+SigLIP2                               0.8447   0.0492   0.7500   0.9030   0.8340    15
+CLIPA                                 0.8439   0.0266   0.8100   0.8830   0.8370     7
+PE                                    0.8400   0.0406   0.7720   0.8790   0.8500     5
+NLLB-SigLIP                           0.8153   0.0766   0.7050   0.8770   0.8395     4
+ViTamin                               0.8098   0.0233   0.7680   0.8380   0.8040    15
+ConvNeXt                              0.8093   0.0203   0.7650   0.8310   0.8185    12
+MobileCLIP                            0.7977   0.0340   0.7600   0.8270   0.8020     4
+EVA                                   0.7954   0.0310   0.7470   0.8300   0.8020     5
+CLIP                                  0.7499   0.1026   0.5050   0.9000   0.7810    85
+CoCa                                  0.7472   0.1668   0.5030   0.8720   0.8070     4
+ResNet                                0.7205   0.0721   0.5970   0.8210   0.7525    16
+
+Kruskal-Wallis: H=66.4738, p=0.000000 (***)
+
+### Worst-Group Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+MobileCLIP2                           0.8013   0.0373   0.7440   0.8400   0.8160     6
+PE                                    0.7024   0.0631   0.6320   0.7680   0.7200     5
+SigLIP                                0.6785   0.1519   0.3680   0.8640   0.6720    11
+CLIPA                                 0.6514   0.1072   0.5280   0.7920   0.5840     7
+ConvNeXt                              0.6193   0.0934   0.4080   0.7520   0.6280    12
+NLLB-SigLIP                           0.6180   0.2737   0.2080   0.7760   0.7440     4
+ViTamin                               0.6085   0.0809   0.4240   0.6960   0.6320    15
+MobileCLIP                            0.6060   0.1062   0.5040   0.7200   0.6000     4
+SigLIP2                               0.6005   0.1741   0.3440   0.8320   0.5200    15
+EVA                                   0.5984   0.0969   0.4640   0.7120   0.6160     5
+CLIP                                  0.5329   0.1830   0.1040   0.8480   0.5600    85
+CoCa                                  0.5200   0.3417   0.0160   0.7760   0.6440     4
+ResNet                                0.5080   0.1373   0.2000   0.6640   0.5200    16
+
+Kruskal-Wallis: H=32.1015, p=0.001335 (**)
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <=240: n=120
+  301-400: n=38
+  241-300: n=29
+  >400: n=7
+
+### Average Accuracy by Resolution
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>400                                  0.8509   0.0345   0.8130   0.8970   0.8600     7
+301-400                               0.8277   0.0496   0.7050   0.9140   0.8315    38
+241-300                               0.8172   0.0418   0.7470   0.8870   0.8210    29
+<=240                                 0.7560   0.1014   0.5030   0.9080   0.7890   120
+
+Kruskal-Wallis: H=29.4060, p=0.000002 (***)
+
+### Worst-Group Accuracy by Resolution
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>400                                  0.6457   0.0839   0.5200   0.7760   0.6400     7
+241-300                               0.6246   0.1432   0.3440   0.8400   0.6320    29
+301-400                               0.6244   0.1523   0.2080   0.8640   0.6360    38
+<=240                                 0.5497   0.1850   0.0160   0.8640   0.5840   120
+
+Kruskal-Wallis: H=7.2522, p=0.064278 (ns)
+
+--------------------------------------------------------------------------------
+FACTOR: Params (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <200M: n=78
+  200-500M: n=52
+  500M-1B: n=34
+  >1B: n=30
+
+### Average Accuracy by Params
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>1B                                   0.8289   0.0413   0.7470   0.8970   0.8310    30
+500M-1B                               0.8116   0.0747   0.5730   0.9140   0.8210    34
+200-500M                              0.8067   0.0698   0.5030   0.9030   0.8145    52
+<200M                                 0.7362   0.1037   0.5050   0.8830   0.7735    78
+
+Kruskal-Wallis: H=39.0919, p=0.000000 (***)
+
+### Worst-Group Accuracy by Params
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>1B                                   0.6048   0.1414   0.3120   0.8000   0.6200    30
+200-500M                              0.5988   0.1675   0.0160   0.8400   0.6200    52
+500M-1B                               0.5833   0.2051   0.1280   0.8640   0.6280    34
+<200M                                 0.5541   0.1740   0.1520   0.8080   0.5960    78
+
+Kruskal-Wallis: H=2.0614, p=0.559771 (ns)
+
+--------------------------------------------------------------------------------
+FACTOR: ViT Size (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  B: n=63
+  L: n=27
+  H: n=15
+  bigG: n=7
+  gopt: n=2 [EXCLUDED]
+  g: n=2 [EXCLUDED]
+
+### Average Accuracy by ViT Size
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+H                                     0.8258   0.0727   0.6510   0.9000   0.8590    15
+bigG                                  0.8064   0.0347   0.7560   0.8370   0.8170     7
+L                                     0.7886   0.0589   0.6090   0.8720   0.8080    27
+B                                     0.7403   0.1179   0.5030   0.9030   0.7780    63
+
+Kruskal-Wallis: H=11.2077, p=0.010654 (*)
+
+### Worst-Group Accuracy by ViT Size
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+H                                     0.6219   0.2106   0.2080   0.8480   0.7040    15
+bigG                                  0.5566   0.1555   0.3120   0.7840   0.5840     7
+B                                     0.5539   0.1941   0.0160   0.8320   0.6160    63
+L                                     0.5167   0.1569   0.1040   0.7760   0.5360    27
+
+Kruskal-Wallis: H=5.1212, p=0.163135 (ns)
+
+--------------------------------------------------------------------------------
+FACTOR: QuickGELU (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  False: n=167
+  True: n=27
+
+### Average Accuracy by QuickGELU
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+False                                 0.7862   0.0924   0.5030   0.9140   0.8140   167
+True                                  0.7607   0.0806   0.6090   0.9000   0.7720    27
+
+Kruskal-Wallis: H=5.0126, p=0.025163 (*)
+
+### Worst-Group Accuracy by QuickGELU
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+False                                 0.5880   0.1690   0.0160   0.8640   0.6240   167
+True                                  0.5233   0.1939   0.1040   0.8480   0.5600    27
+
+Kruskal-Wallis: H=3.0097, p=0.082770 (ns)
+
+--------------------------------------------------------------------------------
+NUMERIC: Params (UrbanCars)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Params Distribution
+Mean: 567.7454
+Std: 628.8177
+Min: 62.5000
+Max: 3631.2000
+Median: 375.2000
+
+### Params → Average Accuracy
+  Pearson: r=+0.2762, p=0.000097 (***)
+  Spearman: ρ=+0.3920, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000040*x + 0.7600
+
+### Params → Worst-Group Accuracy
+  Pearson: r=+0.0511, p=0.479082 (ns)
+  Spearman: ρ=+0.0514, p=0.476913 (ns)
+N: 194
+  Linear: y = 0.000014*x + 0.5710
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (UrbanCars)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Image Size Distribution
+Mean: 265.7938
+Std: 69.3168
+Min: 224
+Max: 512
+Median: 224.0000
+
+### Image Size → Average Accuracy
+  Pearson: r=+0.3261, p=0.000003 (***)
+  Spearman: ρ=+0.3771, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000427*x + 0.6691
+
+### Image Size → Worst-Group Accuracy
+  Pearson: r=+0.1776, p=0.013244 (*)
+  Spearman: ρ=+0.1936, p=0.006846 (**)
+N: 194
+  Linear: y = 0.000444*x + 0.4611
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (UrbanCars)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Patch Size Distribution
+Mean: 18.0000
+Std: 6.5172
+Min: 14.0000
+Max: 32.0000
+Median: 16.0000
+
+### Patch Size → Average Accuracy
+  Pearson: r=-0.5801, p=0.000000 (***)
+  Spearman: ρ=-0.4205, p=0.000000 (***)
+N: 194
+  Linear: y = -0.008084*x + 0.9281
+
+### Patch Size → Worst-Group Accuracy
+  Pearson: r=-0.3514, p=0.000001 (***)
+  Spearman: ρ=-0.2033, p=0.004474 (**)
+N: 194
+  Linear: y = -0.009338*x + 0.7471
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (UrbanCars)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Tokens Distribution
+Mean: 304.7086
+Std: 223.3186
+Min: 49.0000
+Max: 1024.0000
+Median: 256.0000
+
+### Tokens → Average Accuracy
+  Pearson: r=+0.4655, p=0.000000 (***)
+  Spearman: ρ=+0.5163, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000189*x + 0.7250
+
+### Tokens → Worst-Group Accuracy
+  Pearson: r=+0.2609, p=0.000238 (***)
+  Spearman: ρ=+0.2467, p=0.000525 (***)
+N: 194
+  Linear: y = 0.000202*x + 0.5173
+
+--------------------------------------------------------------------------------
+NUMERIC: Embed Dim (UrbanCars)
+--------------------------------------------------------------------------------
+Valid samples: 117
+
+### Embed Dim Distribution
+Mean: 728.6154
+Std: 246.2195
+Min: 512.0000
+Max: 1280.0000
+Median: 640.0000
+
+### Embed Dim → Average Accuracy
+  Pearson: r=+0.3392, p=0.000183 (***)
+  Spearman: ρ=+0.3897, p=0.000014 (***)
+N: 117
+  Linear: y = 0.000139*x + 0.6515
+
+### Embed Dim → Worst-Group Accuracy
+  Pearson: r=+0.1163, p=0.211709 (ns)
+  Spearman: ρ=+0.1001, p=0.283053 (ns)
+N: 117
+  Linear: y = 0.000087*x + 0.4761
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (UrbanCars)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Data Size Distribution
+Mean: 2978.2010
+Std: 3608.3443
+Min: 12
+Max: 12800
+Median: 2000.0000
+
+### Data Size → Average Accuracy
+  Pearson: r=+0.4192, p=0.000000 (***)
+  Spearman: ρ=+0.6144, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000011*x + 0.7512
+
+### Data Size → Worst-Group Accuracy
+  Pearson: r=+0.2572, p=0.000294 (***)
+  Spearman: ρ=+0.4107, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000012*x + 0.5422
+
+--------------------------------------------------------------------------------
+REGRESSION: UrbanCars
+--------------------------------------------------------------------------------
+statsmodels not available.
+
+
+arch_family:
+  0: CLIP
+  1: CLIPA
+  2: CoCa
+  3: ConvNeXt
+  4: EVA
+  5: MobileCLIP
+  6: MobileCLIP2
+  7: NLLB-SigLIP
+  8: NNLB-CLIP
+  9: PE
+  10: ResNet
+  11: RoBERTa-CLIP
+  12: SigLIP
+  13: SigLIP2
+  14: ViTamin
+  15: XLM-RoBERTa-CLIP
+
+training_data:
+  0: CC-12m
+  1: CommonCrawl-2.5b
+  2: CommonPool-12.8b
+  3: CommonPool-128m
+  4: CommonPool-13m
+  5: CommonPool-1b
+  6: DFN-2b
+  7: DFN-5b
+  8: DFNDR-2b
+  9: DataComp-12.8b
+  10: DataComp-128m
+  11: DataComp-13m
+  12: DataComp-1b
+  13: LAION-2b
+  14: LAION-400m
+  15: LAION-5b
+  16: LAION-A-900m
+  17: Merged-2b
+  18: MetaCLIP-400m
+  19: MetaCLIP-5.4b
+  20: MetaCLIP2-2.5b
+  21: OpenAI-400m
+  22: WebLI-10b
+  23: YFCC-15m
+
+--------------------------------------------------------------------------------
+INTERACTIONS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Image Size × Patch Size
+
+Mean WG Accuracy (%):
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             58.4  60.7  42.6
+240              NaN  62.4   NaN
+256             60.5  61.7  74.8
+288              NaN  62.4   NaN
+320              NaN  64.8   NaN
+336             59.9   NaN   NaN
+378             66.3   NaN   NaN
+384             72.6  57.8   NaN
+448             72.0  60.4   NaN
+512              NaN  64.8   NaN
+
+
+Counts:
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             50.0  36.0  32.0
+240              NaN   2.0   NaN
+256              5.0  20.0   2.0
+288              NaN   2.0   NaN
+320              NaN   4.0   NaN
+336             11.0   NaN   NaN
+378              6.0   NaN   NaN
+384              5.0  12.0   NaN
+448              1.0   2.0   NaN
+512              NaN   4.0   NaN
+
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Top 20 by WG Accuracy
+
+                                               model_id training_objective training_data       arch_family  total_params_M  image_size  patch_size  avg_accuracy  worst_group_accuracy
+0                        ViT-SO400M-14-SigLIP-384_webli             SigLIP     WebLI-10b            SigLIP           878.0         384        14.0          91.4                  86.4
+1                            ViT-SO400M-14-SigLIP_webli             SigLIP     WebLI-10b            SigLIP           877.4         224        14.0          90.8                  86.4
+4                              ViT-H-14-quickgelu_dfn5b        Contrastive        DFN-5b              CLIP           986.1         224        14.0          90.0                  84.8
+12                               MobileCLIP2-S3_dfndr2b        Contrastive      DFNDR-2b       MobileCLIP2           248.9         256         NaN          88.4                  84.0
+7                                ViT-B-16-SigLIP2_webli             SigLIP     WebLI-10b           SigLIP2           375.2         224        16.0          89.4                  83.2
+8                              MobileCLIP2-L-14_dfndr2b        Contrastive      DFNDR-2b       MobileCLIP2           427.6         224        14.0          89.4                  82.4
+11                           ViT-B-16-SigLIP2-256_webli             SigLIP     WebLI-10b           SigLIP2           375.2         256        16.0          88.7                  82.4
+20                               MobileCLIP2-S4_dfndr2b        Contrastive      DFNDR-2b       MobileCLIP2           445.4         256         NaN          87.2                  82.4
+25                                   ViT-H-14-378_dfn5b        Contrastive        DFN-5b              CLIP           986.7         378        14.0          86.6                  82.4
+2                        ViT-SO400M-14-SigLIP-378_webli             SigLIP     WebLI-10b            SigLIP           878.0         378        14.0          90.7                  81.6
+21                                MobileCLIP2-B_dfndr2b        Contrastive      DFNDR-2b       MobileCLIP2           149.8         224         NaN          87.0                  80.8
+17                  ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP     WebLI-10b            SigLIP          1127.4         256        16.0          87.3                  80.0
+23                           ViT-B-32-SigLIP2-256_webli             SigLIP     WebLI-10b           SigLIP2           376.9         256        32.0          86.7                  79.2
+28                            ViT-H-14-CLIPA_datacomp1b        Contrastive   DataComp-1b             CLIPA           968.2         224        14.0          85.9                  79.2
+10  xlm-roberta-large-ViT-H-14_frozen_laion5b_s13b_b90k        Contrastive      LAION-5b  XLM-RoBERTa-CLIP          1193.0         224        14.0          89.1                  79.2
+3                            ViT-B-16-SigLIP2-384_webli             SigLIP     WebLI-10b           SigLIP2           375.5         384        16.0          90.3                  78.4
+24                        ViT-H-14-CLIPA-336_datacomp1b        Contrastive   DataComp-1b             CLIPA           968.6         336        14.0          86.6                  78.4
+9                          ViT-H-14-378-quickgelu_dfn5b        Contrastive        DFN-5b              CLIP           986.7         378        14.0          89.3                  78.4
+44                       ViT-bigG-14_laion2b_s39b_b160k        Contrastive      LAION-2b              CLIP          2539.6         224        14.0          83.5                  78.4
+6                            ViT-B-16-SigLIP2-512_webli             SigLIP     WebLI-10b           SigLIP2           375.8         512        16.0          89.7                  77.6
+
+
+Characteristics:
+Objectives: {'Contrastive': 11, 'SigLIP': 9}
+Data: {'WebLI-10b': 9, 'DFNDR-2b': 4, 'DFN-5b': 3, 'DataComp-1b': 2, 'LAION-5b': 1, 'LAION-2b': 1}
+Architectures: {'SigLIP2': 5, 'SigLIP': 4, 'CLIP': 4, 'MobileCLIP2': 4, 'CLIPA': 2, 'XLM-RoBERTa-CLIP': 1}
+Mean params: 777.0000
+Mean img size: 291.1000
+
+### Bottom 20 by WG Accuracy
+
+                                             model_id training_objective     training_data  arch_family  total_params_M  image_size  patch_size  avg_accuracy  worst_group_accuracy
+154                        ViT-L-16-SigLIP2-256_webli             SigLIP         WebLI-10b      SigLIP2           881.5         256        16.0          75.0                  34.4
+124                      ViT-H-14_metaclip_altogether        Contrastive    MetaCLIP2-2.5b         CLIP           986.1         224        14.0          78.1                  33.6
+152                     ViT-L-14-336-quickgelu_openai        Contrastive       OpenAI-400m         CLIP           427.9         336        14.0          75.5                  33.6
+164                          ViT-H-14_metaclip_fullcc        Contrastive  CommonCrawl-2.5b         CLIP           986.1         224        14.0          71.7                  32.8
+151     ViT-bigG-14-worldwide-378_metaclip2_worldwide        Contrastive    MetaCLIP2-2.5b         CLIP          3631.2         378        14.0          75.6                  31.2
+170                              RN50-quickgelu_cc12m        Contrastive            CC-12m       ResNet           102.0         224         NaN          65.4                  31.2
+172                            ViT-L-14_metaclip_400m        Contrastive     MetaCLIP-400m         CLIP           427.6         224        14.0          64.4                  23.2
+186               ViT-B-32_commonpool_s_clip_s13m_b4k        Contrastive    CommonPool-13m         CLIP           151.3         224        32.0          53.9                  23.2
+171                ViT-H-14-quickgelu_metaclip_fullcc        Contrastive  CommonCrawl-2.5b         CLIP           986.1         224        14.0          65.1                  20.8
+165                         nllb-clip-base-siglip_mrl        Contrastive         WebLI-10b  NLLB-SigLIP           507.5         384        16.0          70.5                  20.8
+180                                        RN50_cc12m        Contrastive            CC-12m       ResNet           102.0         224         NaN          59.7                  20.0
+192              ViT-B-32_commonpool_s_laion_s13m_b4k        Contrastive    CommonPool-13m         CLIP           151.3         224        32.0          50.5                  19.2
+175                         ViT-B-32-quickgelu_openai        Contrastive       OpenAI-400m         CLIP           151.3         224        32.0          61.5                  18.4
+187              ViT-B-32_commonpool_s_basic_s13m_b4k        Contrastive    CommonPool-13m         CLIP           151.3         224        32.0          52.4                  17.6
+191              ViT-B-32_commonpool_s_image_s13m_b4k        Contrastive    CommonPool-13m         CLIP           151.3         224        32.0          50.6                  15.2
+189               ViT-B-32_commonpool_s_text_s13m_b4k        Contrastive    CommonPool-13m         CLIP           151.3         224        32.0          50.7                  15.2
+190                      ViT-B-32_datacomp_s_s13m_b4k        Contrastive      DataComp-13m         CLIP           151.3         224        32.0          50.6                  15.2
+183                                 nllb-clip-base_v1        Contrastive       OpenAI-400m    NNLB-CLIP           501.9         224        32.0          57.3                  12.8
+177                  ViT-L-14-quickgelu_metaclip_400m        Contrastive     MetaCLIP-400m         CLIP           427.6         224        14.0          60.9                  10.4
+193  coca_ViT-B-32_mscoco_finetuned_laion2b_s13b_b90k               CoCa          LAION-2b         CoCa           253.6         224        32.0          50.3                   1.6
+
+
+Characteristics:
+Objectives: {'Contrastive': 18, 'SigLIP': 1, 'CoCa': 1}
+Data: {'CommonPool-13m': 5, 'OpenAI-400m': 3, 'WebLI-10b': 2, 'CommonCrawl-2.5b': 2, 'MetaCLIP2-2.5b': 2, 'CC-12m': 2, 'MetaCLIP-400m': 2, 'DataComp-13m': 1, 'LAION-2b': 1}
+Architectures: {'CLIP': 14, 'ResNet': 2, 'SigLIP2': 1, 'NLLB-SigLIP': 1, 'NNLB-CLIP': 1, 'CoCa': 1}
+Mean params: 564.0100
+Mean img size: 246.9000
+
+--------------------------------------------------------------------------------
+SUBGROUPS: UrbanCars
+--------------------------------------------------------------------------------
+Subgroup columns: 10
+
+### Mean Accuracy per Subgroup
+
+Subgroup                                               Mean      Std      Min      Max
+-------------------------------------------------------------------------------------
+obj=urban, bg=country, co=country                    0.6670   0.2121   0.0160   1.0000
+obj=urban, bg=urban, co=country                      0.7068   0.2019   0.0320   1.0000
+gt_text1                                             0.7484   0.1820   0.0320   0.9900
+obj=country, bg=urban, co=urban                      0.7785   0.1391   0.2240   0.9840
+obj=urban, bg=country, co=urban                      0.7868   0.1843   0.0240   1.0000
+obj=country, bg=country, co=urban                    0.8127   0.1298   0.1520   1.0000
+gt_text2                                             0.8168   0.1308   0.1900   0.9900
+obj=country, bg=urban, co=country                    0.8231   0.1444   0.1920   0.9920
+obj=urban, bg=urban, co=urban                        0.8332   0.1683   0.0560   1.0000
+obj=country, bg=country, co=country                  0.8532   0.1264   0.1920   0.9920
+
+### Hardest Subgroup per Model
+  obj=urban, bg=country, co=country: 86 (44.3%)
+  obj=country, bg=urban, co=urban: 46 (23.7%)
+  obj=urban, bg=urban, co=country: 30 (15.5%)
+  obj=country, bg=country, co=urban: 16 (8.2%)
+  obj=country, bg=urban, co=country: 8 (4.1%)
+  obj=urban, bg=country, co=urban: 5 (2.6%)
+  obj=country, bg=country, co=country: 2 (1.0%)
+  obj=urban, bg=urban, co=urban: 1 (0.5%)
+
+--------------------------------------------------------------------------------
+FIGURE: Landscape (UrbanCars)
+--------------------------------------------------------------------------------
+CLIP: n=85, avg=75.0%, wg=53.3%
+CLIPA: n=7, avg=84.4%, wg=65.1%
+CoCa: n=4, avg=74.7%, wg=52.0%
+ConvNeXt: n=12, avg=80.9%, wg=61.9%
+EVA: n=5, avg=79.5%, wg=59.8%
+MobileCLIP: n=4, avg=79.8%, wg=60.6%
+MobileCLIP2: n=6, avg=87.2%, wg=80.1%
+NLLB-SigLIP: n=4, avg=81.5%, wg=61.8%
+NNLB-CLIP: n=2, avg=71.6%, wg=43.2%
+PE: n=5, avg=84.0%, wg=70.2%
+ResNet: n=16, avg=72.0%, wg=50.8%
+RoBERTa-CLIP: n=1, avg=78.9%, wg=66.4%
+SigLIP: n=11, avg=85.0%, wg=67.9%
+SigLIP2: n=15, avg=84.5%, wg=60.1%
+ViTamin: n=15, avg=81.0%, wg=60.9%
+XLM-RoBERTa-CLIP: n=2, avg=85.2%, wg=74.8%
+
+Pareto-optimal (1):
+  ViT-SO400M-14-SigLIP-384_webli: avg=91.4%, wg=86.4%
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data (UrbanCars)
+--------------------------------------------------------------------------------
+Data                            WG Mean   WG Std      Avg       Size     N
+---------------------------------------------------------------------------
+CommonPool-13m                    21.20     8.20    51.48         13     6
+CommonPool-128m                   40.67     3.56    59.33        128     6
+YFCC-15m                          47.40     6.00    65.12         15     4
+MetaCLIP-400m                     47.47    25.37    73.85        400     6
+OpenAI-400m                       48.72    15.60    74.12        400    19
+MetaCLIP2-2.5b                    49.73    17.30    79.93       2500     6
+CommonCrawl-2.5b                  54.08    18.69    77.52       2500    10
+Merged-2b                         57.00     8.45    78.68       2000     4
+LAION-400m                        60.27     8.83    78.73        400    12
+CommonPool-12.8b                  60.80     7.20    81.83      12800     3
+CommonPool-1b                     62.00     7.65    78.40       1000     6
+DataComp-1b                       62.01     9.18    81.38       1000    29
+LAION-2b                          62.23    16.22    80.82       2000    23
+DFN-2b                            62.80    10.78    82.08       2000     4
+WebLI-10b                         63.15    17.80    84.26      10000    30
+LAION-A-900m                      66.67     4.03    80.33        900     3
+MetaCLIP-5.4b                     70.24     6.31    84.00       5400     5
+DFN-5b                            77.00    10.08    87.48       5000     4
+DFNDR-2b                          78.74     5.01    86.53       2000     7
+
+--------------------------------------------------------------------------------
+FIGURE: Architecture (UrbanCars)
+--------------------------------------------------------------------------------
+
+Average Accuracy:
+  ResNet: mean=72.05%, std=7.21%, n=16
+  CoCa: mean=74.72%, std=16.68%, n=4
+  CLIP: mean=74.99%, std=10.26%, n=85
+  EVA: mean=79.54%, std=3.10%, n=5
+  MobileCLIP: mean=79.77%, std=3.40%, n=4
+  ConvNeXt: mean=80.93%, std=2.03%, n=12
+  ViTamin: mean=80.98%, std=2.33%, n=15
+  NLLB-SigLIP: mean=81.53%, std=7.66%, n=4
+  PE: mean=84.00%, std=4.06%, n=5
+  CLIPA: mean=84.39%, std=2.66%, n=7
+  SigLIP2: mean=84.47%, std=4.92%, n=15
+  SigLIP: mean=84.98%, std=4.99%, n=11
+  MobileCLIP2: mean=87.25%, std=2.17%, n=6
+
+Worst-Group Accuracy:
+  ResNet: mean=50.80%, std=13.73%, n=16
+  CoCa: mean=52.00%, std=34.17%, n=4
+  CLIP: mean=53.29%, std=18.30%, n=85
+  EVA: mean=59.84%, std=9.69%, n=5
+  SigLIP2: mean=60.05%, std=17.41%, n=15
+  MobileCLIP: mean=60.60%, std=10.62%, n=4
+  ViTamin: mean=60.85%, std=8.09%, n=15
+  NLLB-SigLIP: mean=61.80%, std=27.37%, n=4
+  ConvNeXt: mean=61.93%, std=9.34%, n=12
+  CLIPA: mean=65.14%, std=10.72%, n=7
+  SigLIP: mean=67.85%, std=15.19%, n=11
+  PE: mean=70.24%, std=6.31%, n=5
+  MobileCLIP2: mean=80.13%, std=3.73%, n=6
+
+--------------------------------------------------------------------------------
+FIGURE: Scale (UrbanCars)
+--------------------------------------------------------------------------------
+Parameters (M) vs WG: ρ=0.0514, p=0.476913
+
+Parameters (M) binned stats:
+  (63.499, 142.644]: mean=55.1%, std=17.2%, n=16
+  (142.644, 320.429]: mean=55.8%, std=17.9%, n=74
+  (320.429, 719.799]: mean=59.1%, std=17.0%, n=53
+  (719.799, 1616.928]: mean=61.0%, std=18.3%, n=37
+  (1616.928, 3632.2]: mean=59.0%, std=14.5%, n=13
+Image Size (px) vs WG: ρ=0.1936, p=0.006846
+
+Image Size (px) binned stats:
+  (223.999, 281.6]: mean=56.3%, std=18.1%, n=147
+  (281.6, 339.2]: mean=61.4%, std=9.6%, n=17
+  (339.2, 396.8]: mean=63.2%, std=18.0%, n=23
+  (396.8, 454.4]: mean=64.3%, std=6.8%, n=3
+  (454.4, 512.0]: mean=64.8%, std=10.5%, n=4
+Patch Size (px) vs WG: ρ=-0.2033, p=0.004474
+
+Patch Size (px) binned stats:
+  (13.999, 17.6]: mean=60.8%, std=15.0%, n=160
+  (28.4, 32.0]: mean=44.5%, std=21.4%, n=34
+Number of Tokens vs WG: ρ=0.2467, p=0.000525
+
+Number of Tokens binned stats:
+  (49.999, 72.936]: mean=74.8%, std=6.2%, n=2
+  (155.195, 226.385]: mean=60.8%, std=13.7%, n=38
+  (226.385, 330.23]: mean=59.5%, std=16.3%, n=72
+  (330.23, 481.71]: mean=62.4%, std=8.6%, n=9
+  (481.71, 702.675]: mean=58.8%, std=14.6%, n=23
+  (702.675, 1025.0]: mean=67.4%, std=14.3%, n=18
+Training Data Size (M) vs WG: ρ=0.4107, p=0.000000
+
+Training Data Size (M) binned stats:
+  (12.999, 51.595]: mean=30.2%, std=15.3%, n=11
+  (51.595, 204.769]: mean=41.0%, std=3.4%, n=7
+  (204.769, 812.688]: mean=52.3%, std=16.3%, n=37
+  (812.688, 3225.402]: mean=61.6%, std=13.9%, n=92
+  (3225.402, 12801.0]: mean=65.7%, std=15.7%, n=45
+
+--------------------------------------------------------------------------------
+FIGURE: Resolution×Patch (UrbanCars)
+--------------------------------------------------------------------------------
+
+Mean WG (%):
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             58.4  60.7  42.6
+240              NaN  62.4   NaN
+256             60.5  61.7  74.8
+288              NaN  62.4   NaN
+320              NaN  64.8   NaN
+336             59.9   NaN   NaN
+378             66.3   NaN   NaN
+384             72.6  57.8   NaN
+448             72.0  60.4   NaN
+512              NaN  64.8   NaN
+
+
+Counts:
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             50.0  36.0  32.0
+240              NaN   2.0   NaN
+256              5.0  20.0   2.0
+288              NaN   2.0   NaN
+320              NaN   4.0   NaN
+336             11.0   NaN   NaN
+378              6.0   NaN   NaN
+384              5.0  12.0   NaN
+448              1.0   2.0   NaN
+512              NaN   4.0   NaN
+
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (UrbanCars)
+--------------------------------------------------------------------------------
+
+Factor                           Avg         WG       p(Avg)        p(WG)
+---------------------------------------------------------------------------
+total_params_M               +0.4267***    +0.1243     0.000002     0.181928
+image_size                   +0.2156*    +0.1534     0.019574     0.098707
+patch_size_num               -0.5580***    -0.2667**     0.000000     0.003648
+num_tokens                   +0.5335***    +0.2737**     0.000000     0.002826
+embed_dim                    +0.3897***    +0.1001     0.000014     0.283053
+training_data_size_M         +0.6786***    +0.5268***     0.000000     0.000000
+
+--------------------------------------------------------------------------------
+DATA LOADING: CelebA
+--------------------------------------------------------------------------------
+File: ./celeba/results_celeba/master_results.csv
+Models: 194
+
+### Data Summary
+Training objectives: {'Contrastive': 164, 'SigLIP': 26, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'PE': 5, 'EVA': 5, 'MobileCLIP': 4, 'CoCa': 4, 'NLLB-SigLIP': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Training data: {'WebLI-10b': 30, 'DataComp-1b': 29, 'LAION-2b': 23, 'OpenAI-400m': 19, 'LAION-400m': 12, 'CommonCrawl-2.5b': 10, 'DFNDR-2b': 7, 'MetaCLIP-400m': 6, 'CommonPool-128m': 6, 'CommonPool-13m': 6, 'CommonPool-1b': 6, 'MetaCLIP2-2.5b': 6, 'MetaCLIP-5.4b': 5, 'DFN-2b': 4, 'DFN-5b': 4, 'Merged-2b': 4, 'YFCC-15m': 4, 'CommonPool-12.8b': 3, 'LAION-A-900m': 3, 'LAION-5b': 2, 'CC-12m': 2, 'DataComp-12.8b': 1, 'DataComp-128m': 1, 'DataComp-13m': 1}
+Image sizes: [224, 240, 256, 288, 320, 336, 378, 384, 448, 512]
+Patch sizes: [14.0, 16.0, 32.0]
+Params range: 62.5 - 3631.2
+
+================================================================================
+ANALYSIS: CELEBA
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: CelebA
+--------------------------------------------------------------------------------
+
+### Average Accuracy
+N: 194
+Mean: 0.8690
+Std: 0.1043
+Min: 0.1333
+Max: 0.9282
+Median: 0.8934
+P5: 0.7015
+P10: 0.8503
+P25: 0.8805
+P75: 0.9080
+P90: 0.9138
+P95: 0.9185
+
+### Worst-Group Accuracy
+N: 194
+Mean: 0.7415
+Std: 0.1692
+Min: 0.0000
+Max: 0.8925
+Median: 0.8028
+P5: 0.3319
+P10: 0.4639
+P25: 0.7139
+P75: 0.8538
+P90: 0.8667
+P95: 0.8724
+
+
+
+--------------------------------------------------------------------------------
+FACTOR: Data (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  WebLI-10b: n=30
+  DataComp-1b: n=29
+  LAION-2b: n=23
+  OpenAI-400m: n=19
+  LAION-400m: n=12
+  CommonCrawl-2.5b: n=10
+  DFNDR-2b: n=7
+  MetaCLIP-400m: n=6
+  CommonPool-128m: n=6
+  CommonPool-13m: n=6
+  CommonPool-1b: n=6
+  MetaCLIP2-2.5b: n=6
+  MetaCLIP-5.4b: n=5
+  DFN-2b: n=4
+  DFN-5b: n=4
+  Merged-2b: n=4
+  YFCC-15m: n=4
+  CommonPool-12.8b: n=3
+  LAION-A-900m: n=3
+  LAION-5b: n=2 [EXCLUDED]
+  CC-12m: n=2 [EXCLUDED]
+  DataComp-12.8b: n=1 [EXCLUDED]
+  DataComp-128m: n=1 [EXCLUDED]
+  DataComp-13m: n=1 [EXCLUDED]
+
+### Average Accuracy by Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFN-2b                                0.9215   0.0071   0.9125   0.9282   0.9226     4
+DFNDR-2b                              0.9199   0.0025   0.9150   0.9225   0.9202     7
+CommonCrawl-2.5b                      0.9028   0.0089   0.8885   0.9171   0.9028    10
+CommonPool-1b                         0.9018   0.0091   0.8929   0.9123   0.9007     6
+Merged-2b                             0.9016   0.0101   0.8873   0.9110   0.9040     4
+MetaCLIP-5.4b                         0.8990   0.0127   0.8827   0.9147   0.8949     5
+MetaCLIP-400m                         0.8976   0.0259   0.8474   0.9147   0.9088     6
+LAION-400m                            0.8968   0.0124   0.8738   0.9122   0.8987    12
+DataComp-1b                           0.8943   0.0221   0.8419   0.9199   0.9048    29
+LAION-A-900m                          0.8939   0.0192   0.8719   0.9065   0.9034     3
+DFN-5b                                0.8925   0.0042   0.8887   0.8982   0.8917     4
+WebLI-10b                             0.8888   0.0130   0.8534   0.9083   0.8865    30
+CommonPool-12.8b                      0.8865   0.0174   0.8667   0.8996   0.8930     3
+MetaCLIP2-2.5b                        0.8847   0.0100   0.8720   0.8988   0.8861     6
+LAION-2b                              0.8648   0.1341   0.2539   0.9185   0.8894    23
+OpenAI-400m                           0.8539   0.1753   0.1333   0.9162   0.8935    19
+CommonPool-128m                       0.7986   0.1218   0.5645   0.8791   0.8563     6
+YFCC-15m                              0.6988   0.0887   0.5888   0.8058   0.7003     4
+CommonPool-13m                        0.5712   0.1298   0.4210   0.7359   0.5404     6
+
+Kruskal-Wallis: H=77.2343, p=0.000000 (***)
+
+### Worst-Group Accuracy by Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFN-5b                                0.8620   0.0061   0.8556   0.8704   0.8611     4
+WebLI-10b                             0.8470   0.0540   0.6667   0.8925   0.8663    30
+MetaCLIP2-2.5b                        0.8424   0.0153   0.8278   0.8614   0.8389     6
+CommonPool-12.8b                      0.8210   0.0221   0.8056   0.8463   0.8111     3
+LAION-A-900m                          0.8157   0.0226   0.8000   0.8417   0.8056     3
+DataComp-1b                           0.8111   0.0597   0.6444   0.8722   0.8333    29
+LAION-400m                            0.7898   0.0483   0.7222   0.8612   0.7944    12
+Merged-2b                             0.7868   0.0587   0.7222   0.8640   0.7806     4
+DFNDR-2b                              0.7802   0.0235   0.7333   0.8056   0.7833     7
+CommonCrawl-2.5b                      0.7767   0.0628   0.6944   0.8556   0.7889    10
+LAION-2b                              0.7597   0.2112   0.0097   0.8764   0.8278    23
+MetaCLIP-400m                         0.7469   0.0750   0.6444   0.8500   0.7361     6
+DFN-2b                                0.7333   0.0779   0.6667   0.8278   0.7194     4
+MetaCLIP-5.4b                         0.7233   0.0983   0.5833   0.8556   0.7222     5
+OpenAI-400m                           0.7061   0.1824   0.0000   0.8389   0.7500    19
+CommonPool-1b                         0.5269   0.0876   0.4167   0.6278   0.5278     6
+CommonPool-13m                        0.4444   0.1243   0.3270   0.6611   0.4246     6
+YFCC-15m                              0.4160   0.0928   0.2952   0.5132   0.4278     4
+CommonPool-128m                       0.4062   0.1767   0.2056   0.6851   0.4361     6
+
+Kruskal-Wallis: H=101.0304, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=85
+  ResNet: n=16
+  ViTamin: n=15
+  SigLIP2: n=15
+  ConvNeXt: n=12
+  SigLIP: n=11
+  CLIPA: n=7
+  MobileCLIP2: n=6
+  PE: n=5
+  EVA: n=5
+  MobileCLIP: n=4
+  CoCa: n=4
+  NLLB-SigLIP: n=4
+  XLM-RoBERTa-CLIP: n=2 [EXCLUDED]
+  NNLB-CLIP: n=2 [EXCLUDED]
+  RoBERTa-CLIP: n=1 [EXCLUDED]
+
+### Average Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+MobileCLIP2                           0.9207   0.0015   0.9186   0.9225   0.9208     6
+MobileCLIP                            0.9121   0.0026   0.9099   0.9156   0.9115     4
+PE                                    0.8990   0.0127   0.8827   0.9147   0.8949     5
+EVA                                   0.8989   0.0105   0.8873   0.9110   0.9032     5
+SigLIP2                               0.8907   0.0112   0.8777   0.9083   0.8860    15
+ViTamin                               0.8907   0.0264   0.8419   0.9199   0.9075    15
+SigLIP                                0.8895   0.0134   0.8643   0.9082   0.8914    11
+ConvNeXt                              0.8823   0.0141   0.8696   0.9065   0.8759    12
+CLIPA                                 0.8820   0.0101   0.8712   0.8977   0.8807     7
+NLLB-SigLIP                           0.8795   0.0175   0.8534   0.8898   0.8874     4
+CLIP                                  0.8630   0.1063   0.4210   0.9282   0.8941    85
+ResNet                                0.8025   0.2038   0.1333   0.9162   0.8954    16
+CoCa                                  0.7465   0.3285   0.2539   0.9185   0.9067     4
+
+Kruskal-Wallis: H=34.9057, p=0.000485 (***)
+
+### Worst-Group Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+SigLIP                                0.8704   0.0138   0.8429   0.8925   0.8737    11
+SigLIP2                               0.8643   0.0061   0.8551   0.8727   0.8667    15
+CLIPA                                 0.8578   0.0143   0.8409   0.8742   0.8556     7
+MobileCLIP                            0.8458   0.0228   0.8167   0.8722   0.8472     4
+ConvNeXt                              0.8374   0.0346   0.7556   0.8706   0.8431    12
+ViTamin                               0.7979   0.0531   0.6889   0.8617   0.7944    15
+EVA                                   0.7884   0.0510   0.7222   0.8640   0.7889     5
+MobileCLIP2                           0.7880   0.0124   0.7722   0.8056   0.7889     6
+PE                                    0.7233   0.0983   0.5833   0.8556   0.7222     5
+NLLB-SigLIP                           0.7181   0.0414   0.6667   0.7667   0.7194     4
+CLIP                                  0.7100   0.1651   0.2056   0.8764   0.7667    85
+CoCa                                  0.5788   0.3839   0.0097   0.8278   0.7389     4
+ResNet                                0.5505   0.2464   0.0000   0.8389   0.6361    16
+
+Kruskal-Wallis: H=90.2147, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <=240: n=120
+  301-400: n=38
+  241-300: n=29
+  >400: n=7
+
+### Average Accuracy by Resolution
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+241-300                               0.8935   0.0220   0.8419   0.9225   0.8932    29
+301-400                               0.8892   0.0164   0.8504   0.9162   0.8878    38
+<=240                                 0.8617   0.1123   0.2539   0.9282   0.8953   120
+>400                                  0.7847   0.2874   0.1333   0.9070   0.8864     7
+
+Kruskal-Wallis: H=2.8875, p=0.409291 (ns)
+
+### Worst-Group Accuracy by Resolution
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+241-300                               0.8162   0.0641   0.6333   0.8775   0.8467    29
+301-400                               0.8100   0.0713   0.5833   0.8925   0.8423    38
+>400                                  0.7255   0.3226   0.0000   0.8783   0.8564     7
+<=240                                 0.7027   0.1857   0.0097   0.8764   0.7806   120
+
+Kruskal-Wallis: H=23.8885, p=0.000026 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Params (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <200M: n=78
+  200-500M: n=52
+  500M-1B: n=34
+  >1B: n=30
+
+### Average Accuracy by Params
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>1B                                   0.8900   0.0112   0.8720   0.9158   0.8878    30
+200-500M                              0.8841   0.0907   0.2539   0.9260   0.8947    52
+500M-1B                               0.8653   0.1311   0.1333   0.9147   0.8890    34
+<200M                                 0.8526   0.1180   0.4210   0.9282   0.9005    78
+
+Kruskal-Wallis: H=4.9100, p=0.178509 (ns)
+
+### Worst-Group Accuracy by Params
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>1B                                   0.8158   0.1213   0.2167   0.8775   0.8567    30
+200-500M                              0.7966   0.1238   0.0097   0.8783   0.8167    52
+500M-1B                               0.7861   0.1551   0.0000   0.8925   0.8371    34
+<200M                                 0.6567   0.1837   0.2056   0.8722   0.7083    78
+
+Kruskal-Wallis: H=50.9008, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: ViT Size (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  B: n=63
+  L: n=27
+  H: n=15
+  bigG: n=7
+  g: n=2 [EXCLUDED]
+  gopt: n=2 [EXCLUDED]
+
+### Average Accuracy by ViT Size
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+L                                     0.8916   0.0173   0.8474   0.9260   0.8903    27
+bigG                                  0.8908   0.0129   0.8720   0.9059   0.8929     7
+H                                     0.8906   0.0117   0.8712   0.9138   0.8901    15
+B                                     0.8427   0.1431   0.2539   0.9282   0.8960    63
+
+Kruskal-Wallis: H=1.0214, p=0.796079 (ns)
+
+### Worst-Group Accuracy by ViT Size
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+bigG                                  0.8401   0.0361   0.7833   0.8764   0.8556     7
+H                                     0.8381   0.0354   0.7278   0.8742   0.8444    15
+L                                     0.8142   0.0489   0.6722   0.8712   0.8278    27
+B                                     0.6669   0.1992   0.0097   0.8783   0.7222    63
+
+Kruskal-Wallis: H=24.7461, p=0.000017 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: QuickGELU (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  False: n=167
+  True: n=27
+
+### Average Accuracy by QuickGELU
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+False                                 0.8722   0.0930   0.2539   0.9260   0.8930   167
+True                                  0.8496   0.1595   0.1333   0.9282   0.8941    27
+
+Kruskal-Wallis: H=0.0060, p=0.938161 (ns)
+
+### Worst-Group Accuracy by QuickGELU
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+False                                 0.7476   0.1619   0.0097   0.8925   0.8056   167
+True                                  0.7038   0.2107   0.0000   0.8704   0.7667    27
+
+Kruskal-Wallis: H=2.4257, p=0.119363 (ns)
+
+--------------------------------------------------------------------------------
+NUMERIC: Params (CelebA)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Params Distribution
+Mean: 567.7454
+Std: 628.8177
+Min: 62.5000
+Max: 3631.2000
+Median: 375.2000
+
+### Params → Average Accuracy
+  Pearson: r=+0.0983, p=0.172619 (ns)
+  Spearman: ρ=-0.1633, p=0.022916 (*)
+N: 194
+  Linear: y = 0.000016*x + 0.8598
+
+### Params → Worst-Group Accuracy
+  Pearson: r=+0.2934, p=0.000033 (***)
+  Spearman: ρ=+0.4794, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000079*x + 0.6967
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (CelebA)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Image Size Distribution
+Mean: 265.7938
+Std: 69.3168
+Min: 224
+Max: 512
+Median: 224.0000
+
+### Image Size → Average Accuracy
+  Pearson: r=+0.0064, p=0.929408 (ns)
+  Spearman: ρ=-0.0698, p=0.333430 (ns)
+N: 194
+  Linear: y = 0.000010*x + 0.8665
+
+### Image Size → Worst-Group Accuracy
+  Pearson: r=+0.1881, p=0.008635 (**)
+  Spearman: ρ=+0.3233, p=0.000004 (***)
+N: 194
+  Linear: y = 0.000459*x + 0.6195
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (CelebA)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Patch Size Distribution
+Mean: 18.0000
+Std: 6.5172
+Min: 14.0000
+Max: 32.0000
+Median: 16.0000
+
+### Patch Size → Average Accuracy
+  Pearson: r=-0.3483, p=0.000001 (***)
+  Spearman: ρ=-0.1382, p=0.054573 (ns)
+N: 194
+  Linear: y = -0.005573*x + 0.9694
+
+### Patch Size → Worst-Group Accuracy
+  Pearson: r=-0.3898, p=0.000000 (***)
+  Spearman: ρ=-0.3644, p=0.000000 (***)
+N: 194
+  Linear: y = -0.010119*x + 0.9236
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (CelebA)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Tokens Distribution
+Mean: 304.7086
+Std: 223.3186
+Min: 49.0000
+Max: 1024.0000
+Median: 256.0000
+
+### Tokens → Average Accuracy
+  Pearson: r=+0.1165, p=0.105639 (ns)
+  Spearman: ρ=+0.0190, p=0.792526 (ns)
+N: 194
+  Linear: y = 0.000054*x + 0.8525
+
+### Tokens → Worst-Group Accuracy
+  Pearson: r=+0.2941, p=0.000032 (***)
+  Spearman: ρ=+0.4504, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000223*x + 0.6736
+
+--------------------------------------------------------------------------------
+NUMERIC: Embed Dim (CelebA)
+--------------------------------------------------------------------------------
+Valid samples: 117
+
+### Embed Dim Distribution
+Mean: 728.6154
+Std: 246.2195
+Min: 512.0000
+Max: 1280.0000
+Median: 640.0000
+
+### Embed Dim → Average Accuracy
+  Pearson: r=+0.1055, p=0.257643 (ns)
+  Spearman: ρ=+0.0020, p=0.983100 (ns)
+N: 117
+  Linear: y = 0.000056*x + 0.8123
+
+### Embed Dim → Worst-Group Accuracy
+  Pearson: r=+0.2778, p=0.002425 (**)
+  Spearman: ρ=+0.4899, p=0.000000 (***)
+N: 117
+  Linear: y = 0.000221*x + 0.5290
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (CelebA)
+--------------------------------------------------------------------------------
+Valid samples: 194
+
+### Data Size Distribution
+Mean: 2978.2010
+Std: 3608.3443
+Min: 12
+Max: 12800
+Median: 2000.0000
+
+### Data Size → Average Accuracy
+  Pearson: r=+0.1642, p=0.022173 (*)
+  Spearman: ρ=+0.1473, p=0.040340 (*)
+N: 194
+  Linear: y = 0.000005*x + 0.8549
+
+### Data Size → Worst-Group Accuracy
+  Pearson: r=+0.3640, p=0.000000 (***)
+  Spearman: ρ=+0.5655, p=0.000000 (***)
+N: 194
+  Linear: y = 0.000017*x + 0.6906
+
+--------------------------------------------------------------------------------
+REGRESSION: CelebA
+--------------------------------------------------------------------------------
+statsmodels not available.
+
+
+arch_family:
+  0: CLIP
+  1: CLIPA
+  2: CoCa
+  3: ConvNeXt
+  4: EVA
+  5: MobileCLIP
+  6: MobileCLIP2
+  7: NLLB-SigLIP
+  8: NNLB-CLIP
+  9: PE
+  10: ResNet
+  11: RoBERTa-CLIP
+  12: SigLIP
+  13: SigLIP2
+  14: ViTamin
+  15: XLM-RoBERTa-CLIP
+
+training_data:
+  0: CC-12m
+  1: CommonCrawl-2.5b
+  2: CommonPool-12.8b
+  3: CommonPool-128m
+  4: CommonPool-13m
+  5: CommonPool-1b
+  6: DFN-2b
+  7: DFN-5b
+  8: DFNDR-2b
+  9: DataComp-12.8b
+  10: DataComp-128m
+  11: DataComp-13m
+  12: DataComp-1b
+  13: LAION-2b
+  14: LAION-400m
+  15: LAION-5b
+  16: LAION-A-900m
+  17: Merged-2b
+  18: MetaCLIP-400m
+  19: MetaCLIP-5.4b
+  20: MetaCLIP2-2.5b
+  21: OpenAI-400m
+  22: WebLI-10b
+  23: YFCC-15m
+
+--------------------------------------------------------------------------------
+INTERACTIONS: CelebA
+--------------------------------------------------------------------------------
+
+### Image Size × Patch Size
+
+Mean WG Accuracy (%):
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             80.0  66.0  59.5
+240              NaN  74.4   NaN
+256             80.5  83.8  79.4
+288              NaN  64.7   NaN
+320              NaN  83.0   NaN
+336             80.2   NaN   NaN
+378             86.3   NaN   NaN
+384             79.6  79.0   NaN
+448             85.6  37.8   NaN
+512              NaN  86.7   NaN
+
+
+Counts:
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             50.0  36.0  32.0
+240              NaN   2.0   NaN
+256              5.0  20.0   2.0
+288              NaN   2.0   NaN
+320              NaN   4.0   NaN
+336             11.0   NaN   NaN
+378              6.0   NaN   NaN
+384              5.0  12.0   NaN
+448              1.0   2.0   NaN
+512              NaN   4.0   NaN
+
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: CelebA
+--------------------------------------------------------------------------------
+
+### Top 20 by WG Accuracy
+
+                                           model_id training_objective training_data arch_family  total_params_M  image_size  patch_size  avg_accuracy  worst_group_accuracy
+65                   ViT-SO400M-14-SigLIP-384_webli             SigLIP     WebLI-10b      SigLIP           878.0         384        14.0         90.48                 89.25
+71                   ViT-SO400M-14-SigLIP-378_webli             SigLIP     WebLI-10b      SigLIP           878.0         378        14.0         90.38                 88.33
+105                       ViT-B-16-SigLIP-512_webli             SigLIP     WebLI-10b      SigLIP           203.8         512        16.0         89.14                 87.83
+104             ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP     WebLI-10b      SigLIP          1127.4         256        16.0         89.18                 87.75
+106                  ViT-bigG-14_laion2b_s39b_b160k        Contrastive      LAION-2b        CLIP          2539.6         224        14.0         89.07                 87.64
+140                      ViT-H-14-CLIPA-336_laion2b        Contrastive      LAION-2b       CLIPA           968.6         336        14.0         88.20                 87.42
+98                        ViT-B-16-SigLIP-256_webli             SigLIP     WebLI-10b      SigLIP           203.2         256        16.0         89.32                 87.42
+113                       ViT-B-16-SigLIP-384_webli             SigLIP     WebLI-10b      SigLIP           203.4         384        16.0         88.87                 87.37
+125                 ViT-SO400M-16-SigLIP2-384_webli             SigLIP     WebLI-10b     SigLIP2          1136.0         384        16.0         88.64                 87.27
+130                           ViT-B-16-SigLIP_webli             SigLIP     WebLI-10b      SigLIP           203.2         224        16.0         88.50                 87.27
+60                           ViT-B-16-SigLIP2_webli             SigLIP     WebLI-10b     SigLIP2           375.2         224        16.0         90.53                 87.22
+39                          MobileCLIP-B_datacompdr        Contrastive   DataComp-1b  MobileCLIP           149.8         224        14.0         90.99                 87.22
+144                       ViT-L-14-CLIPA_datacomp1b        Contrastive   DataComp-1b       CLIPA           414.2         224        14.0         88.07                 87.12
+150                   ViT-L-14-CLIPA-336_datacomp1b        Contrastive   DataComp-1b       CLIPA           414.5         336        14.0         87.80                 87.10
+129                 ViT-SO400M-14-SigLIP2-378_webli             SigLIP     WebLI-10b     SigLIP2          1136.0         378        14.0         88.52                 87.09
+142       convnext_xxlarge_laion2b_s34b_b82k_augreg        Contrastive      LAION-2b    ConvNeXt          1200.6         256         NaN         88.16                 87.06
+114                        ViT-H-14-quickgelu_dfn5b        Contrastive        DFN-5b        CLIP           986.1         224        14.0         88.87                 87.04
+133                     ViT-SO400M-14-SigLIP2_webli             SigLIP     WebLI-10b     SigLIP2          1135.5         224        14.0         88.47                 86.82
+152  convnext_xxlarge_laion2b_s34b_b82k_augreg_soup        Contrastive      LAION-2b    ConvNeXt          1200.6         256         NaN         87.74                 86.72
+47                       ViT-B-32-SigLIP2-256_webli             SigLIP     WebLI-10b     SigLIP2           376.9         256        32.0         90.83                 86.67
+
+
+Characteristics:
+Objectives: {'SigLIP': 12, 'Contrastive': 8}
+Data: {'WebLI-10b': 12, 'LAION-2b': 4, 'DataComp-1b': 3, 'DFN-5b': 1}
+Architectures: {'SigLIP': 7, 'SigLIP2': 5, 'CLIPA': 3, 'CLIP': 2, 'ConvNeXt': 2, 'MobileCLIP': 1}
+Mean params: 786.5300
+Mean img size: 297.0000
+
+### Bottom 20 by WG Accuracy
+
+                                             model_id training_objective    training_data arch_family  total_params_M  image_size  patch_size  avg_accuracy  worst_group_accuracy
+183                           RN101-quickgelu_yfcc15m        Contrastive         YFCC-15m      ResNet           119.7         224         NaN         70.44                 45.56
+187                   ViT-B-32_commonpool_m_s128m_b4k        Contrastive  CommonPool-128m        CLIP           151.3         224        32.0         56.45                 45.20
+169              ViT-B-32_commonpool_m_clip_s128m_b4k        Contrastive  CommonPool-128m        CLIP           151.3         224        32.0         86.66                 45.00
+35                ViT-B-16_commonpool_l_image_s1b_b8k        Contrastive    CommonPool-1b        CLIP           149.6         224        16.0         91.05                 45.00
+186              ViT-B-32_commonpool_s_laion_s13m_b4k        Contrastive   CommonPool-13m        CLIP           151.3         224        32.0         57.62                 44.79
+177             ViT-B-32_commonpool_m_laion_s128m_b4k        Contrastive  CommonPool-128m        CLIP           151.3         224        32.0         84.60                 42.22
+100                     ViT-B-16_commonpool_l_s1b_b8k        Contrastive    CommonPool-1b        CLIP           149.6         224        16.0         89.29                 41.67
+188              ViT-B-32_commonpool_s_basic_s13m_b4k        Contrastive   CommonPool-13m        CLIP           151.3         224        32.0         50.47                 40.14
+179                                     RN101_yfcc15m        Contrastive         YFCC-15m      ResNet           119.7         224         NaN         80.58                 40.00
+191                    ViT-B-32_commonpool_s_s13m_b4k        Contrastive   CommonPool-13m        CLIP           151.3         224        32.0         42.10                 33.45
+189                      ViT-B-32_datacomp_s_s13m_b4k        Contrastive     DataComp-13m        CLIP           151.3         224        32.0         47.44                 32.70
+190              ViT-B-32_commonpool_s_image_s13m_b4k        Contrastive   CommonPool-13m        CLIP           151.3         224        32.0         47.44                 32.70
+185                            RN50-quickgelu_yfcc15m        Contrastive         YFCC-15m      ResNet           102.0         224         NaN         58.88                 29.52
+87                                         RN50_cc12m        Contrastive           CC-12m      ResNet           102.0         224         NaN         89.74                 27.78
+81                               RN50-quickgelu_cc12m        Contrastive           CC-12m      ResNet           102.0         224         NaN         90.02                 26.11
+166             ViT-B-32_commonpool_m_image_s128m_b4k        Contrastive  CommonPool-128m        CLIP           151.3         224        32.0         86.95                 22.22
+40                                 nllb-clip-large_v1        Contrastive         LAION-2b   NNLB-CLIP          1399.2         224        14.0         90.96                 21.67
+147             ViT-B-32_commonpool_m_basic_s128m_b4k        Contrastive  CommonPool-128m        CLIP           151.3         224        32.0         87.91                 20.56
+192  coca_ViT-B-32_mscoco_finetuned_laion2b_s13b_b90k               CoCa         LAION-2b        CoCa           253.6         224        32.0         25.39                  0.97
+193                          RN50x64-quickgelu_openai        Contrastive      OpenAI-400m      ResNet           623.3         448         NaN         13.33                  0.00
+
+
+Characteristics:
+Objectives: {'Contrastive': 19, 'CoCa': 1}
+Data: {'CommonPool-128m': 5, 'CommonPool-13m': 4, 'YFCC-15m': 3, 'CommonPool-1b': 2, 'CC-12m': 2, 'LAION-2b': 2, 'DataComp-13m': 1, 'OpenAI-400m': 1}
+Architectures: {'CLIP': 12, 'ResNet': 6, 'NNLB-CLIP': 1, 'CoCa': 1}
+Mean params: 231.6850
+Mean img size: 235.2000
+
+--------------------------------------------------------------------------------
+SUBGROUPS: CelebA
+--------------------------------------------------------------------------------
+Subgroup columns: 4
+
+### Mean Accuracy per Subgroup
+
+Subgroup                                               Mean      Std      Min      Max
+-------------------------------------------------------------------------------------
+blonde_male                                          0.7758   0.1417   0.2056   1.0000
+non-blonde_female                                    0.8529   0.1395   0.0000   0.9783
+non-blonde_male                                      0.8831   0.1094   0.0000   0.9918
+blonde_female                                        0.8967   0.0770   0.3903   1.0000
+
+### Hardest Subgroup per Model
+  blonde_male: 139 (71.6%)
+  non-blonde_female: 36 (18.6%)
+  non-blonde_male: 19 (9.8%)
+
+--------------------------------------------------------------------------------
+FIGURE: Landscape (CelebA)
+--------------------------------------------------------------------------------
+CLIP: n=85, avg=86.3%, wg=71.0%
+CLIPA: n=7, avg=88.2%, wg=85.8%
+CoCa: n=4, avg=74.6%, wg=57.9%
+ConvNeXt: n=12, avg=88.2%, wg=83.7%
+EVA: n=5, avg=89.9%, wg=78.8%
+MobileCLIP: n=4, avg=91.2%, wg=84.6%
+MobileCLIP2: n=6, avg=92.1%, wg=78.8%
+NLLB-SigLIP: n=4, avg=88.0%, wg=71.8%
+NNLB-CLIP: n=2, avg=88.0%, wg=43.9%
+PE: n=5, avg=89.9%, wg=72.3%
+ResNet: n=16, avg=80.3%, wg=55.1%
+RoBERTa-CLIP: n=1, avg=90.9%, wg=77.8%
+SigLIP: n=11, avg=89.0%, wg=87.0%
+SigLIP2: n=15, avg=89.1%, wg=86.4%
+ViTamin: n=15, avg=89.1%, wg=79.8%
+XLM-RoBERTa-CLIP: n=2, avg=89.7%, wg=80.8%
+
+Pareto-optimal (8):
+  ViT-B-16-quickgelu_dfn2b: avg=92.8%, wg=66.7%
+  ViT-L-14_dfn2b: avg=92.6%, wg=67.2%
+  MobileCLIP2-S4_dfndr2b: avg=92.3%, wg=77.2%
+  MobileCLIP2-S3_dfndr2b: avg=92.2%, wg=79.4%
+  MobileCLIP2-L-14_dfndr2b: avg=91.9%, wg=80.6%
+  MobileCLIP-S1_datacompdr: avg=91.6%, wg=85.0%
+  MobileCLIP-B_datacompdr: avg=91.0%, wg=87.2%
+  ViT-SO400M-14-SigLIP-384_webli: avg=90.5%, wg=89.2%
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data (CelebA)
+--------------------------------------------------------------------------------
+Data                            WG Mean   WG Std      Avg       Size     N
+---------------------------------------------------------------------------
+CommonPool-128m                   40.62    17.67    79.86        128     6
+YFCC-15m                          41.60     9.28    69.88         15     4
+CommonPool-13m                    44.44    12.43    57.12         13     6
+CommonPool-1b                     52.69     8.76    90.18       1000     6
+OpenAI-400m                       70.61    18.24    85.39        400    19
+MetaCLIP-5.4b                     72.33     9.83    89.90       5400     5
+DFN-2b                            73.33     7.79    92.15       2000     4
+MetaCLIP-400m                     74.69     7.50    89.76        400     6
+LAION-2b                          75.97    21.12    86.48       2000    23
+CommonCrawl-2.5b                  77.67     6.28    90.28       2500    10
+DFNDR-2b                          78.02     2.35    91.99       2000     7
+Merged-2b                         78.68     5.87    90.16       2000     4
+LAION-400m                        78.98     4.83    89.68        400    12
+DataComp-1b                       81.11     5.97    89.43       1000    29
+LAION-A-900m                      81.57     2.26    89.39        900     3
+CommonPool-12.8b                  82.10     2.21    88.65      12800     3
+MetaCLIP2-2.5b                    84.24     1.53    88.47       2500     6
+WebLI-10b                         84.70     5.40    88.88      10000    30
+DFN-5b                            86.20     0.61    89.25       5000     4
+
+--------------------------------------------------------------------------------
+FIGURE: Architecture (CelebA)
+--------------------------------------------------------------------------------
+
+Average Accuracy:
+  CoCa: mean=74.65%, std=32.85%, n=4
+  ResNet: mean=80.25%, std=20.38%, n=16
+  CLIP: mean=86.30%, std=10.63%, n=85
+  NLLB-SigLIP: mean=87.95%, std=1.75%, n=4
+  CLIPA: mean=88.20%, std=1.01%, n=7
+  ConvNeXt: mean=88.23%, std=1.41%, n=12
+  SigLIP: mean=88.95%, std=1.34%, n=11
+  ViTamin: mean=89.07%, std=2.64%, n=15
+  SigLIP2: mean=89.07%, std=1.12%, n=15
+  EVA: mean=89.89%, std=1.05%, n=5
+  PE: mean=89.90%, std=1.27%, n=5
+  MobileCLIP: mean=91.21%, std=0.26%, n=4
+  MobileCLIP2: mean=92.07%, std=0.15%, n=6
+
+Worst-Group Accuracy:
+  ResNet: mean=55.05%, std=24.64%, n=16
+  CoCa: mean=57.88%, std=38.39%, n=4
+  CLIP: mean=71.00%, std=16.51%, n=85
+  NLLB-SigLIP: mean=71.81%, std=4.14%, n=4
+  PE: mean=72.33%, std=9.83%, n=5
+  MobileCLIP2: mean=78.80%, std=1.24%, n=6
+  EVA: mean=78.84%, std=5.10%, n=5
+  ViTamin: mean=79.79%, std=5.31%, n=15
+  ConvNeXt: mean=83.74%, std=3.46%, n=12
+  MobileCLIP: mean=84.58%, std=2.28%, n=4
+  CLIPA: mean=85.78%, std=1.43%, n=7
+  SigLIP2: mean=86.43%, std=0.61%, n=15
+  SigLIP: mean=87.04%, std=1.38%, n=11
+
+--------------------------------------------------------------------------------
+FIGURE: Scale (CelebA)
+--------------------------------------------------------------------------------
+Parameters (M) vs WG: ρ=0.4794, p=0.000000
+
+Parameters (M) binned stats:
+  (63.499, 142.644]: mean=62.4%, std=22.1%, n=16
+  (142.644, 320.429]: mean=67.7%, std=18.5%, n=74
+  (320.429, 719.799]: mean=78.9%, std=12.7%, n=53
+  (719.799, 1616.928]: mean=81.9%, std=11.2%, n=37
+  (1616.928, 3632.2]: mean=84.3%, std=2.7%, n=13
+Image Size (px) vs WG: ρ=0.3233, p=0.000004
+
+Image Size (px) binned stats:
+  (223.999, 281.6]: mean=72.6%, std=17.6%, n=147
+  (281.6, 339.2]: mean=79.0%, std=8.6%, n=17
+  (339.2, 396.8]: mean=81.0%, std=7.3%, n=23
+  (396.8, 454.4]: mean=53.7%, std=46.8%, n=3
+  (454.4, 512.0]: mean=86.7%, std=0.9%, n=4
+Patch Size (px) vs WG: ρ=-0.3644, p=0.000000
+
+Patch Size (px) binned stats:
+  (13.999, 17.6]: mean=77.0%, std=14.0%, n=160
+  (28.4, 32.0]: mean=60.7%, std=22.5%, n=34
+Number of Tokens vs WG: ρ=0.4504, p=0.000000
+
+Number of Tokens binned stats:
+  (49.999, 72.936]: mean=79.4%, std=10.2%, n=2
+  (155.195, 226.385]: mean=66.5%, std=17.5%, n=38
+  (226.385, 330.23]: mean=80.7%, std=9.0%, n=72
+  (330.23, 481.71]: mean=81.6%, std=3.3%, n=9
+  (481.71, 702.675]: mean=79.6%, std=7.9%, n=23
+  (702.675, 1025.0]: mean=79.1%, std=20.5%, n=18
+Training Data Size (M) vs WG: ρ=0.5655, p=0.000000
+
+Training Data Size (M) binned stats:
+  (12.999, 51.595]: mean=42.3%, std=10.7%, n=11
+  (51.595, 204.769]: mean=41.7%, std=16.4%, n=7
+  (204.769, 812.688]: mean=74.0%, std=14.0%, n=37
+  (812.688, 3225.402]: mean=77.1%, std=13.4%, n=92
+  (3225.402, 12801.0]: mean=83.1%, std=6.7%, n=45
+
+--------------------------------------------------------------------------------
+FIGURE: Resolution×Patch (CelebA)
+--------------------------------------------------------------------------------
+
+Mean WG (%):
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             80.0  66.0  59.5
+240              NaN  74.4   NaN
+256             80.5  83.8  79.4
+288              NaN  64.7   NaN
+320              NaN  83.0   NaN
+336             80.2   NaN   NaN
+378             86.3   NaN   NaN
+384             79.6  79.0   NaN
+448             85.6  37.8   NaN
+512              NaN  86.7   NaN
+
+
+Counts:
+
+patch_size_num  14.0  16.0  32.0
+image_size                      
+224             50.0  36.0  32.0
+240              NaN   2.0   NaN
+256              5.0  20.0   2.0
+288              NaN   2.0   NaN
+320              NaN   4.0   NaN
+336             11.0   NaN   NaN
+378              6.0   NaN   NaN
+384              5.0  12.0   NaN
+448              1.0   2.0   NaN
+512              NaN   4.0   NaN
+
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (CelebA)
+--------------------------------------------------------------------------------
+
+Factor                           Avg         WG       p(Avg)        p(WG)
+---------------------------------------------------------------------------
+total_params_M               +0.0277    +0.5355***     0.766753     0.000000
+image_size                   +0.0665    +0.1623     0.476333     0.080378
+patch_size_num               -0.1278    -0.5667***     0.169739     0.000000
+num_tokens                   +0.1518    +0.4844***     0.102407     0.000000
+embed_dim                    +0.0020    +0.4899***     0.983100     0.000000
+training_data_size_M         +0.3561***    +0.5885***     0.000081     0.000000
+
+================================================================================
+CROSS-DATASET: URBANCARS VS CELEBA
+================================================================================
+Models in UrbanCars: 194
+Models in CelebA: 194
+Overlapping: 194
+
+### Ranking Correlations
+
+Avg Acc:
+  Spearman: ρ=0.2558 (p=0.000319)
+  Pearson: r=0.5704 (p=0.000000)
+
+WG Acc:
+  Spearman: ρ=0.2776 (p=0.000089)
+  Pearson: r=0.4164 (p=0.000000)
+
+### Largest Rank Differences
+
+                                             model_id  worst_group_accuracy_urbancars  worst_group_accuracy_celeba     r1     r2  rdiff
+29                                 nllb-clip-large_v1                           0.736                        0.217   36.0  191.0  155.0
+151     ViT-bigG-14-worldwide-378_metaclip2_worldwide                           0.312                        0.860  179.5   38.0  141.5
+143  convnext_xxlarge_laion2b_s34b_b82k_augreg_rewind                           0.408                        0.866  163.5   25.0  138.5
+171                ViT-H-14-quickgelu_metaclip_fullcc                           0.208                        0.856  183.5   45.5  138.0
+95                 ViT-B-16_commonpool_l_clip_s1b_b8k                           0.744                        0.611   32.5  168.0  135.5
+48                        ViT-SO400M-14-SigLIP2_webli                           0.464                        0.868  153.0   18.0  135.0
+69                    ViT-SO400M-14-SigLIP2-378_webli                           0.472                        0.871  150.0   15.0  135.0
+49                    ViT-SO400M-16-SigLIP2-384_webli                           0.488                        0.873  144.0    9.5  134.5
+159                         ViT-L-16-SigLIP-256_webli                           0.368                        0.859  171.0   39.5  131.5
+58                    ViT-SO400M-16-SigLIP2-256_webli                           0.448                        0.864  156.0   27.0  129.0
+
+
+### Consistent Top Performers
+
+Models in top-20 on BOTH: 6
+
+                               model_id training_objective  worst_group_accuracy_urbancars  worst_group_accuracy_celeba
+0        ViT-SO400M-14-SigLIP-384_webli             SigLIP                           0.864                        0.892
+4              ViT-H-14-quickgelu_dfn5b        Contrastive                           0.848                        0.870
+7                ViT-B-16-SigLIP2_webli             SigLIP                           0.832                        0.872
+2        ViT-SO400M-14-SigLIP-378_webli             SigLIP                           0.816                        0.883
+17  ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP                           0.800                        0.878
+44       ViT-bigG-14_laion2b_s39b_b160k        Contrastive                           0.784                        0.876
+
+
+### Factor Consistency
+
+training_objective:
+  SigLIP: UrbanCars=0.634, CelebA=0.867, Δ=-0.233
+  Contrastive: UrbanCars=0.572, CelebA=0.726, Δ=-0.154
+  CoCa: UrbanCars=0.520, CelebA=0.579, Δ=-0.059
+
+arch_family:
+  SigLIP: UrbanCars=0.679, CelebA=0.870, Δ=-0.192
+  SigLIP2: UrbanCars=0.601, CelebA=0.864, Δ=-0.264
+  CLIP: UrbanCars=0.533, CelebA=0.710, Δ=-0.177
+  MobileCLIP2: UrbanCars=0.801, CelebA=0.788, Δ=+0.013
+  CLIPA: UrbanCars=0.651, CelebA=0.858, Δ=-0.206
+  PE: UrbanCars=0.702, CelebA=0.723, Δ=-0.021
+  NLLB-SigLIP: UrbanCars=0.618, CelebA=0.718, Δ=-0.100
+  CoCa: UrbanCars=0.520, CelebA=0.579, Δ=-0.059
+  ViTamin: UrbanCars=0.609, CelebA=0.798, Δ=-0.189
+  ConvNeXt: UrbanCars=0.619, CelebA=0.837, Δ=-0.218
+  EVA: UrbanCars=0.598, CelebA=0.788, Δ=-0.190
+  MobileCLIP: UrbanCars=0.606, CelebA=0.846, Δ=-0.240
+  ResNet: UrbanCars=0.508, CelebA=0.551, Δ=-0.043
+
+--------------------------------------------------------------------------------
+FIGURE: Cross-Dataset
+--------------------------------------------------------------------------------
+Average Accuracy: ρ=0.2558, p=0.000319
+Worst-Group Accuracy: ρ=0.2776, p=0.000089
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+
+### UrbanCars Key Findings
+
+Top 5 by WG:
+  ViT-SO400M-14-SigLIP-384_webli: WG=86.4%, Avg=91.4%, 
+  ViT-SO400M-14-SigLIP_webli: WG=86.4%, Avg=90.8%,
+  ViT-H-14-quickgelu_dfn5b: WG=84.8%, Avg=90.0%, 
+  MobileCLIP2-S3_dfndr2b: WG=84.0%, Avg=88.4%, 
+  ViT-B-16-SigLIP2_webli: WG=83.2%, Avg=89.4%, 
+
+
+### CelebA Key Findings
+
+Top 5 by WG:
+  ViT-SO400M-14-SigLIP-384_webli: WG=89.2%, 
+  ViT-SO400M-14-SigLIP-378_webli: WG=88.3%, 
+  ViT-B-16-SigLIP-512_webli: WG=87.8%, 
+  ViT-SO400M-16-SigLIP-i18n-256_webli: WG=87.8%,
+  ViT-bigG-14_laion2b_s39b_b160k: WG=87.6%, 
+
+### Cross-Dataset
+
+WG Ranking Correlation: ρ=0.278 (p=8.88e-05), n=194

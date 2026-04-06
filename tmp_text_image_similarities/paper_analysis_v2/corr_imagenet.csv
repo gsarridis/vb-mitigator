@@ -1,0 +1,7 @@
+,Top-1 Accuracy
+total_params_M,0.6969328495724155
+image_size,0.3327318923078807
+patch_size_num,-0.789692583092594
+num_tokens,0.7661545722429917
+embed_dim,0.6616377665485933
+training_data_size_M,0.5637076938063037

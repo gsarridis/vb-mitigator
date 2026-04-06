@@ -1,0 +1,20 @@
+{
+  "model_name": "RN101",
+  "pretrained_tag": "yfcc15m",
+  "model_id": "RN101_yfcc15m",
+  "arch_family": "ResNet",
+  "resnet_depth": 101,
+  "resnet_multiplier": "x1",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "YFCC-15M",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 119.7,
+  "top1_accuracy": 34.054,
+  "top5_accuracy": 59.376,
+  "total_images": 50000,
+  "load_time_s": 11.6,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 58.9
+}

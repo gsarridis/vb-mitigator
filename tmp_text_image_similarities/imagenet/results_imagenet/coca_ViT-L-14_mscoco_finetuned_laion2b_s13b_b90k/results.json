@@ -1,0 +1,19 @@
+{
+  "model_name": "coca_ViT-L-14",
+  "pretrained_tag": "mscoco_finetuned_laion2b_s13b_b90k",
+  "model_id": "coca_ViT-L-14_mscoco_finetuned_laion2b_s13b_b90k",
+  "arch_family": "ViT",
+  "vit_size": "L",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "embed_dim": 768,
+  "total_params_M": 638.5,
+  "top1_accuracy": 72.136,
+  "top5_accuracy": 93.264,
+  "total_images": 50000,
+  "load_time_s": 33.0,
+  "classifier_time_s": 21.5,
+  "eval_time_s": 153.5
+}

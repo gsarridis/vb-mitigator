@@ -1,0 +1,17 @@
+{
+  "model_name": "PE-Core-L-14-336",
+  "pretrained_tag": "meta",
+  "model_id": "PE-Core-L-14-336_meta",
+  "arch_family": "Other",
+  "patch_size": null,
+  "image_size": 336,
+  "training_data": "meta",
+  "quickgelu": false,
+  "total_params_M": 671.1,
+  "top1_accuracy": 83.484,
+  "top5_accuracy": 97.338,
+  "total_images": 50000,
+  "load_time_s": 83.2,
+  "classifier_time_s": 16.3,
+  "eval_time_s": 256.8
+}

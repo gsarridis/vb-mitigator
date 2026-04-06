@@ -1,0 +1,19 @@
+{
+  "model_name": "xlm-roberta-base-ViT-B-32",
+  "pretrained_tag": "laion5b_s13b_b90k",
+  "model_id": "xlm-roberta-base-ViT-B-32_laion5b_s13b_b90k",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 32,
+  "image_size": 224,
+  "training_data": "laion5b_s13b_b90k",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 366.1,
+  "top1_accuracy": 62.35,
+  "top5_accuracy": 88.042,
+  "total_images": 50000,
+  "load_time_s": 19.7,
+  "classifier_time_s": 19.5,
+  "eval_time_s": 57.8
+}

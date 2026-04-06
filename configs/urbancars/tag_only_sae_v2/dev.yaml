@@ -1,0 +1,70 @@
+# Enhanced Tag-Only SAE v2
+#
+# This SAE includes neurons for:
+# - Irrelevant tags (from irrelevant_tags column)
+# - Bias labels (e.g., background=water, background=land)
+# - Relevant tags (all tags - irrelevant tags)
+# - Target classes (e.g., class=waterbird, class=landbird)
+#
+# Debiasing zeros: irrelevant tags + bias labels
+# Debiasing keeps: relevant tags + target classes
+
+EXPERIMENT:
+  NAME: "tag_only_sae_v2"
+  TAG: "urbancars_irrelevant"
+  PROJECT: "tag_only_supervised_sae"
+
+
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+  URBANCARS:
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+
+
+MITIGATOR:
+  TYPE: "tag_only_sae_v2"
+  
+  TAG_ONLY_SAE_V2:
+    # ---- Tags Configuration ----
+    TAGS_CSV_PATH: "train_tags.csv"
+    ALL_TAGS_COLUMN: "tags"
+    IRRELEVANT_TAGS_COLUMN: "irrelevant_tags"
+    TAG_SEPARATOR: " | "
+    MIN_TAG_FREQUENCY: 10
+    
+    # ---- Training ----
+    STEPS: 10000
+    BATCH_SIZE: 256
+    LR: 1e-3
+    
+    # ---- Loss Weights ----
+    LAMBDA_RECONSTRUCTION: 1.0
+    LAMBDA_SPARSITY: 0.1
+    LAMBDA_TAG: 0.0
+    LAMBDA_BIAS: 1.0      # Weight for bias label supervision
+    LAMBDA_TARGET: 1.0    # Weight for target class supervision
+    
+    # ---- Tag Supervision ----
+    TAG_LOSS_TYPE: "mse"
+    
+    # Weights for positive (tag present) vs negative (tag absent)
+    POSITIVE_WEIGHT: 1.0
+    NEGATIVE_WEIGHT: 0.0
+    
+    # Whether to penalize activation when tag is absent
+    USE_NEGATIVE_SUPERVISION: False
+    MARGIN: 0.5
+    TARGET_ACTIVATION: 1.0
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+
+SOLVER:
+  BATCH_SIZE: 256
+  LR: 1e-3
+
+LOG:
+  PREFIX: "./outputs"

@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-B-16",
+  "pretrained_tag": "commonpool_l_text_s1b_b8k",
+  "model_id": "ViT-B-16_commonpool_l_text_s1b_b8k",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 16,
+  "image_size": 224,
+  "training_data": "CommonPool",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 149.6,
+  "top1_accuracy": 56.07,
+  "top5_accuracy": 84.114,
+  "total_images": 50000,
+  "load_time_s": 10.2,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 59.9
+}

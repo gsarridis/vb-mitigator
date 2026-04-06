@@ -1,0 +1,17 @@
+{
+  "model_name": "convnext_base_w",
+  "pretrained_tag": "laion_aesthetic_s13b_b82k",
+  "model_id": "convnext_base_w_laion_aesthetic_s13b_b82k",
+  "arch_family": "ConvNeXt",
+  "patch_size": null,
+  "image_size": 256,
+  "training_data": "laion_aesthetic_s13b_b82k",
+  "quickgelu": false,
+  "total_params_M": 179.4,
+  "top1_accuracy": 70.974,
+  "top5_accuracy": 92.162,
+  "total_images": 50000,
+  "load_time_s": 14.7,
+  "classifier_time_s": 15.4,
+  "eval_time_s": 73.4
+}

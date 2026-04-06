@@ -1,0 +1,94 @@
+# Tag-Supervised SAE Training
+#
+# This config trains an SAE where specific neurons are supervised
+# to activate based on the presence of irrelevant tags (from MAVIAS).
+#
+# Prerequisites:
+#   1. Run MAVIAS to generate train_tags.csv with irrelevant_tags column
+#   2. Have a pretrained model checkpoint (optional)
+#
+# The trained SAE can be used for debiasing by zeroing out
+# the tag-associated neurons during inference.
+
+EXPERIMENT:
+  NAME: "tag_sae"
+  TAG: "waterbirds_irrelevant"
+  PROJECT: "tag_supervised_sae"
+
+DATASET:
+  TYPE: "waterbirds"
+  WATERBIRDS:
+    IMAGE_SIZE: 224
+
+
+MITIGATOR:
+  TYPE: "tag_sae"
+  
+  TAG_SAE:
+    # ---- Tags from MAVIAS Pipeline ----
+    # Path to tags CSV (relative to data root or absolute)
+    TAGS_CSV_PATH: "./data/waterbirds/train_tags_bu.csv"
+
+    # Use irrelevant tags for supervision
+    TAG_COLUMN: "irrelevant_tags"
+    TAG_SEPARATOR: " | "
+    
+    # Only use tags that appear at least 10 times
+    MIN_TAG_FREQUENCY: 10
+    
+    # ---- Model Checkpoint ----
+    # Optional: load pretrained model for feature extraction
+    # CHECKPOINT_PATH: "outputs/erm/utkface/best_model.pt"
+    CHECKPOINT_PATH: ""
+    
+    # Optional: load precomputed features (faster!)
+    # PRECOMPUTED_FEATURES_PATH: "outputs/sae/features/train_features.pt"
+    PRECOMPUTED_FEATURES_PATH: ""
+    
+    # ---- SAE Architecture ----
+    # Number of free neurons beyond tag neurons
+    # 0 = use expansion factor instead
+    NUM_FREE_NEURONS: 512
+    
+    # Alternative: use expansion factor
+    # dict_size = feature_dim * EXPANSION_FACTOR
+    EXPANSION_FACTOR: 8
+    
+    # ---- Training ----
+    STEPS: 10000
+    BATCH_SIZE: 256
+    LR: 1e-3
+    
+    # ---- Loss Weights ----
+    LAMBDA_RECONSTRUCTION: 1.0
+    LAMBDA_SPARSITY: 0.1
+    LAMBDA_TAG: 1.0
+    
+    # ---- Tag Supervision ----
+    # Loss type: "bce", "hinge", or "mse"
+    TAG_LOSS_TYPE: "mse"
+    
+    # Weights for positive (tag present) vs negative (tag absent)
+    POSITIVE_WEIGHT: 1.0
+    NEGATIVE_WEIGHT: 0.0
+    
+    # Whether to penalize activation when tag is absent
+    USE_NEGATIVE_SUPERVISION: False
+    
+    # For hinge loss
+    MARGIN: 0.5
+    
+    # For MSE loss
+    TARGET_ACTIVATION: 1.0
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+
+SOLVER:
+  BATCH_SIZE: 256
+  LR: 1e-3
+
+LOG:
+  PREFIX: "./outputs"

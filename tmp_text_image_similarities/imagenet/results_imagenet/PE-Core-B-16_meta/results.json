@@ -1,0 +1,17 @@
+{
+  "model_name": "PE-Core-B-16",
+  "pretrained_tag": "meta",
+  "model_id": "PE-Core-B-16_meta",
+  "arch_family": "Other",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "meta",
+  "quickgelu": false,
+  "total_params_M": 447.7,
+  "top1_accuracy": 78.358,
+  "top5_accuracy": 95.676,
+  "total_images": 50000,
+  "load_time_s": 65.3,
+  "classifier_time_s": 16.3,
+  "eval_time_s": 46.0
+}

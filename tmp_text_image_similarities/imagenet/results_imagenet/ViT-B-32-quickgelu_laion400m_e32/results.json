@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-B-32-quickgelu",
+  "pretrained_tag": "laion400m_e32",
+  "model_id": "ViT-B-32-quickgelu_laion400m_e32",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 32,
+  "image_size": 224,
+  "training_data": "LAION-400M",
+  "quickgelu": true,
+  "embed_dim": 512,
+  "total_params_M": 151.3,
+  "top1_accuracy": 62.942,
+  "top5_accuracy": 87.668,
+  "total_images": 50000,
+  "load_time_s": 28.7,
+  "classifier_time_s": 8.9,
+  "eval_time_s": 75.9
+}

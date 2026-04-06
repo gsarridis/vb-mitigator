@@ -17,7 +17,8 @@ SOLVER:
     LR_DECAY_STAGES: [1000]
     LR_DECAY_RATE: 0.1
 MODEL:
-  TYPE: "resnet50"
+  TYPE: "openclip_vit_b_32"
   PRETRAINED: True
-METRIC: "wg_ovr_tags"
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+METRIC: "wg_ovr"
 

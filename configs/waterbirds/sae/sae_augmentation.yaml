@@ -1,0 +1,60 @@
+# SAE Feature Augmentation Configuration for UTKFace
+#
+# This config trains a model that:
+# 1. Uses OpenCLIP as frozen backbone
+# 2. Encodes features with pretrained SAE
+# 3. During training, randomly activates/deactivates class-specific neurons
+# 4. Trains classification head on augmented sparse features
+#
+# The augmentation reinforces class-relevant patterns by:
+# - Deactivating some active class neurons (dropout-like regularization)
+# - Activating some inactive class neurons (boosting class signal)
+
+EXPERIMENT:
+  NAME: "sae_augmentation"
+  TAG: "openclip_deact20_act30_val1"
+  PROJECT: "utkface_sae_augmentation"
+
+DATASET:
+  TYPE: "utkface"
+  UTKFACE:
+    BIAS: "race"
+    IMAGE_SIZE: 224  # Must match OpenCLIP
+
+MITIGATOR:
+  TYPE: "sae_augmentation"
+  SAE_AUGMENTATION:
+    # Paths to SAE outputs (set these to your trained SAE)
+    SAE_CHECKPOINT_PATH: "outputs/utkface_sae/race_analysis/sae/sae_checkpoints/ae.pt"  # e.g., "outputs/utkface_sae/sae/sae_checkpoints/ae.pt"
+    SAE_ANALYSIS_PATH: "outputs/utkface_sae/race_analysis/sae/analysis_results.json"    # e.g., "outputs/utkface_sae/sae/analysis_results.json"
+    
+    # Only use neurons with 100% class purity
+    PURITY_THRESHOLD: 1.0
+    
+    # Augmentation parameters
+    AUGMENT_PROB: 0.8        # 50% chance to augment each sample
+    DEACTIVATE_PCT: 0.8      # Deactivate 20% of active class neurons
+    ACTIVATE_PCT: 0.0        # Activate 30% of inactive class neurons
+    ACTIVATION_VALUE: 20.0    # Add this value to activated neurons
+    
+    # Use sparse features for classification (more interpretable)
+    CLASSIFIER_INPUT: "sparse"
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True
+
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 20
+  LR: 0.001
+  TYPE: "Adam"
+  SCHEDULER:
+    LR_DECAY_STAGES: [6, 13]
+    LR_DECAY_RATE: 0.1
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"

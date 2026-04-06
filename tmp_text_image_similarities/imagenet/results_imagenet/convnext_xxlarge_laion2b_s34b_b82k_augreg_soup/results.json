@@ -1,0 +1,17 @@
+{
+  "model_name": "convnext_xxlarge",
+  "pretrained_tag": "laion2b_s34b_b82k_augreg_soup",
+  "model_id": "convnext_xxlarge_laion2b_s34b_b82k_augreg_soup",
+  "arch_family": "ConvNeXt",
+  "patch_size": null,
+  "image_size": 256,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "total_params_M": 1200.6,
+  "top1_accuracy": 79.428,
+  "top5_accuracy": 95.974,
+  "total_images": 50000,
+  "load_time_s": 61.5,
+  "classifier_time_s": 39.5,
+  "eval_time_s": 205.9
+}

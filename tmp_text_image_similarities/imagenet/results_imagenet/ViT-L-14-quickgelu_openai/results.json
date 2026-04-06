@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-L-14-quickgelu",
+  "pretrained_tag": "openai",
+  "model_id": "ViT-L-14-quickgelu_openai",
+  "arch_family": "ViT",
+  "vit_size": "L",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "OpenAI WIT (400M)",
+  "quickgelu": true,
+  "embed_dim": 768,
+  "total_params_M": 427.6,
+  "top1_accuracy": 75.534,
+  "top5_accuracy": 94.58,
+  "total_images": 50000,
+  "load_time_s": 22.3,
+  "classifier_time_s": 15.3,
+  "eval_time_s": 104.7
+}

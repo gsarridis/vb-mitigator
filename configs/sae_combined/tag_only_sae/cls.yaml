@@ -1,0 +1,63 @@
+# SAE-Debiased Classifier Training
+#
+# This config trains a classifier on debiased features.
+# The debiasing is done by a pre-trained Tag-SAE that zeros out
+# tag-associated neurons before decoding.
+#
+# Prerequisites:
+#   1. Train a Tag-SAE first (see tag_sae configs)
+#   2. Have the Tag-SAE checkpoint path ready
+#
+# This enables fair comparison:
+#   - mode="none": Baseline (no debiasing)
+#   - mode="all": Full debiasing (all tags removed)
+#   - mode="specific": Selective debiasing
+
+EXPERIMENT:
+  NAME: "tag_only_debias_cls"
+  TAG: "urbancars_debiased"
+  PROJECT: "sae_debiasing"
+
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+  URBANCARS:
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+
+MITIGATOR:
+  TYPE: "tag_only_debias_cls"
+  
+  TAG_ONLY_DEBIAS_CLS:
+    # ---- Tag-Only SAE Checkpoint (REQUIRED) ----
+    SAE_CHECKPOINT_PATH: "./outputs/tag_only_supervised_sae/urbancars_irrelevant/tag_only_sae/tag_only_sae/tag_only_sae.pt"
+    
+    # ---- Classifier ----
+    CLASSIFIER_TYPE: "linear"  # or "mlp"
+    HIDDEN_DIM: 256
+    DROPOUT: 0.1
+    
+    # ---- Training ----
+    EPOCHS: 50
+    LR: 1e-3
+    WEIGHT_DECAY: 1e-4
+
+
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 150
+  LR: 0.001
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+METRIC: "wg_ovr"
+
+
+
+LOG:
+  PREFIX: "./outputs"

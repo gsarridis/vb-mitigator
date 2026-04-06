@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-L-14-quickgelu",
+  "pretrained_tag": "metaclip_400m",
+  "model_id": "ViT-L-14-quickgelu_metaclip_400m",
+  "arch_family": "ViT",
+  "vit_size": "L",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "MetaCLIP",
+  "quickgelu": true,
+  "embed_dim": 768,
+  "total_params_M": 427.6,
+  "top1_accuracy": 76.242,
+  "top5_accuracy": 94.538,
+  "total_images": 50000,
+  "load_time_s": 28.9,
+  "classifier_time_s": 15.3,
+  "eval_time_s": 104.9
+}

@@ -1,0 +1,61 @@
+# SAE Neuron Classifier Configuration for UTKFace
+#
+# This is a TRAINING-FREE interpretable classifier that:
+# 1. Uses OpenCLIP as frozen backbone
+# 2. Encodes features with pretrained SAE
+# 3. Assigns each monosemantic neuron to the class it responds to
+# 4. Classifies by summing activations of each class's neurons
+#
+# No learnable parameters except optional temperature scaling.
+# Highly interpretable: can trace prediction back to specific neurons.
+
+EXPERIMENT:
+  NAME: "sae_neuron_classifier"
+  TAG: "openclip_purity100_sum"
+  PROJECT: "waterbirds_sae_neuron_classifier"
+
+DATASET:
+  TYPE: "waterbirds"
+  WATERBIRDS:
+    IMAGE_SIZE: 224
+
+
+MITIGATOR:
+  TYPE: "sae_neuron_classifier"
+  SAE_NEURON_CLASSIFIER:
+    # Paths to SAE outputs (set these to your trained SAE)
+    SAE_CHECKPOINT_PATH: "./outputs/sae_combined_training/openclip_vit_b_32/sae_combined/sae_checkpoints/ae.pt"  # e.g., "outputs/utkface_sae/sae/sae_checkpoints/ae.pt"
+    SAE_ANALYSIS_PATH: "outputs/waterbirds_sae/waterbirds_species/sae/analysis_results.json"    # e.g., "outputs/utkface_sae/sae/analysis_results.json"
+    
+    # Only use neurons with 100% class purity
+    PURITY_THRESHOLD: 0.99
+
+    # Minimum activation to consider a neuron as contributing
+    # Neurons with activation < threshold are ignored (treated as 0)
+    ACTIVATION_THRESHOLD: 0.2
+    
+    # Sum activations of all neurons belonging to each class
+    AGGREGATION: "mean"  # Options: "sum", "mean", "max"
+    
+    # Temperature scaling (1.0 = no scaling)
+    TEMPERATURE: 4.0
+    
+    # Whether to learn optimal temperature on train set
+    LEARN_TEMPERATURE: False
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True
+
+SOLVER:
+  BATCH_SIZE: 64
+  LR: 0.001  # Only used if LEARN_TEMPERATURE is True
+  TYPE: "Adam"
+  SCHEDULER:
+    TYPE: "none"
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"

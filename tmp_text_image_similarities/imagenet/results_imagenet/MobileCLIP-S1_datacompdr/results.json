@@ -1,0 +1,17 @@
+{
+  "model_name": "MobileCLIP-S1",
+  "pretrained_tag": "datacompdr",
+  "model_id": "MobileCLIP-S1_datacompdr",
+  "arch_family": "MobileCLIP",
+  "patch_size": null,
+  "image_size": 256,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "total_params_M": 85.0,
+  "top1_accuracy": 72.594,
+  "top5_accuracy": 93.632,
+  "total_images": 50000,
+  "load_time_s": 6.8,
+  "classifier_time_s": 7.2,
+  "eval_time_s": 55.4
+}

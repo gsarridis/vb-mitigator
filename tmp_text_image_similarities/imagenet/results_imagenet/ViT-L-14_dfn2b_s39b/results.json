@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-L-14",
+  "pretrained_tag": "dfn2b_s39b",
+  "model_id": "ViT-L-14_dfn2b_s39b",
+  "arch_family": "ViT",
+  "vit_size": "L",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "DFN",
+  "quickgelu": false,
+  "embed_dim": 768,
+  "total_params_M": 427.6,
+  "top1_accuracy": 82.008,
+  "top5_accuracy": 96.644,
+  "total_images": 50000,
+  "load_time_s": 26.6,
+  "classifier_time_s": 20.5,
+  "eval_time_s": 151.9
+}

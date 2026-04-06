@@ -1,0 +1,19 @@
+{
+  "model_name": "xlm-roberta-large-ViT-H-14",
+  "pretrained_tag": "frozen_laion5b_s13b_b90k",
+  "model_id": "xlm-roberta-large-ViT-H-14_frozen_laion5b_s13b_b90k",
+  "arch_family": "ViT",
+  "vit_size": "H",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "frozen_laion5b_s13b_b90k",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 1193.0,
+  "top1_accuracy": 76.962,
+  "top5_accuracy": 95.112,
+  "total_images": 50000,
+  "load_time_s": 59.7,
+  "classifier_time_s": 61.4,
+  "eval_time_s": 286.6
+}

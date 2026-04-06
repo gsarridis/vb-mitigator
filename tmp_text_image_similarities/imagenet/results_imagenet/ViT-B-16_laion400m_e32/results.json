@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-B-16",
+  "pretrained_tag": "laion400m_e32",
+  "model_id": "ViT-B-16_laion400m_e32",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 16,
+  "image_size": 224,
+  "training_data": "LAION-400M",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 149.6,
+  "top1_accuracy": 67.054,
+  "top5_accuracy": 90.422,
+  "total_images": 50000,
+  "load_time_s": 19.6,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 60.0
+}

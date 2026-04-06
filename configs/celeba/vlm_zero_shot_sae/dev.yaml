@@ -1,0 +1,65 @@
+# SAE-Filtered Zero-Shot Classification for UTKFace
+#
+# This combines SAE neuron filtering with zero-shot VLM classification:
+# 1. Encode images with VLM (OpenCLIP/SigLIP/PE)
+# 2. Filter through SAE, keeping only class-specific neurons
+# 3. Decode back to feature space
+# 4. Zero-shot classify using text-image similarity
+#
+# The hypothesis is that keeping only monosemantic neurons removes
+# spurious correlations and bias-related features.
+
+EXPERIMENT:
+  NAME: "sae_filtered_zero_shot"
+  TAG: "blonde"
+  PROJECT: "celeba_zero_shot"
+
+DATASET:
+  TYPE: "celeba"
+  BIASES: ["gender"]
+  CELEBA:
+    BIAS: "gender"
+    TARGET: "blonde"
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+
+MITIGATOR:
+  TYPE: "sae_filtered_zero_shot"
+  SAE_FILTERED_ZERO_SHOT:
+    # VLM Encoder
+    ENCODER_TYPE: "openclip"
+    MODEL_NAME: "ViT-B-32"
+    
+    # SAE paths (set these to your trained SAE)
+    SAE_CHECKPOINT_PATH: "outputs/celeba_sae/makeup_analysis/sae/sae_checkpoints/ae.pt"  # e.g., "outputs/utkface_sae/sae/sae_checkpoints/ae.pt"
+    SAE_ANALYSIS_PATH: "outputs/celeba_sae/makeup_analysis/sae/analysis_results.json"    # e.g., "outputs/utkface_sae/sae/analysis_results.json"
+    
+    # Neuron filtering thresholds
+    PURITY_THRESHOLD: 1.0
+    ACTIVATION_THRESHOLD: 0.1
+    
+    # Filtering strategy:
+    # - "per_class": For each class, use only that class's neurons to compute score
+    # - "all_mono": Keep all monosemantic neurons
+    # - "target_only": Keep only one class's neurons
+    FILTER_MODE: "all_mono"
+    
+    # Class prompts
+    CLASS_NAME_VARIANT: "blonde"
+    
+    # Temperature for similarity
+    TEMPERATURE: 100.0
+    
+    # Compare with unfiltered baseline
+    COMPARE_WITH_UNFILTERED: True
+
+MODEL:
+  TYPE: "zero_shot"
+  PRETRAINED: True
+
+SOLVER:
+  BATCH_SIZE: 64
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"

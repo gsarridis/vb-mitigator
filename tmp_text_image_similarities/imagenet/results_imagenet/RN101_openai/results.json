@@ -1,0 +1,20 @@
+{
+  "model_name": "RN101",
+  "pretrained_tag": "openai",
+  "model_id": "RN101_openai",
+  "arch_family": "ResNet",
+  "resnet_depth": 101,
+  "resnet_multiplier": "x1",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "OpenAI WIT (400M)",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 119.7,
+  "top1_accuracy": 60.482,
+  "top5_accuracy": 87.266,
+  "total_images": 50000,
+  "load_time_s": 13.2,
+  "classifier_time_s": 10.9,
+  "eval_time_s": 58.6
+}

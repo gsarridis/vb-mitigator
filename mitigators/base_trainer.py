@@ -122,6 +122,7 @@ class BaseTrainer:
         self.num_class = dataset["num_class"]
         self.biases = dataset["biases"]
         self.dataloaders = dataset["dataloaders"]
+        self.dataloaders["train"] = self.dataloaders["val"]
         self.sets = dataset["sets"]
         self.data_root = dataset["root"]
         self.target2name = dataset["target2name"]
@@ -202,7 +203,7 @@ class BaseTrainer:
                     self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP * train_data_len
                 ),
             )
-        elif self.cfg.SOLVER.SCHEDULER.TYPE == "None":
+        elif self.cfg.SOLVER.SCHEDULER.TYPE == "none":
             return
         else:
             raise ValueError(

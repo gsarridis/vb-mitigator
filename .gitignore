@@ -14,3 +14,115 @@ data/biased_mnist/pickles/
 /slurm/
 /tmp/
 /coco/
+!data/*/relevant_tags/
+# Keep everything in docs/
+!docs/
+!docs/**
+
+dictionary_learning/
+perception_models/ 
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.tif
+*.ico
+*.svg
+*.webp
+*.heic
+*.heif
+*.raw
+*.psd
+*.ai
+ 
+# Documents / PDFs
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+*.odt
+*.ods
+*.odp
+ 
+# Data files
+# *.csv
+# *.tsv
+# *.json
+# *.jsonl
+# *.xml
+# *.yaml
+# *.yml
+# *.toml
+# *.parquet
+# *.feather
+# *.arrow
+# *.avro
+# *.hdf5
+# *.h5
+ 
+# Plain text / logs
+# *.txt
+*.log
+*.out
+ 
+# Pickled / serialized objects
+*.pkl
+*.pickle
+*.joblib
+*.npy
+*.npz
+ 
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz
+ 
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+ 
+# Model weights / ML artifacts
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.bin
+*.ckpt
+*.weights
+ 
+# Audio / Video
+*.mp3
+*.wav
+*.flac
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+ 
+# OS / IDE junk
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+ 

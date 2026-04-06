@@ -1,0 +1,20 @@
+{
+  "model_name": "RN50",
+  "pretrained_tag": "openai",
+  "model_id": "RN50_openai",
+  "arch_family": "ResNet",
+  "resnet_depth": 50,
+  "resnet_multiplier": "x1",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "OpenAI WIT (400M)",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 102.0,
+  "top1_accuracy": 57.908,
+  "top5_accuracy": 85.496,
+  "total_images": 50000,
+  "load_time_s": 15.7,
+  "classifier_time_s": 11.9,
+  "eval_time_s": 79.6
+}

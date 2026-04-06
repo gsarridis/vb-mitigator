@@ -1,0 +1,20 @@
+{
+  "model_name": "RN50-quickgelu",
+  "pretrained_tag": "openai",
+  "model_id": "RN50-quickgelu_openai",
+  "arch_family": "ResNet",
+  "resnet_depth": 50,
+  "resnet_multiplier": "x1",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "OpenAI WIT (400M)",
+  "quickgelu": true,
+  "embed_dim": 1024,
+  "total_params_M": 102.0,
+  "top1_accuracy": 59.818,
+  "top5_accuracy": 86.554,
+  "total_images": 50000,
+  "load_time_s": 14.6,
+  "classifier_time_s": 9.0,
+  "eval_time_s": 75.4
+}

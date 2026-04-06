@@ -1,0 +1,122 @@
+# Configuration for SAE (Sparse Autoencoder) Analysis on UTKFace
+# This mitigator trains an SAE on features from a pretrained ERM model
+# and analyzes monosemantic neurons to understand learned representations
+
+EXPERIMENT:
+  NAME: "sae_combined"
+  TAG: "openclip_vit_b_32"
+  PROJECT: "sae_combined_training"
+  SEED: 42
+  EVAL_STEP: 1
+  EPOCH_STEPS: 1  # Not used in SAE - we have our own training loop
+
+DATASET:
+  TYPE: "sae_combined"
+  NUM_WORKERS: 8
+  
+  SAE_COMBINED:
+    # Dataset roots - UPDATE THESE PATHS
+    CUB200_ROOT: "/mnt/cephfs/home/gsarridis/datasets/CUB_200_2011"
+    STANFORD_CARS_ROOT: "/nas3-2/gsarridis/backups/154/projects/Whac-A-Mole/data/stanford_cars"
+    PLACES365_ROOT: "/nas3-2/gsarridis/backups/154/projects/Whac-A-Mole/data/places"
+    LVIS_ROOT: "/nas3-2/gsarridis/backups/154/projects/Whac-A-Mole/data/lvis"
+    COCO_IMAGES_ROOT: "/nas3-2/gsarridis/backups/154/projects/Whac-A-Mole/data/coco"
+    
+    # Places365 categories (backgrounds)
+    PLACES365_CATEGORIES:
+      # Natural (for waterbirds-like scenarios)
+      - "bamboo_forest"
+      - "forest/broadleaf"
+      - "ocean"
+      - "lake/natural"
+      # Urban (for cars-like scenarios)
+      - "alley"
+      - "crosswalk"
+      - "downtown"
+      - "gas_station"
+      - "garage/outdoor"
+      - "driveway"
+      # Roads
+      - "forest_road"
+      - "field_road"
+      - "desert_road"
+    
+    # LVIS categories (objects in COCO images)
+    LVIS_CATEGORIES:
+      # Street objects
+      - "fire_hydrant"
+      - "stop_sign"
+      - "street_sign"
+      - "parking_meter"
+      - "traffic_light"
+      # Animals
+      - "cow"
+      - "horse"
+      - "sheep"
+    
+    IMAGE_SIZE: 224
+    SPLIT: "all"
+    BALANCE_SOURCES: True  # Balance sampling across datasets
+
+
+MITIGATOR:
+  TYPE: "sae"
+  SAE:
+    # Path to pretrained ERM model checkpoint
+    CHECKPOINT_PATH: "outputs/utkface_baselines/race_clip/erm/latest"  # Set this to your ERM checkpoint, e.g., "outputs/utkface_baselines/erm/best.pth"
+    
+    # PRECOMPUTED_FEATURES_PATH: "/path/to/previous_run/features/train_features.pt"
+    PRECOMPUTED_FEATURES_PATH: "./outputs/sae_combined_training/openclip_vit_b_32/sae_combined/features/train_features.pt"
+
+    # SAE Architecture
+    TYPE: "batch_topk"  # Options: "standard", "topk", "batch_topk", "jumprelu"
+    EXPANSION_FACTOR: 2  # Dictionary size = feature_dim * expansion_factor
+    
+    # Training parameters
+    STEPS: 50000
+    BATCH_SIZE: 256
+    LR: 0.0001
+    WARMUP_STEPS: 2500
+    
+    # Standard SAE specific
+    L1_PENALTY: 0.1
+    RESAMPLE_STEPS: 2500  # Set to 0 to disable resampling
+
+    # TopK SAE specific
+    K: 32
+    AUXK_ALPHA: 0.03
+    
+    # JumpReLU SAE specific
+    BANDWIDTH: 0.001
+    SPARSITY_PENALTY: 0.1
+    
+    # Analysis parameters
+    TOP_K_IMAGES: 32  # Number of top activating images to save per neuron #100 for 83bca and 82wg
+    NUM_VISUALIZE: 20  # Number of neurons to generate visualizations for
+
+    # Clustering parameters
+    CLUSTERING:
+      ENABLED: True  # Whether to perform clustering analysis
+      N_CLUSTERS: -1  # Number of clusters (-1 = use number of data groups)
+      PERPLEXITY: 30  # t-SNE perplexity
+      UMAP_NEIGHBORS: 15  # UMAP n_neighbors
+      UMAP_MIN_DIST: 0.1  # UMAP min_dist
+
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 1  # Not used
+  LR: 0.001
+  TYPE: "Adam"
+  SCHEDULER:
+    TYPE: "None"
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"
+  TRAIN_PERFORMANCE: False

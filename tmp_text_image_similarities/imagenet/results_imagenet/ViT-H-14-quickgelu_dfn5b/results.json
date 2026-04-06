@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-H-14-quickgelu",
+  "pretrained_tag": "dfn5b",
+  "model_id": "ViT-H-14-quickgelu_dfn5b",
+  "arch_family": "ViT",
+  "vit_size": "H",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "DFN",
+  "quickgelu": true,
+  "embed_dim": 1024,
+  "total_params_M": 986.1,
+  "top1_accuracy": 83.4,
+  "top5_accuracy": 97.164,
+  "total_images": 50000,
+  "load_time_s": 14.3,
+  "classifier_time_s": 45.3,
+  "eval_time_s": 194.5
+}

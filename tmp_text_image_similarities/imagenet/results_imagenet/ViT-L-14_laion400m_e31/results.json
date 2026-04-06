@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-L-14",
+  "pretrained_tag": "laion400m_e31",
+  "model_id": "ViT-L-14_laion400m_e31",
+  "arch_family": "ViT",
+  "vit_size": "L",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "LAION-400M",
+  "quickgelu": false,
+  "embed_dim": 768,
+  "total_params_M": 427.6,
+  "top1_accuracy": 72.694,
+  "top5_accuracy": 92.978,
+  "total_images": 50000,
+  "load_time_s": 65.7,
+  "classifier_time_s": 20.4,
+  "eval_time_s": 151.5
+}

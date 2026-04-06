@@ -1,0 +1,49 @@
+# Zero-Shot VLM Classification for Waterbirds
+#
+# Tests different prompt strategies:
+# - "default": generic "waterbird" vs "landbird"
+# - "species": specific species names (albatross vs warbler)
+# - "detailed": descriptive prompts with habitat context
+#
+# The hypothesis is that more specific prompts may help avoid
+# learning spurious background correlations.
+
+EXPERIMENT:
+  NAME: "zero_shot_vlm"
+  TAG: "waterbirds_species"
+  PROJECT: "waterbirds_zero_shot"
+
+DATASET:
+  TYPE: "waterbirds"
+  WATERBIRDS:
+    IMAGE_SIZE: 224
+
+MITIGATOR:
+  TYPE: "zero_shot_vlm"
+  ZERO_SHOT_VLM:
+    # Use SigLIP for potentially better performance
+    # ENCODER_TYPE: "siglip"
+    # MODEL_NAME: "siglip-so400m-patch14-384"
+    ENCODER_TYPE: "openclip"
+    MODEL_NAME: "ViT-B-32"
+       
+    # Use species-specific names instead of generic waterbird/landbird
+    CLASS_NAME_VARIANT: "species"
+    
+    # SigLIP uses sigmoid, so lower temperature
+    TEMPERATURE: 1.0
+    
+    # Compare all variants
+    EVALUATE_ALL_VARIANTS: True
+
+MODEL:
+  TYPE: "zero_shot"
+  PRETRAINED: True
+
+SOLVER:
+  BATCH_SIZE: 64
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"

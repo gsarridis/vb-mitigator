@@ -1,0 +1,18 @@
+{
+  "model_name": "ViT-SO400M-14-SigLIP2-378",
+  "pretrained_tag": "webli",
+  "model_id": "ViT-SO400M-14-SigLIP2-378_webli",
+  "arch_family": "ViT",
+  "vit_size": null,
+  "patch_size": null,
+  "image_size": 378,
+  "training_data": "WebLI",
+  "quickgelu": false,
+  "total_params_M": 1136.0,
+  "top1_accuracy": 84.094,
+  "top5_accuracy": 97.396,
+  "total_images": 50000,
+  "load_time_s": 78.0,
+  "classifier_time_s": 43.4,
+  "eval_time_s": 343.1
+}

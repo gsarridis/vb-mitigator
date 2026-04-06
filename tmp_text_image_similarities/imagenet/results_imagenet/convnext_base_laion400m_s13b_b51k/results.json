@@ -1,0 +1,17 @@
+{
+  "model_name": "convnext_base",
+  "pretrained_tag": "laion400m_s13b_b51k",
+  "model_id": "convnext_base_laion400m_s13b_b51k",
+  "arch_family": "ConvNeXt",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "LAION-400M",
+  "quickgelu": false,
+  "total_params_M": 151.5,
+  "top1_accuracy": 66.278,
+  "top5_accuracy": 89.68,
+  "total_images": 50000,
+  "load_time_s": 10.2,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 64.0
+}

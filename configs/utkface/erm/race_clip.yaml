@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "erm"
+  TAG: "race_clip"
+  PROJECT: "utkface_baselines"
+DATASET:
+  TYPE: "utkface"
+  UTKFACE:
+    BIAS: "race"
+    IMAGE_SIZE: 224  # CLIP models typically use 224x224
+
+MITIGATOR:
+  TYPE: "erm"
+
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 20
+  LR: 0.001
+  TYPE: "Adam"
+  SCHEDULER:
+    LR_DECAY_STAGES: [6, 13]
+    LR_DECAY_RATE: 0.1
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"
+  TRAIN_PERFORMANCE: False

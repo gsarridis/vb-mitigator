@@ -1,0 +1,272 @@
+======================================================================
+URBANCARS MODEL ANALYSIS REPORT
+Models analyzed: 194
+======================================================================
+
+OVERALL STATISTICS:
+  Average Accuracy: mean=0.7826  std=0.0911  min=0.5030  max=0.9140
+  Worst-Group Accuracy: mean=0.5790  std=0.1736  min=0.0160  max=0.8640
+  Fairness Gap (Avg − Worst): mean=0.2036  std=0.1072  min=0.0390  max=0.5050
+
+──────────────────────────────────────────────────────────────────────
+Factor: Architecture Family (arch_family)
+──────────────────────────────────────────────────────────────────────
+Groups with >= 2 models: 7 / 7
+  ConvNeXt: n=12
+  EVA: n=5
+  MobileCLIP: n=10
+  Other: n=7
+  ResNet: n=16
+  SigLIP: n=4
+  ViT: n=140
+
+  Metric: Average Accuracy
+    MobileCLIP                     mean=0.8426  std=0.0462  min=0.7600  max=0.8940  n=10
+    SigLIP                         mean=0.8153  std=0.0766  min=0.7050  max=0.8770  n=4
+    ConvNeXt                       mean=0.8093  std=0.0203  min=0.7650  max=0.8310  n=12
+    Other                          mean=0.8046  std=0.1076  min=0.5730  max=0.8790  n=7
+    EVA                            mean=0.7954  std=0.0310  min=0.7470  max=0.8300  n=5
+    ViT                            mean=0.7807  std=0.0964  min=0.5030  max=0.9140  n=140
+    ResNet                         mean=0.7205  std=0.0721  min=0.5970  max=0.8210  n=16
+    Kruskal-Wallis: H=23.158, p=0.0007 ***
+
+  Metric: Worst-Group Accuracy
+    MobileCLIP                     mean=0.7232  std=0.1213  min=0.5040  max=0.8400  n=10
+    Other                          mean=0.6251  std=0.2255  min=0.1280  max=0.7680  n=7
+    ConvNeXt                       mean=0.6193  std=0.0934  min=0.4080  max=0.7520  n=12
+    SigLIP                         mean=0.6180  std=0.2737  min=0.2080  max=0.7760  n=4
+    EVA                            mean=0.5984  std=0.0969  min=0.4640  max=0.7120  n=5
+    ViT                            mean=0.5693  std=0.1778  min=0.0160  max=0.8640  n=140
+    ResNet                         mean=0.5080  std=0.1373  min=0.2000  max=0.6640  n=16
+    Kruskal-Wallis: H=16.179, p=0.0128 *
+
+  Metric: Fairness Gap (Avg − Worst)
+    ResNet                         mean=0.2125  std=0.0915  min=0.1080  max=0.3970  n=16
+    ViT                            mean=0.2114  std=0.1087  min=0.0390  max=0.5050  n=140
+    SigLIP                         mean=0.1972  std=0.2003  min=0.0800  max=0.4970  n=4
+    EVA                            mean=0.1970  std=0.0735  min=0.1180  max=0.2830  n=5
+    ConvNeXt                       mean=0.1900  std=0.0797  min=0.0700  max=0.3570  n=12
+    Other                          mean=0.1794  std=0.1248  min=0.0720  max=0.4450  n=7
+    MobileCLIP                     mean=0.1194  std=0.0796  min=0.0440  max=0.2560  n=10
+    Kruskal-Wallis: H=9.974, p=0.1257 ns
+
+──────────────────────────────────────────────────────────────────────
+Factor: Training Data (training_data_label)
+──────────────────────────────────────────────────────────────────────
+Groups with >= 2 models: 15 / 18
+  CC-12M (12M): n=2
+  CommonPool (12.8B): n=21
+  DFN (2.0B): n=15
+  DataComp (1.0B): n=32
+  LAION-2B (2.0B): n=22
+  LAION-400M (400M): n=12
+  Merged (2.0B): n=4
+  MetaCLIP (400M): n=22
+  OpenAI WIT (400M) (400M): n=18
+  WebLI (10.0B): n=26
+  YFCC-15M (15M): n=4
+  frozen_laion5b_s13b_b90k: n=1
+  laion5b_s13b_b90k: n=1
+  laion_aesthetic_s13b_b82k: n=2
+  laion_aesthetic_s13b_b82k_augreg: n=1
+  meta: n=5
+  mrl: n=2
+  v1: n=4
+
+  Metric: Average Accuracy
+    DFN (2.0B)                     mean=0.8559  std=0.0344  min=0.7870  max=0.9000  n=15
+    WebLI (10.0B)                  mean=0.8468  std=0.0486  min=0.7470  max=0.9140  n=26
+    meta                           mean=0.8400  std=0.0406  min=0.7720  max=0.8790  n=5
+    LAION-2B (2.0B)                mean=0.8059  std=0.0733  min=0.5030  max=0.8830  n=22
+    laion_aesthetic_s13b_b82k      mean=0.8050  std=0.0198  min=0.7910  max=0.8190  n=2
+    DataComp (1.0B)                mean=0.7966  std=0.0706  min=0.5060  max=0.8660  n=32
+    LAION-400M (400M)              mean=0.7873  std=0.0290  min=0.7400  max=0.8300  n=12
+    Merged (2.0B)                  mean=0.7868  std=0.0280  min=0.7470  max=0.8100  n=4
+    v1                             mean=0.7833  std=0.1419  min=0.5730  max=0.8770  n=4
+    mrl                            mean=0.7800  std=0.1061  min=0.7050  max=0.8550  n=2
+    MetaCLIP (400M)                mean=0.7718  std=0.0657  min=0.6090  max=0.8680  n=22
+    OpenAI WIT (400M) (400M)       mean=0.7505  std=0.0455  min=0.6150  max=0.8210  n=18
+    CommonPool (12.8B)             mean=0.6575  std=0.1281  min=0.5050  max=0.8430  n=21
+    YFCC-15M (15M)                 mean=0.6512  std=0.0458  min=0.6070  max=0.6970  n=4
+    CC-12M (12M)                   mean=0.6255  std=0.0403  min=0.5970  max=0.6540  n=2
+    Kruskal-Wallis: H=88.880, p=0.0000 ***
+
+  Metric: Worst-Group Accuracy
+    DFN (2.0B)                     mean=0.7403  std=0.1035  min=0.5040  max=0.8480  n=15
+    meta                           mean=0.7024  std=0.0631  min=0.6320  max=0.7680  n=5
+    laion_aesthetic_s13b_b82k      mean=0.6480  std=0.0339  min=0.6240  max=0.6720  n=2
+    WebLI (10.0B)                  mean=0.6335  std=0.1665  min=0.3440  max=0.8640  n=26
+    LAION-2B (2.0B)                mean=0.6171  std=0.1641  min=0.0160  max=0.7840  n=22
+    DataComp (1.0B)                mean=0.6028  std=0.1258  min=0.1520  max=0.7920  n=32
+    LAION-400M (400M)              mean=0.6027  std=0.0883  min=0.4720  max=0.7200  n=12
+    v1                             mean=0.5960  std=0.3125  min=0.1280  max=0.7760  n=4
+    Merged (2.0B)                  mean=0.5700  std=0.0845  min=0.4640  max=0.6560  n=4
+    MetaCLIP (400M)                mean=0.5109  std=0.1957  min=0.1040  max=0.7760  n=22
+    OpenAI WIT (400M) (400M)       mean=0.5071  std=0.1333  min=0.1840  max=0.6640  n=18
+    mrl                            mean=0.4760  std=0.3790  min=0.2080  max=0.7440  n=2
+    YFCC-15M (15M)                 mean=0.4740  std=0.0600  min=0.3920  max=0.5360  n=4
+    CommonPool (12.8B)             mean=0.4408  std=0.1840  min=0.1520  max=0.7440  n=21
+    CC-12M (12M)                   mean=0.2560  std=0.0792  min=0.2000  max=0.3120  n=2
+    Kruskal-Wallis: H=50.912, p=0.0000 ***
+
+  Metric: Fairness Gap (Avg − Worst)
+    CC-12M (12M)                   mean=0.3695  std=0.0389  min=0.3420  max=0.3970  n=2
+    mrl                            mean=0.3040  std=0.2729  min=0.1110  max=0.4970  n=2
+    MetaCLIP (400M)                mean=0.2609  std=0.1436  min=0.0390  max=0.5050  n=22
+    OpenAI WIT (400M) (400M)       mean=0.2434  std=0.1006  min=0.1080  max=0.4310  n=18
+    CommonPool (12.8B)             mean=0.2168  std=0.0807  min=0.0660  max=0.3550  n=21
+    Merged (2.0B)                  mean=0.2167  std=0.0678  min=0.1320  max=0.2830  n=4
+    WebLI (10.0B)                  mean=0.2133  std=0.1231  min=0.0440  max=0.4060  n=26
+    DataComp (1.0B)                mean=0.1938  std=0.0795  min=0.0670  max=0.3540  n=32
+    LAION-2B (2.0B)                mean=0.1888  std=0.1003  min=0.0510  max=0.4870  n=22
+    v1                             mean=0.1872  std=0.1727  min=0.0800  max=0.4450  n=4
+    LAION-400M (400M)              mean=0.1847  std=0.0653  min=0.0950  max=0.2720  n=12
+    YFCC-15M (15M)                 mean=0.1772  std=0.0454  min=0.1290  max=0.2170  n=4
+    laion_aesthetic_s13b_b82k      mean=0.1570  std=0.0141  min=0.1470  max=0.1670  n=2
+    meta                           mean=0.1376  std=0.0523  min=0.0720  max=0.2100  n=5
+    DFN (2.0B)                     mean=0.1157  std=0.0754  min=0.0420  max=0.2830  n=15
+    Kruskal-Wallis: H=27.075, p=0.0188 *
+
+──────────────────────────────────────────────────────────────────────
+Factor: QuickGELU (quickgelu)
+──────────────────────────────────────────────────────────────────────
+Groups with >= 2 models: 2 / 2
+  False: n=167
+  True: n=27
+
+  Metric: Average Accuracy
+    0                              mean=0.7862  std=0.0924  min=0.5030  max=0.9140  n=167
+    1                              mean=0.7607  std=0.0806  min=0.6090  max=0.9000  n=27
+    Kruskal-Wallis: H=5.013, p=0.0252 *
+
+  Metric: Worst-Group Accuracy
+    0                              mean=0.5880  std=0.1690  min=0.0160  max=0.8640  n=167
+    1                              mean=0.5233  std=0.1939  min=0.1040  max=0.8480  n=27
+    Kruskal-Wallis: H=3.010, p=0.0828 ns
+
+  Metric: Fairness Gap (Avg − Worst)
+    1                              mean=0.2374  std=0.1304  min=0.0390  max=0.5050  n=27
+    0                              mean=0.1982  std=0.1023  min=0.0420  max=0.4970  n=167
+    Kruskal-Wallis: H=1.720, p=0.1897 ns
+
+──────────────────────────────────────────────────────────────────────
+Factor: ViT Size (S/B/L/H/g/G) (vit_size)
+──────────────────────────────────────────────────────────────────────
+Groups with >= 2 models: 6 / 6
+  B: n=63
+  H: n=15
+  L: n=27
+  bigG: n=7
+  g: n=2
+  gopt: n=2
+
+  Metric: Average Accuracy
+    gopt                           mean=0.8580  std=0.0552  min=0.8190  max=0.8970  n=2
+    g                              mean=0.8395  std=0.0219  min=0.8240  max=0.8550  n=2
+    H                              mean=0.8258  std=0.0727  min=0.6510  max=0.9000  n=15
+    bigG                           mean=0.8064  std=0.0347  min=0.7560  max=0.8370  n=7
+    L                              mean=0.7886  std=0.0589  min=0.6090  max=0.8720  n=27
+    B                              mean=0.7403  std=0.1179  min=0.5030  max=0.9030  n=63
+    Kruskal-Wallis: H=15.599, p=0.0081 **
+
+  Metric: Worst-Group Accuracy
+    g                              mean=0.7000  std=0.0849  min=0.6400  max=0.7600  n=2
+    H                              mean=0.6219  std=0.2106  min=0.2080  max=0.8480  n=15
+    gopt                           mean=0.6200  std=0.1640  min=0.5040  max=0.7360  n=2
+    bigG                           mean=0.5566  std=0.1555  min=0.3120  max=0.7840  n=7
+    B                              mean=0.5539  std=0.1941  min=0.0160  max=0.8320  n=63
+    L                              mean=0.5167  std=0.1569  min=0.1040  max=0.7760  n=27
+    Kruskal-Wallis: H=6.696, p=0.2443 ns
+
+  Metric: Fairness Gap (Avg − Worst)
+    L                              mean=0.2719  std=0.1053  min=0.0960  max=0.5050  n=27
+    bigG                           mean=0.2499  std=0.1253  min=0.0510  max=0.4440  n=7
+    gopt                           mean=0.2380  std=0.1089  min=0.1610  max=0.3150  n=2
+    H                              mean=0.2039  std=0.1431  min=0.0420  max=0.4450  n=15
+    B                              mean=0.1864  std=0.0941  min=0.0390  max=0.4870  n=63
+    g                              mean=0.1395  std=0.0629  min=0.0950  max=0.1840  n=2
+    Kruskal-Wallis: H=13.976, p=0.0158 *
+
+──────────────────────────────────────────────────────────────────────
+Factor: Model Size (M params) (total_params_M)
+──────────────────────────────────────────────────────────────────────
+Models with valid total_params_M: 194 / 194
+  Average Accuracy:
+    Pearson:  r=+0.2762  p=0.0001
+    Spearman: ρ=+0.3920  p=0.0000
+  Worst-Group Accuracy:
+    Pearson:  r=+0.0511  p=0.4791
+    Spearman: ρ=+0.0514  p=0.4769
+  Fairness Gap (Avg − Worst):
+    Pearson:  r=+0.1519  p=0.0345
+    Spearman: ρ=+0.1729  p=0.0159
+
+──────────────────────────────────────────────────────────────────────
+Factor: Image Size (px) (image_size)
+──────────────────────────────────────────────────────────────────────
+Models with valid image_size: 194 / 194
+  Average Accuracy:
+    Pearson:  r=+0.3261  p=0.0000
+    Spearman: ρ=+0.3771  p=0.0000
+  Worst-Group Accuracy:
+    Pearson:  r=+0.1776  p=0.0132
+    Spearman: ρ=+0.1936  p=0.0068
+  Fairness Gap (Avg − Worst):
+    Pearson:  r=-0.0107  p=0.8826
+    Spearman: ρ=-0.0290  p=0.6883
+
+──────────────────────────────────────────────────────────────────────
+Factor: Patch Size (px) (patch_size)
+──────────────────────────────────────────────────────────────────────
+Models with valid patch_size: 121 / 194
+  Average Accuracy:
+    Pearson:  r=-0.6019  p=0.0000
+    Spearman: ρ=-0.4318  p=0.0000
+  Worst-Group Accuracy:
+    Pearson:  r=-0.3381  p=0.0001
+    Spearman: ρ=-0.1823  p=0.0453
+  Fairness Gap (Avg − Worst):
+    Pearson:  r=+0.0146  p=0.8733
+    Spearman: ρ=-0.0707  p=0.4410
+
+──────────────────────────────────────────────────────────────────────
+Factor: Embedding Dim (embed_dim)
+──────────────────────────────────────────────────────────────────────
+Models with valid embed_dim: 117 / 194
+  Average Accuracy:
+    Pearson:  r=+0.3392  p=0.0002
+    Spearman: ρ=+0.3897  p=0.0000
+  Worst-Group Accuracy:
+    Pearson:  r=+0.1163  p=0.2117
+    Spearman: ρ=+0.1001  p=0.2831
+  Fairness Gap (Avg − Worst):
+    Pearson:  r=+0.1190  p=0.2014
+    Spearman: ρ=+0.1200  p=0.1976
+
+──────────────────────────────────────────────────────────────────────
+Factor: Training Samples (M) (training_samples_M)
+──────────────────────────────────────────────────────────────────────
+Models with valid training_samples_M: 178 / 194
+  Average Accuracy:
+    Pearson:  r=-0.1566  p=0.0368
+    Spearman: ρ=+0.2403  p=0.0012
+  Worst-Group Accuracy:
+    Pearson:  r=-0.0915  p=0.2247
+    Spearman: ρ=+0.1191  p=0.1133
+  Fairness Gap (Avg − Worst):
+    Pearson:  r=+0.0120  p=0.8733
+    Spearman: ρ=-0.1010  p=0.1797
+
+──────────────────────────────────────────────────────────────────────
+Factor: Number of Tokens (img_size/patch_size)² (n_tokens)
+──────────────────────────────────────────────────────────────────────
+Models with valid n_tokens: 121 / 194
+  Average Accuracy:
+    Pearson:  r=+0.4744  p=0.0000
+    Spearman: ρ=+0.5428  p=0.0000
+  Worst-Group Accuracy:
+    Pearson:  r=+0.2605  p=0.0039
+    Spearman: ρ=+0.2364  p=0.0090
+  Fairness Gap (Avg − Worst):
+    Pearson:  r=-0.0017  p=0.9852
+    Spearman: ρ=+0.0601  p=0.5126

@@ -1,0 +1,47 @@
+# CLIP Distillation for Waterbirds
+# Teacher: ViT-L-14 (larger, better zero-shot)
+# Student: ViT-B-32 (smaller) + learnable linear projection
+EXPERIMENT:
+  NAME: "pkt"
+  TAG: "urbancars"
+  PROJECT: "clip_distillation"
+
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+  URBANCARS:
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+  
+
+MITIGATOR:
+  TYPE: "clip_distillation"
+  CLIP_DISTILLATION:
+    # Teacher (frozen) - provides target similarity structure
+    TEACHER_ARCH: "ViT-SO400M-14-SigLIP"
+    TEACHER_PRETRAINED: "webli"
+
+    # Student (frozen) + learnable projection
+    STUDENT_ARCH: "ViT-B-16"
+    STUDENT_PRETRAINED: "openai"
+    
+    # Training
+    STEPS: 2000
+    BATCH_SIZE: 32
+    LR: 1e-3
+    WEIGHT_DECAY: 0.0
+    
+    # Projection: null = linear, int = MLP hidden dim
+    PROJECTION_HIDDEN: 512
+    
+    # Zero-shot evaluation
+    CLASS_NAME_VARIANT: "car_types"  # Use specific bird names
+    TEMPERATURE: 1.0
+
+    # BIAS_TEXTS:
+    #   - ["a compact city car", "a pickup truck"]
+    #   - ["a small sporty coupe", "a 4x4 jeep"]
+    #   - ["a modern sedan car","a rugged utility truck"]
+    #   - ["a hatchback car","an off-road capable SUV"]
+    #   - ["a luxury sports sedan","a large van"]
+ 
+ 

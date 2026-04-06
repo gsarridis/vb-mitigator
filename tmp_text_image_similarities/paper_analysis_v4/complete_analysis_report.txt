@@ -1,0 +1,2991 @@
+
+================================================================================
+VLM ROBUSTNESS ANALYSIS - COMPLETE REPORT
+================================================================================
+Generated: 2026-03-26 22:36:42
+Output: paper_analysis_v4
+
+This report analyzes VLM robustness across:
+  - ImageNet: General capability (Top-1 accuracy)
+  - UrbanCars: Robustness to spurious correlations (WG accuracy)
+  - CelebA: Robustness to demographic biases (WG accuracy)
+
+--------------------------------------------------------------------------------
+DATA LOADING: ImageNet
+--------------------------------------------------------------------------------
+File: ./imagenet/results_imagenet/master_results.csv
+Models: 194
+Models with valid patch_size: 162 (83.5%)
+Models without patch_size (ResNet, ConvNeXt, etc.): 32 (16.5%)
+
+### Data Summary
+Training objectives: {'CLIP': 152, 'SigLIP2': 15, 'SigLIP': 11, 'CLIPA': 7, 'EVA': 5, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'EVA': 5, 'PE': 5, 'CoCa': 4, 'MobileCLIP': 4, 'NLLB-SigLIP': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Training data: {'WebLI-10b': 30, 'DataComp-1b': 29, 'LAION-2b': 23, 'OpenAI-400m': 19, 'LAION-400m': 12, 'CommonCrawl-2.5b': 10, 'DFNDR-2b': 7, 'MetaCLIP2-2.5b': 6, 'CommonPool-128m': 6, 'CommonPool-13m': 6}
+Image sizes: [224, 240, 256, 288, 320, 336, 378, 384, 448, 512]
+Params range: 62.5 - 3631.2
+top1_accuracy range: 2.7% - 85.0%
+
+--------------------------------------------------------------------------------
+DATA LOADING: UrbanCars
+--------------------------------------------------------------------------------
+File: ./urbancars/results/master_results.csv
+Models: 194
+Models with valid patch_size: 162 (83.5%)
+Models without patch_size (ResNet, ConvNeXt, etc.): 32 (16.5%)
+
+### Data Summary
+Training objectives: {'CLIP': 152, 'SigLIP2': 15, 'SigLIP': 11, 'CLIPA': 7, 'EVA': 5, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'PE': 5, 'EVA': 5, 'MobileCLIP': 4, 'NLLB-SigLIP': 4, 'CoCa': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Training data: {'WebLI-10b': 30, 'DataComp-1b': 29, 'LAION-2b': 23, 'OpenAI-400m': 19, 'LAION-400m': 12, 'CommonCrawl-2.5b': 10, 'DFNDR-2b': 7, 'MetaCLIP2-2.5b': 6, 'CommonPool-1b': 6, 'CommonPool-13m': 6}
+Image sizes: [224, 240, 256, 288, 320, 336, 378, 384, 448, 512]
+Params range: 62.5 - 3631.2
+worst_group_accuracy range: 1.6% - 86.4%
+
+--------------------------------------------------------------------------------
+DATA LOADING: CelebA
+--------------------------------------------------------------------------------
+File: ./celeba/results_celeba/master_results.csv
+Models: 194
+Models with valid patch_size: 162 (83.5%)
+Models without patch_size (ResNet, ConvNeXt, etc.): 32 (16.5%)
+
+### Data Summary
+Training objectives: {'CLIP': 152, 'SigLIP2': 15, 'SigLIP': 11, 'CLIPA': 7, 'EVA': 5, 'CoCa': 4}
+Architectures: {'CLIP': 85, 'ResNet': 16, 'ViTamin': 15, 'SigLIP2': 15, 'ConvNeXt': 12, 'SigLIP': 11, 'CLIPA': 7, 'MobileCLIP2': 6, 'PE': 5, 'EVA': 5, 'MobileCLIP': 4, 'CoCa': 4, 'NLLB-SigLIP': 4, 'XLM-RoBERTa-CLIP': 2, 'NNLB-CLIP': 2, 'RoBERTa-CLIP': 1}
+Training data: {'WebLI-10b': 30, 'DataComp-1b': 29, 'LAION-2b': 23, 'OpenAI-400m': 19, 'LAION-400m': 12, 'CommonCrawl-2.5b': 10, 'DFNDR-2b': 7, 'MetaCLIP-400m': 6, 'CommonPool-128m': 6, 'CommonPool-13m': 6}
+Image sizes: [224, 240, 256, 288, 320, 336, 378, 384, 448, 512]
+Params range: 62.5 - 3631.2
+worst_group_accuracy range: 0.0% - 89.2%
+
+================================================================================
+ANALYSIS: IMAGENET
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: ImageNet
+--------------------------------------------------------------------------------
+
+### Top-1 Accuracy
+N: 194
+Mean: 67.5806
+Std: 19.2690
+Min: 2.6940
+Max: 84.9560
+Median: 74.3370
+P5: 23.8615
+P10: 36.0630
+P25: 63.3195
+P75: 80.5385
+P90: 82.5782
+P95: 83.2495
+
+--------------------------------------------------------------------------------
+FACTOR: Training Objective (ImageNet)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=152
+  SigLIP2: n=15
+  SigLIP: n=11
+  CLIPA: n=7
+  EVA: n=5
+  CoCa: n=4
+
+### Top-1 Accuracy by Training Objective
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+SigLIP2                                82.07     2.98    73.85    84.96    83.23    15
+CLIPA                                  81.12     1.48    79.11    82.88    81.51     7
+SigLIP                                 79.70     2.85    75.12    83.09    80.44    11
+EVA                                    78.54     2.24    74.73    80.38    79.32     5
+CoCa                                   68.67     6.20    63.31    75.65    67.86     4
+CLIP                                   64.26    20.48     2.69    84.33    71.36   152
+
+Kruskal-Wallis: H=49.4061, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Training Data (ImageNet)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  WebLI-10b: n=30
+  DataComp-1b: n=29
+  LAION-2b: n=23
+  OpenAI-400m: n=19
+  LAION-400m: n=12
+  CommonCrawl-2.5b: n=10
+  DFNDR-2b: n=7
+  MetaCLIP2-2.5b: n=6
+  CommonPool-128m: n=6
+  CommonPool-13m: n=6
+  CommonPool-1b: n=6
+  MetaCLIP-400m: n=6
+  MetaCLIP-5.4b: n=5
+  DFN-5b: n=4
+  DFN-2b: n=4
+  Merged-2b: n=4
+  YFCC-15m: n=4
+  CommonPool-12.8b: n=3
+  LAION-A-900m: n=3
+  LAION-5b: n=2 [EXCLUDED]
+  CC-12m: n=2 [EXCLUDED]
+  DataComp-12.8b: n=1 [EXCLUDED]
+  DataComp-128m: n=1 [EXCLUDED]
+  DataComp-13m: n=1 [EXCLUDED]
+
+### Top-1 Accuracy by Training Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFN-5b                                 83.40     0.66    82.82    84.33    83.23     4
+DFN-2b                                 79.85     2.99    75.45    82.01    80.97     4
+Merged-2b                              78.55     2.58    74.73    80.38    79.54     4
+DFNDR-2b                               78.41     3.72    71.57    81.91    79.36     7
+MetaCLIP2-2.5b                         77.43    10.45    56.20    83.02    81.59     6
+DataComp-1b                            77.30     6.33    62.22    82.88    80.77    29
+WebLI-10b                              75.91    13.81    37.06    84.96    80.96    30
+CommonCrawl-2.5b                       75.00     6.12    64.88    81.20    77.58    10
+CommonPool-12.8b                       74.72     2.15    72.29    76.39    75.47     3
+MetaCLIP-5.4b                          74.13     7.95    62.11    83.48    74.24     5
+LAION-2b                               71.84     9.60    36.71    80.09    75.65    23
+LAION-A-900m                           71.31     0.36    70.97    71.69    71.26     3
+MetaCLIP-400m                          69.10     5.33    61.69    76.24    68.96     6
+LAION-400m                             67.40     5.47    60.23    78.50    67.02    12
+OpenAI-400m                            65.19    11.54    24.31    76.55    66.25    19
+CommonPool-1b                          53.96     4.52    45.89    57.77    55.66     6
+YFCC-15m                               33.51     1.16    32.36    34.87    33.41     4
+CommonPool-128m                        23.77     3.59    17.56    27.20    24.27     6
+CommonPool-13m                          3.84     0.89     2.69     5.05     3.84     6
+
+Kruskal-Wallis: H=107.2897, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (ImageNet)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=85
+  ResNet: n=16
+  ViTamin: n=15
+  SigLIP2: n=15
+  ConvNeXt: n=12
+  SigLIP: n=11
+  CLIPA: n=7
+  MobileCLIP2: n=6
+  EVA: n=5
+  PE: n=5
+  CoCa: n=4
+  MobileCLIP: n=4
+  NLLB-SigLIP: n=4
+  XLM-RoBERTa-CLIP: n=2 [EXCLUDED]
+  NNLB-CLIP: n=2 [EXCLUDED]
+  RoBERTa-CLIP: n=1 [EXCLUDED]
+
+### Top-1 Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+SigLIP2                                82.07     2.98    73.85    84.96    83.23    15
+CLIPA                                  81.12     1.48    79.11    82.88    81.51     7
+SigLIP                                 79.70     2.85    75.12    83.09    80.44    11
+MobileCLIP2                            78.77     3.94    71.57    81.91    80.03     6
+EVA                                    78.54     2.24    74.73    80.38    79.32     5
+ViTamin                                77.55     7.27    62.22    82.68    81.38    15
+MobileCLIP                             75.26     2.16    72.59    77.19    75.63     4
+PE                                     74.13     7.95    62.11    83.48    74.24     5
+ConvNeXt                               74.13     4.26    66.28    79.43    73.79    12
+CoCa                                   68.67     6.20    63.31    75.65    67.86     4
+CLIP                                   62.03    23.24     2.69    84.33    69.19    85
+ResNet                                 54.13    16.44    32.36    73.91    60.15    16
+NLLB-SigLIP                            42.41     5.96    37.06    48.50    42.04     4
+
+Kruskal-Wallis: H=80.4182, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution Bucket (ImageNet)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <=240: n=120
+  301-400: n=38
+  241-300: n=29
+  >400: n=7
+
+### Top-1 Accuracy by Resolution Bucket
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>400                                   78.51     4.72    73.23    84.28    79.12     7
+241-300                                76.94     5.17    64.84    84.46    79.04    29
+301-400                                75.43    12.65    37.06    84.96    81.15    38
+<=240                                  62.19    21.70     2.69    83.40    69.06   120
+
+Kruskal-Wallis: H=38.0480, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Params Bucket (ImageNet)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <200M: n=78
+  200-500M: n=52
+  500M-1B: n=34
+  >1B: n=30
+
+### Top-1 Accuracy by Params Bucket
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+500M-1B                                76.60    14.22    24.31    84.33    81.79    34
+>1B                                    76.43    12.29    36.71    84.96    80.34    30
+200-500M                               75.95     5.28    61.75    82.01    76.57    52
+<200M                                  54.67    22.15     2.69    79.36    63.22    78
+
+Kruskal-Wallis: H=97.7980, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+NUMERIC: Parameters (M) (ImageNet)
+--------------------------------------------------------------------------------
+
+### Parameters (M) → Top-1 Accuracy
+  Pearson: r=+0.3583, p=0.000000 (***)
+  Spearman: ρ=+0.6817, p=0.000000 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (ImageNet)
+--------------------------------------------------------------------------------
+
+### Image Size → Top-1 Accuracy
+  Pearson: r=+0.2631, p=0.000211 (***)
+  Spearman: ρ=+0.4235, p=0.000000 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (ImageNet)
+--------------------------------------------------------------------------------
+
+### Patch Size → Top-1 Accuracy
+  Pearson: r=-0.6712, p=0.000000 (***)
+  Spearman: ρ=-0.6033, p=0.000000 (***)
+N: 162
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (ImageNet)
+--------------------------------------------------------------------------------
+
+### Tokens → Top-1 Accuracy
+  Pearson: r=+0.4344, p=0.000000 (***)
+  Spearman: ρ=+0.6980, p=0.000000 (***)
+N: 162
+
+--------------------------------------------------------------------------------
+NUMERIC: Embed Dim (ImageNet)
+--------------------------------------------------------------------------------
+
+### Embed Dim → Top-1 Accuracy
+  Pearson: r=+0.4522, p=0.000000 (***)
+  Spearman: ρ=+0.6616, p=0.000000 (***)
+N: 117
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (M) (ImageNet)
+--------------------------------------------------------------------------------
+
+### Data Size (M) → Top-1 Accuracy
+  Pearson: r=+0.2816, p=0.000070 (***)
+  Spearman: ρ=+0.5257, p=0.000000 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: ImageNet
+--------------------------------------------------------------------------------
+
+### Top 20 by Top-1 Accuracy
+
+                                         model_id training_objective   training_data arch_family  total_params_M  image_size  patch_size  top1_accuracy
+0                   ViT-gopt-16-SigLIP2-384_webli            SigLIP2       WebLI-10b     SigLIP2          1871.9         384        16.0          84.96
+1                   ViT-gopt-16-SigLIP2-256_webli            SigLIP2       WebLI-10b     SigLIP2          1871.4         256        16.0          84.46
+2                    ViT-H-14-378-quickgelu_dfn5b               CLIP          DFN-5b        CLIP           986.7         378        14.0          84.33
+3                 ViT-SO400M-16-SigLIP2-512_webli            SigLIP2       WebLI-10b     SigLIP2          1136.6         512        16.0          84.28
+4                 ViT-SO400M-16-SigLIP2-384_webli            SigLIP2       WebLI-10b     SigLIP2          1136.0         384        16.0          84.18
+5                 ViT-SO400M-14-SigLIP2-378_webli            SigLIP2       WebLI-10b     SigLIP2          1136.0         378        14.0          84.09
+6                      ViT-L-16-SigLIP2-512_webli            SigLIP2       WebLI-10b     SigLIP2           882.3         512        16.0          83.50
+7                           PE-Core-L-14-336_meta               CLIP   MetaCLIP-5.4b          PE           671.1         336        14.0          83.48
+8                        ViT-H-14-quickgelu_dfn5b               CLIP          DFN-5b        CLIP           986.1         224        14.0          83.40
+9                 ViT-SO400M-16-SigLIP2-256_webli            SigLIP2       WebLI-10b     SigLIP2          1135.7         256        16.0          83.28
+10                     ViT-L-16-SigLIP2-384_webli            SigLIP2       WebLI-10b     SigLIP2           881.9         384        16.0          83.23
+11                    ViT-SO400M-14-SigLIP2_webli            SigLIP2       WebLI-10b     SigLIP2          1135.5         224        14.0          83.18
+12                 ViT-SO400M-14-SigLIP-384_webli             SigLIP       WebLI-10b      SigLIP           878.0         384        14.0          83.09
+13                 ViT-SO400M-14-SigLIP-378_webli             SigLIP       WebLI-10b      SigLIP           878.0         378        14.0          83.09
+14                             ViT-H-14-378_dfn5b               CLIP          DFN-5b        CLIP           986.7         378        14.0          83.07
+15  ViT-bigG-14-worldwide-378_metaclip2_worldwide               CLIP  MetaCLIP2-2.5b        CLIP          3631.2         378        14.0          83.02
+16               ViT-bigG-14-CLIPA-336_datacomp1b              CLIPA     DataComp-1b       CLIPA          2517.8         336        14.0          82.88
+17                                 ViT-H-14_dfn5b               CLIP          DFN-5b        CLIP           986.1         224        14.0          82.82
+18                   ViT-bigG-14-CLIPA_datacomp1b              CLIPA     DataComp-1b       CLIPA          2517.2         224        14.0          82.68
+19                      ViTamin-XL-336_datacomp1b               CLIP     DataComp-1b     ViTamin           924.8         336        14.0          82.68
+
+
+### Bottom 20 by Top-1 Accuracy
+
+                                  model_id training_objective    training_data arch_family  total_params_M  image_size  patch_size  top1_accuracy
+174                             RN50_cc12m               CLIP           CC-12m      ResNet           102.0         224         NaN          35.90
+175                RN101-quickgelu_yfcc15m               CLIP         YFCC-15m      ResNet           119.7         224         NaN          34.87
+176                          RN101_yfcc15m               CLIP         YFCC-15m      ResNet           119.7         224         NaN          34.05
+177                 RN50-quickgelu_yfcc15m               CLIP         YFCC-15m      ResNet           102.0         224         NaN          32.77
+178                           RN50_yfcc15m               CLIP         YFCC-15m      ResNet           102.0         224         NaN          32.36
+179          ViT-B-32_datacomp_m_s128m_b4k               CLIP    DataComp-128m        CLIP           151.3         224        32.0          29.71
+180   ViT-B-32_commonpool_m_clip_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0          27.20
+181  ViT-B-32_commonpool_m_image_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0          26.78
+182   ViT-B-32_commonpool_m_text_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0          25.50
+183                      nllb-clip-base_v1               CLIP      OpenAI-400m   NNLB-CLIP           501.9         224        32.0          24.31
+184  ViT-B-32_commonpool_m_laion_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0          23.04
+185  ViT-B-32_commonpool_m_basic_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0          22.57
+186        ViT-B-32_commonpool_m_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0          17.56
+187    ViT-B-32_commonpool_s_clip_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0           5.05
+188    ViT-B-32_commonpool_s_text_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0           4.60
+189           ViT-B-32_datacomp_s_s13m_b4k               CLIP     DataComp-13m        CLIP           151.3         224        32.0           3.91
+190   ViT-B-32_commonpool_s_image_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0           3.91
+191   ViT-B-32_commonpool_s_basic_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0           3.77
+192   ViT-B-32_commonpool_s_laion_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0           3.05
+193         ViT-B-32_commonpool_s_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0           2.69
+
+
+--------------------------------------------------------------------------------
+FIGURE: Landscape (ImageNet)
+--------------------------------------------------------------------------------
+
+Pareto-optimal (1):
+  ViT-gopt-16-SigLIP2-384_webli: x=85.0%, y=97.6%
+
+--------------------------------------------------------------------------------
+FIGURE: objective (ImageNet)
+--------------------------------------------------------------------------------
+  CLIP: mean=64.26%, std=20.48%, n=152
+  CoCa: mean=68.67%, std=6.20%, n=4
+  EVA: mean=78.54%, std=2.24%, n=5
+  SigLIP: mean=79.70%, std=2.85%, n=11
+  CLIPA: mean=81.12%, std=1.48%, n=7
+  SigLIP2: mean=82.07%, std=2.98%, n=15
+
+--------------------------------------------------------------------------------
+FIGURE: arch (ImageNet)
+--------------------------------------------------------------------------------
+  NLLB-SigLIP: mean=42.41%, std=5.96%, n=4
+  ResNet: mean=54.13%, std=16.44%, n=16
+  CLIP: mean=62.03%, std=23.24%, n=85
+  CoCa: mean=68.67%, std=6.20%, n=4
+  ConvNeXt: mean=74.13%, std=4.26%, n=12
+  PE: mean=74.13%, std=7.95%, n=5
+  MobileCLIP: mean=75.26%, std=2.16%, n=4
+  ViTamin: mean=77.55%, std=7.27%, n=15
+  EVA: mean=78.54%, std=2.24%, n=5
+  MobileCLIP2: mean=78.77%, std=3.94%, n=6
+  SigLIP: mean=79.70%, std=2.85%, n=11
+  CLIPA: mean=81.12%, std=1.48%, n=7
+  SigLIP2: mean=82.07%, std=2.98%, n=15
+
+--------------------------------------------------------------------------------
+FIGURE: data (ImageNet)
+--------------------------------------------------------------------------------
+  CommonPool-13m: mean=3.84%, std=0.89%, n=6
+  CommonPool-128m: mean=23.77%, std=3.59%, n=6
+  YFCC-15m: mean=33.51%, std=1.16%, n=4
+  CommonPool-1b: mean=53.96%, std=4.52%, n=6
+  OpenAI-400m: mean=65.19%, std=11.54%, n=19
+  LAION-400m: mean=67.40%, std=5.47%, n=12
+  MetaCLIP-400m: mean=69.10%, std=5.33%, n=6
+  LAION-A-900m: mean=71.31%, std=0.36%, n=3
+  LAION-2b: mean=71.84%, std=9.60%, n=23
+  MetaCLIP-5.4b: mean=74.13%, std=7.95%, n=5
+  CommonPool-12.8b: mean=74.72%, std=2.15%, n=3
+  CommonCrawl-2.5b: mean=75.00%, std=6.12%, n=10
+  WebLI-10b: mean=75.91%, std=13.81%, n=30
+  DataComp-1b: mean=77.30%, std=6.33%, n=29
+  MetaCLIP2-2.5b: mean=77.43%, std=10.45%, n=6
+  DFNDR-2b: mean=78.41%, std=3.72%, n=7
+  Merged-2b: mean=78.55%, std=2.58%, n=4
+  DFN-2b: mean=79.85%, std=2.99%, n=4
+  DFN-5b: mean=83.40%, std=0.66%, n=4
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) Scale (ImageNet)
+--------------------------------------------------------------------------------
+Parameters (M) vs Top-1 Accuracy: ρ=0.6817, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) Scale (ImageNet)
+--------------------------------------------------------------------------------
+Image Size (px) vs Top-1 Accuracy: ρ=0.4235, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) Scale (ImageNet)
+--------------------------------------------------------------------------------
+Patch Size (px) vs Top-1 Accuracy: ρ=-0.6033, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens Scale (ImageNet)
+--------------------------------------------------------------------------------
+Number of Tokens vs Top-1 Accuracy: ρ=0.6980, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) Scale (ImageNet)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs Top-1 Accuracy: ρ=0.5257, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (ImageNet)
+--------------------------------------------------------------------------------
+
+Factor                          Corr      p-value
+--------------------------------------------------
+total_params_M               +0.6656***     0.000000
+image_size                   +0.3796***     0.000090
+patch_size_num               -0.8170***     0.000000
+num_tokens                   +0.8352***     0.000000
+embed_dim                    +0.8093***     0.000000
+training_data_size_M         +0.4816***     0.000000
+
+================================================================================
+ISOLATED FACTOR ANALYSIS: IMAGENET
+================================================================================
+
+This section identifies model pairs/groups where only ONE factor varies,
+enabling stronger causal claims than correlational analysis.
+
+Note: Models without patch_size (ResNet, ConvNeXt, MobileCLIP) are excluded
+from patch size and token analyses.
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Patch Size (ImageNet)
+--------------------------------------------------------------------------------
+
+Analyzing 162 models with valid patch_size
+Excluded 32 models without patch_size (ResNet, ConvNeXt, etc.)
+
+Found 7 matched groups where only patch size varies:
+
+Base Configuration                                 | Patch Sizes          | Top-1 Accuracy                          
+-------------------------------------------------------------------------------------------------------------------
+CLIP / LAION-400m / B                              | 16, 32               | 16→68.0%, 32→61.6%                      
+SigLIP2 / WebLI-10b / B                            | 16, 32               | 16→79.9%, 32→73.8%                      
+CLIP / CommonCrawl-2.5b / B                        | 16, 32               | 16→70.4%, 32→66.2%                      
+CLIP / MetaCLIP-400m / B                           | 16, 32               | 16→69.0%, 32→63.6%                      
+CLIP / OpenAI-400m / B                             | 16, 32               | 16→66.4%, 32→61.5%                      
+CLIP / DataComp-1b / B                             | 16, 32               | 16→68.3%, 32→72.8%                      
+CLIP / LAION-2b / B                                | 16, 32               | 16→70.2%, 32→66.1%                      
+
+### Summary: Patch Size Effect
+
+Patch 16 → 32 (n=7 comparisons):
+  Mean effect: -3.78 pp
+  Std: 3.49 pp
+  Range: [-6.45, 4.52] pp
+  Direction: 1 positive, 6 negative, 0 no change
+
+** Overall: Increasing patch size → -3.78 pp Top-1 Accuracy on average **
+   (Smaller patches = better robustness)
+
+### Figure: Patch Size Isolated Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Image Size (ImageNet)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 13 matched groups where only image size varies:
+
+Base Configuration                                      | Resolutions          | Top-1 Accuracy                          
+------------------------------------------------------------------------------------------------------------------------
+SigLIP / WebLI-10b / 16.0 / B                           | 224px, 256px, 384px, 512px | 224→76.0%, 256→75.8%, 384→78.5%, 512→79.1%
+CLIP / DFN-5b / 14.0 / H                                | 224px, 378px         | 224→83.1%, 378→83.7%                    
+CLIP / LAION-400m / 16.0 / B                            | 224px, 240px         | 224→67.0%, 240→69.1%                    
+CLIP / MetaCLIP2-2.5b / 14.0 / H                        | 224px, 378px         | 224→73.1%, 378→82.3%                    
+CLIP / OpenAI-400m / 14.0 / L                           | 224px, 336px         | 224→74.2%, 336→75.3%                    
+SigLIP2 / WebLI-10b / 16.0 / B                          | 224px, 256px, 384px, 512px | 224→78.5%, 256→79.3%, 384→80.7%, 512→81.3%
+SigLIP2 / WebLI-10b / 16.0 / L                          | 256px, 384px, 512px  | 256→82.3%, 384→83.2%, 512→83.5%         
+CLIP / MetaCLIP2-2.5b / 14.0 / bigG                     | 224px, 378px         | 224→79.9%, 378→83.0%                    
+CLIPA / DataComp-1b / 14.0 / H                          | 224px, 336px         | 224→81.5%, 336→81.8%                    
+CLIPA / DataComp-1b / 14.0 / L                          | 224px, 336px         | 224→79.6%, 336→80.3%                    
+CLIPA / DataComp-1b / 14.0 / bigG                       | 224px, 336px         | 224→82.7%, 336→82.9%                    
+SigLIP / WebLI-10b / 16.0 / L                           | 256px, 384px         | 256→80.4%, 384→82.1%                    
+SigLIP2 / WebLI-10b / 16.0 / gopt                       | 256px, 384px         | 256→84.5%, 384→85.0%                    
+
+### Summary: Image Size Effect
+
+224px → 240px (n=1 comparisons):
+  Mean effect: +2.03 pp
+  Std: 0.00 pp
+  Range: [2.03, 2.03] pp
+
+224px → 256px (n=2 comparisons):
+  Mean effect: +0.31 pp
+  Std: 0.52 pp
+  Range: [-0.21, 0.83] pp
+
+224px → 336px (n=4 comparisons):
+  Mean effect: +0.56 pp
+  Std: 0.35 pp
+  Range: [0.19, 1.07] pp
+
+224px → 378px (n=3 comparisons):
+  Mean effect: +4.27 pp
+  Std: 3.58 pp
+  Range: [0.59, 9.12] pp
+
+224px → 384px (n=2 comparisons):
+  Mean effect: +2.31 pp
+  Std: 0.13 pp
+  Range: [2.17, 2.44] pp
+
+224px → 512px (n=2 comparisons):
+  Mean effect: +2.94 pp
+  Std: 0.14 pp
+  Range: [2.80, 3.08] pp
+
+256px → 384px (n=5 comparisons):
+  Mean effect: +1.40 pp
+  Std: 0.73 pp
+  Range: [0.50, 2.65] pp
+
+256px → 512px (n=3 comparisons):
+  Mean effect: +2.13 pp
+  Std: 0.88 pp
+  Range: [1.15, 3.28] pp
+
+384px → 512px (n=3 comparisons):
+  Mean effect: +0.51 pp
+  Std: 0.17 pp
+  Range: [0.27, 0.64] pp
+
+** Overall: Increasing resolution → +1.73 pp Top-1 Accuracy on average **
+
+### Figure: Image Size (px) Isolated Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Training Data (ImageNet)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 7 matched groups where only training data varies:
+
+Architecture Config                           | Datasets                            | Top-1 Accuracy
+----------------------------------------------------------------------------------------------------------------------------------
+CLIP / 224 / B / 32.0                         | DataComp-12., CommonCrawl-, LAION-2b, MetaCLIP-400, LAION-400m, OpenAI-400m, DataComp-128, CommonPool-1, DataComp-13m, CommonPool-1 | DataComp-1=69.2% > CommonCraw=66.2% > LAION-2b=66.1% > MetaCLIP-4=63.6% > LAION-400m=61.6% > OpenAI-400=61.5% > DataComp-1=29.7% > CommonPool=23.8% > DataComp-1=3.9% > CommonPool=3.8%
+CLIP / 224 / B / 16.0                         | DFNDR-2b, DFN-2b, CommonCrawl-, LAION-2b, MetaCLIP-400, DataComp-1b, LAION-400m, OpenAI-400m, CommonPool-1 | DFNDR-2b=76.3% > DFN-2b=75.5% > CommonCraw=70.4% > LAION-2b=70.2% > MetaCLIP-4=69.0% > DataComp-1=68.3% > LAION-400m=67.0% > OpenAI-400=66.4% > CommonPool=54.0%
+CLIP / 224 / L / 14.0                         | DFN-2b, DataComp-1b, CommonCrawl-, LAION-2b, CommonPool-1, MetaCLIP-400, OpenAI-400m, LAION-400m | DFN-2b=81.3% > DataComp-1=79.2% > CommonCraw=77.9% > LAION-2b=75.2% > CommonPool=74.7% > MetaCLIP-4=74.7% > OpenAI-400=74.2% > LAION-400m=72.7%
+CLIP / 224 / H / 14.0                         | DFN-5b, CommonCrawl-, LAION-2b, MetaCLIP2-2. | DFN-5b=83.1% > CommonCraw=79.5% > LAION-2b=77.9% > MetaCLIP2-=73.1%
+CLIP / 224 / bigG / 14.0                      | CommonCrawl-, LAION-2b, MetaCLIP2-2. | CommonCraw=80.9% > LAION-2b=80.1% > MetaCLIP2-=79.9%
+CLIP / 378 / H / 14.0                         | DFN-5b, MetaCLIP2-2.                | DFN-5b=83.7% > MetaCLIP2-=82.3%
+CLIPA / 336 / H / 14.0                        | DataComp-1b, LAION-2b               | DataComp-1=81.8% > LAION-2b=79.1%
+
+### Summary: Training Data Effect
+
+Head-to-head comparisons (positive = first dataset wins):
+
+Dataset                     Wins   Losses   Ties   Net Δ (pp)
+------------------------------------------------------------
+CommonCrawl-2.5b              21        6      2        +8.60
+LAION-2b                      17       10      3        +7.10
+DFN-2b                        14        1      0        +6.84
+MetaCLIP-400m                 12       11      1        +7.43
+DataComp-1b                   10        6      0        +1.50
+DataComp-12.8b                 9        0      0       +26.94
+DFNDR-2b                       8        0      0        +8.68
+OpenAI-400m                    6       17      1        +5.38
+LAION-400m                     6       17      1        +5.18
+DFN-5b                         4        0      0        +5.05
+DataComp-128m                  3        6      0       -16.93
+CommonPool-12.8b               2        4      1        -1.76
+CommonPool-128m                2        7      0       -23.53
+MetaCLIP2-2.5b                 0        5      1        -3.96
+CommonPool-13m                 0        8      1       -45.67
+CommonPool-1b                  0        8      0       -16.41
+DataComp-13m                   0        8      1       -45.60
+
+### Figure: Training Data Rankings
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Model Scale (ImageNet)
+--------------------------------------------------------------------------------
+
+Analyzing 116 models with vit_size
+
+Found 11 matched groups where only vit_size varies:
+
+Base Configuration                                      | Sizes           | Top-1 Accuracy
+------------------------------------------------------------------------------------------------------------------------
+CLIP / LAION-2b / 224 / 14.0                            | L < H < g < bigG | L=75.2% → H=77.9% → g=77.5% → bigG=80.1%
+CLIP / CommonCrawl-2.5b / 224 / 14.0                    | L < H < bigG    | L=77.9% → H=79.5% → bigG=80.9%
+CLIPA / DataComp-1b / 224 / 14.0                        | L < H < bigG    | L=79.6% → H=81.5% → bigG=82.7%
+CLIPA / DataComp-1b / 336 / 14.0                        | L < H < bigG    | L=80.3% → H=81.8% → bigG=82.9%
+SigLIP2 / WebLI-10b / 256 / 16.0                        | B < L < gopt    | B=79.3% → L=82.3% → gopt=84.5%
+SigLIP2 / WebLI-10b / 384 / 16.0                        | B < L < gopt    | B=80.7% → L=83.2% → gopt=85.0%
+CLIP / MetaCLIP2-2.5b / 224 / 14.0                      | H < bigG        | H=73.1% → bigG=79.9%
+CLIP / MetaCLIP2-2.5b / 378 / 14.0                      | H < bigG        | H=82.3% → bigG=83.0%
+SigLIP / WebLI-10b / 256 / 16.0                         | B < L           | B=75.8% → L=80.4%
+SigLIP / WebLI-10b / 384 / 16.0                         | B < L           | B=78.5% → L=82.1%
+SigLIP2 / WebLI-10b / 512 / 16.0                        | B < L           | B=81.3% → L=83.5%
+
+### Summary: Model Scale Effect
+
+Overall effect of scaling up (n=26 comparisons):
+  Mean effect: +2.63 pp
+  Std: 1.52 pp
+  25 positive, 1 negative
+
+By size transition:
+  B → L: +3.21 pp (n=5, std=0.84)
+  B → gopt: +4.73 pp (n=2, std=0.42)
+  H → bigG: +2.23 pp (n=6, std=2.08)
+  L → H: +1.92 pp (n=4, std=0.46)
+  L → bigG: +3.37 pp (n=4, std=0.87)
+  L → gopt: +1.92 pp (n=2, std=0.19)
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Training Objective (ImageNet)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 8 matched groups where only training objective varies:
+
+Configuration                                                | Objectives                | Top-1 Accuracy
+----------------------------------------------------------------------------------------------------------------------------------
+DataComp-1b / 224 / 400-600M / L / 14.0                      | CLIPA, CLIP               | CLIPA=79.6% > CLIP=79.2%
+LAION-2b / 224 / 200-400M / B / 32.0                         | CoCa, CLIP                | CoCa=63.4% > CLIP=61.8%
+WebLI-10b / 224 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=78.5% > SigLIP=76.0%
+WebLI-10b / 256 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=79.3% > SigLIP=75.8%
+WebLI-10b / 256 / 600M-1B / L / 16.0                         | SigLIP2, SigLIP           | SigLIP2=82.3% > SigLIP=80.4%
+WebLI-10b / 384 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=80.7% > SigLIP=78.5%
+WebLI-10b / 384 / 600M-1B / L / 16.0                         | SigLIP2, SigLIP           | SigLIP2=83.2% > SigLIP=82.1%
+WebLI-10b / 512 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=81.3% > SigLIP=79.1%
+
+### Summary: Training Objective Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTORS SUMMARY
+--------------------------------------------------------------------------------
+  patch_size: 7 matched comparisons found
+  image_size: 25 matched comparisons found
+  training_data: 120 matched comparisons found
+  model_scale: 26 matched comparisons found
+  objective: 8 matched comparisons found
+
+================================================================================
+MULTIVARIATE ANALYSIS: IMAGENET
+================================================================================
+
+This section analyzes confounded relationships between factors.
+Goal: Identify the independent contribution of each factor,
+controlling for other factors that may be correlated.
+
+--------------------------------------------------------------------------------
+MULTIVARIATE REGRESSION: ImageNet
+--------------------------------------------------------------------------------
+
+Note: 32 models lack patch_size (ResNet, ConvNeXt, MobileCLIP, etc.)
+These will be EXCLUDED from the regression which includes patch_size as a factor.
+Regression will use 162 models with valid patch_size.
+Samples for regression: 162
+
+### Factor Distributions in Regression Sample
+
+Architecture groups:
+  CLIP: n=114
+  SigLIP: n=26
+  CLIPA: n=7
+  MobileCLIP: n=6
+  EVA: n=5
+  CoCa: n=4
+
+Dataset groups:
+  LAION: n=42
+  DataComp: n=32
+  WebLI: n=30
+  CommonPool: n=21
+  MetaCLIP: n=17
+  DFN: n=11
+  OpenAI: n=9
+
+### Model 1: Full Model (all factors)
+
+Formula: y ~ is_siglip + is_coca + is_eva + is_clipa + is_mobileclip + is_webli + is_datacomp + is_dfn + is_openai + is_metaclip + log_params_z + log_datasize_z + log_patchsize_z + log_imgsize_z
+R²: 0.7873
+Adj R²: 0.7670
+F-statistic: 38.8580
+F p-value: 0.0000
+
+Variable                        Coef         SE          t            p               95% CI   Sig
+-----------------------------------------------------------------------------------------------
+Intercept                     64.031      1.475      43.40       0.0000 [  61.12,  66.95]   ***
+is_siglip                     41.489      5.213       7.96       0.0000 [  31.19,  51.79]   ***
+is_coca                        3.229      5.073       0.64       0.5255 [  -6.80,  13.25]      
+is_eva                         7.662      4.585       1.67       0.0969 [  -1.40,  16.72]      
+is_clipa                       4.012      4.160       0.96       0.3365 [  -4.21,  12.23]      
+is_mobileclip                  3.202      4.427       0.72       0.4706 [  -5.55,  11.95]      
+is_webli                     -48.626      5.792      -8.40       0.0000 [ -60.07, -37.18]   ***
+is_datacomp                    6.841      2.438       2.81       0.0057 [   2.02,  11.66]    **
+is_dfn                         6.508      3.422       1.90       0.0591 [  -0.25,  13.27]      
+is_openai                     11.502      3.517       3.27       0.0013 [   4.55,  18.45]    **
+is_metaclip                   15.439      2.933       5.26       0.0000 [   9.64,  21.24]   ***
+log_params_z                   2.051      0.989       2.07       0.0397 [   0.10,   4.01]     *
+log_datasize_z                14.361      1.303      11.02       0.0000 [  11.79,  16.94]   ***
+log_patchsize_z               -5.988      1.043      -5.74       0.0000 [  -8.05,  -3.93]   ***
+log_imgsize_z                  1.396      0.955       1.46       0.1459 [  -0.49,   3.28]      
+
+### Interpretation Guide
+
+• Architecture dummies: effect vs CLIP (reference category)
+• Dataset dummies: effect vs LAION (reference category)
+• Numeric variables: standardized (1 unit = 1 SD)
+  - log_params_z: model size (log10 of params)
+  - log_datasize_z: training data size (log10)
+  - log_patchsize_z: patch size (log2)
+  - log_imgsize_z: image resolution (log2)
+
+### Significant Effects (p < 0.05)
+  ↑ is_siglip: +41.49pp (p=0.0000)
+  ↓ is_webli: -48.63pp (p=0.0000)
+  ↑ is_datacomp: +6.84pp (p=0.0057)
+  ↑ is_openai: +11.50pp (p=0.0013)
+  ↑ is_metaclip: +15.44pp (p=0.0000)
+  ↑ log_params_z: +2.05pp (p=0.0397)
+  ↑ log_datasize_z: +14.36pp (p=0.0000)
+  ↓ log_patchsize_z: -5.99pp (p=0.0000)
+
+### Model 2: Hierarchical Regression (Incremental R²)
+
+How much variance does each factor GROUP add?
+
+Step                                             R²        ΔR²          F            p
+-------------------------------------------------------------------------------------
+1. Architecture                              0.1393     0.1393       5.05     0.000257
+2. + Scale (params, img, patch)              0.5238     0.3845      21.03     0.000000
+3. + Dataset Type                            0.6116     0.0878      17.93     0.000000
+4. + Dataset Size                            0.7873     0.1757      38.86     0.000000
+
+
+Alternative order (robustness check):
+
+Step                                             R²        ΔR²
+-----------------------------------------------------------------
+1. Scale                                     0.4741     0.4741
+2. + Dataset Size                            0.5915     0.1174
+3. + Dataset Type                            0.6887     0.0972
+4. + Architecture                            0.7873     0.0986
+
+--------------------------------------------------------------------------------
+PARTIAL CORRELATIONS: ImageNet
+--------------------------------------------------------------------------------
+
+Note: Excluding 32 models without patch_size (ResNet, ConvNeXt, etc.)
+Samples: 162
+
+### Zero-Order vs Partial Correlations
+
+Zero-order: raw correlation (potentially confounded)
+Partial: correlation controlling for all other factors
+
+Factor                      Zero-Order      Partial          Δ Interpretation      
+-------------------------------------------------------------------------------------
+Architecture (SigLIP)          +0.4362      -0.0222    -0.4584 Confounded ↓        
+Model Parameters               +0.6583      +0.1211    -0.5373 Confounded ↓        
+Dataset Size                   +0.4518      +0.4125    -0.0392 Independent effect  
+Patch Size                     -0.6033      -0.4956    +0.1077 Suppressed ↑        
+Image Size                     +0.4520      -0.0344    -0.4863 Confounded ↓        
+
+### Interpretation Guide
+
+• Partial ≈ Zero-order: Factor has independent effect (not confounded)
+• Partial << Zero-order: Effect was confounded (inflated by correlations)
+• Partial >> Zero-order: Suppressor effect (other factors were masking it)
+
+### Key Findings
+• Model Parameters: Confounded ↓ (Δ = -0.537)
+• Image Size: Confounded ↓ (Δ = -0.486)
+• Architecture (SigLIP): Confounded ↓ (Δ = -0.458)
+• Patch Size: Suppressed ↑ (Δ = +0.108)
+
+--------------------------------------------------------------------------------
+VARIANCE PARTITIONING: ImageNet
+--------------------------------------------------------------------------------
+
+Note: Excluding 32 models without patch_size (ResNet, ConvNeXt, etc.)
+Samples: 162
+
+### Individual Model R² Values
+
+Model                                            R²
+-------------------------------------------------------
+none                                        -0.0000
+arch                                         0.0958
+scale                                        0.4741
+data                                         0.4741
+arch_scale                                   0.5153
+arch_data                                    0.5620
+scale_data                                   0.6414
+full                                         0.7395
+
+### Unique Contributions (Type III)
+
+Unique = variance explained ONLY by this factor group,
+not shared with any other factor group.
+
+Factor Group                 Unique R²   % of Total Variables                     
+-------------------------------------------------------------------------------------
+Architecture                    0.0981        13.3% SigLIP, CoCa, EVA dummies     
+Scale                           0.1775        24.0% params, img_size, patch_size  
+Data                            0.2242        30.3% dataset_type, dataset_size    
+Shared/Confounded               0.2397        32.4%
+-------------------------------------------------------------------------------------
+TOTAL EXPLAINED                 0.7395       100.0%
+Unexplained                     0.2605
+
+### Interpretation
+
+Factor importance ranking (by unique variance):
+  1. Data: 30.3% of explained variance
+  2. Scale: 24.0% of explained variance
+  3. Architecture: 13.3% of explained variance
+
+⚠ Warning: 32.4% of variance is shared (confounded).
+  Factors are highly correlated; interpret individual effects with caution.
+
+--------------------------------------------------------------------------------
+RANDOM FOREST IMPORTANCE: ImageNet
+--------------------------------------------------------------------------------
+
+Note: 32 models lack patch_size and will be excluded.
+Samples: 101
+Features: 8
+CV R² mean: -40.3677
+CV R² std: 33.5898
+Training R²: 0.8418
+
+### Feature Importance Ranking
+
+Importance = Mean Decrease in Impurity (Gini importance)
+
+Rank  Feature                     Importance   Cumulative
+------------------------------------------------------------
+1     Dataset Size (M)                0.7502       0.7502
+2     Num Tokens                      0.0997       0.8498
+3     Dataset Type                    0.0491       0.8990
+4     Embedding Dim                   0.0485       0.9474
+5     Patch Size                      0.0340       0.9814
+6     Model Parameters (M)            0.0161       0.9975
+7     Architecture Family             0.0022       0.9997
+8     Image Size                      0.0003       1.0000
+
+### Importance by Factor Category
+
+Category               Importance
+-----------------------------------
+Architecture               0.0022
+Scale                      0.1985
+Data                       0.7993
+
+### Categorical Encodings
+
+arch_family:
+  0: CLIP
+  1: CLIPA
+  2: CoCa
+  3: ConvNeXt
+  4: EVA
+  5: MobileCLIP
+  6: MobileCLIP2
+  7: NLLB-SigLIP
+  8: NNLB-CLIP
+  9: PE
+  10: ResNet
+  11: RoBERTa-CLIP
+  12: SigLIP
+  13: SigLIP2
+  14: ViTamin
+  15: XLM-RoBERTa-CLIP
+
+training_data:
+  0: CC-12m
+  1: CommonCrawl-2.5b
+  2: CommonPool-12.8b
+  3: CommonPool-128m
+  4: CommonPool-13m
+  5: CommonPool-1b
+  6: DFN-2b
+  7: DFN-5b
+  8: DFNDR-2b
+  9: DataComp-12.8b
+  10: DataComp-128m
+  11: DataComp-13m
+  12: DataComp-1b
+  13: LAION-2b
+  14: LAION-400m
+  15: LAION-5b
+  16: LAION-A-900m
+  17: Merged-2b
+  18: MetaCLIP-400m
+  19: MetaCLIP-5.4b
+  20: MetaCLIP2-2.5b
+  21: OpenAI-400m
+  22: WebLI-10b
+  23: YFCC-15m
+
+--------------------------------------------------------------------------------
+INTERACTION ANALYSIS: ImageNet
+--------------------------------------------------------------------------------
+Samples: 194
+
+### Testing Interaction Effects
+
+Main effects only: R² = 0.5002, Adj R² = 0.4896
+With interactions: R² = 0.5898, Adj R² = 0.5766
+Improvement: ΔR² = 0.0896
+
+F-test for interactions: F=20.413, df=(2.0, 187.0), p=0.0000
+→ Interaction effects are statistically significant!
+
+### Interaction Coefficients
+
+Term                                           Coef         SE            p   Sig
+--------------------------------------------------------------------------------
+Intercept                                  70.561      1.046       0.0000   ***
+is_siglip                                  -0.616      1.383       0.6565      
+log_params_z                                4.248      1.071       0.0001   ***
+log_imgsize_z                               0.927      1.014       0.3618      
+log_datasize_z                              6.653      1.420       0.0000   ***
+  → is_siglip:log_params_z                     11.727      4.159       0.0053    **
+  → is_siglip:log_datasize_z                   -0.862      1.934       0.6565      
+  → log_params_z:log_datasize_z                -8.930      1.400       0.0000   ***
+
+### Interaction Interpretation
+
+• SigLIP × Model Size: SigLIP benefits MORE from larger models
+  (Each 1 SD increase in size gives SigLIP an extra 11.73pp)
+
+• Size × Data: Larger models benefit LESS from larger datasets
+
+================================================================================
+ANALYSIS: URBANCARS
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Worst-Group Accuracy
+N: 194
+Mean: 57.9010
+Std: 17.3182
+Min: 1.6000
+Max: 86.4000
+Median: 61.6000
+P5: 20.5200
+P10: 34.6400
+P25: 48.8000
+P75: 70.4000
+P90: 77.6000
+P95: 81.0800
+
+--------------------------------------------------------------------------------
+FACTOR: Training Objective (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=152
+  SigLIP2: n=15
+  SigLIP: n=11
+  CLIPA: n=7
+  EVA: n=5
+  CoCa: n=4
+
+### Worst-Group Accuracy by Training Objective
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+SigLIP                                 67.85    15.19    36.80    86.40    67.20    11
+CLIPA                                  65.14    10.72    52.80    79.20    58.40     7
+SigLIP2                                60.05    17.41    34.40    83.20    52.00    15
+EVA                                    59.84     9.69    46.40    71.20    61.60     5
+CLIP                                   56.73    17.30    10.40    84.80    61.20   152
+CoCa                                   52.00    34.17     1.60    77.60    64.40     4
+
+Kruskal-Wallis: H=5.2658, p=0.384311 (ns)
+
+--------------------------------------------------------------------------------
+FACTOR: Training Data (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  WebLI-10b: n=30
+  DataComp-1b: n=29
+  LAION-2b: n=23
+  OpenAI-400m: n=19
+  LAION-400m: n=12
+  CommonCrawl-2.5b: n=10
+  DFNDR-2b: n=7
+  MetaCLIP2-2.5b: n=6
+  CommonPool-1b: n=6
+  CommonPool-13m: n=6
+  CommonPool-128m: n=6
+  MetaCLIP-400m: n=6
+  MetaCLIP-5.4b: n=5
+  DFN-5b: n=4
+  Merged-2b: n=4
+  DFN-2b: n=4
+  YFCC-15m: n=4
+  LAION-A-900m: n=3
+  CommonPool-12.8b: n=3
+  LAION-5b: n=2 [EXCLUDED]
+  CC-12m: n=2 [EXCLUDED]
+  DataComp-12.8b: n=1 [EXCLUDED]
+  DataComp-128m: n=1 [EXCLUDED]
+  DataComp-13m: n=1 [EXCLUDED]
+
+### Worst-Group Accuracy by Training Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFNDR-2b                               78.74     5.01    70.40    84.00    80.80     7
+DFN-5b                                 77.00    10.08    62.40    84.80    80.40     4
+MetaCLIP-5.4b                          70.24     6.31    63.20    76.80    72.00     5
+LAION-A-900m                           66.67     4.03    62.40    70.40    67.20     3
+WebLI-10b                              63.15    17.80    20.80    86.40    66.40    30
+DFN-2b                                 62.80    10.78    50.40    76.00    62.40     4
+LAION-2b                               62.23    16.22     1.60    78.40    64.80    23
+DataComp-1b                            62.01     9.18    42.40    79.20    63.20    29
+CommonPool-1b                          62.00     7.65    52.80    74.40    61.20     6
+CommonPool-12.8b                       60.80     7.20    53.60    68.00    60.80     3
+LAION-400m                             60.27     8.83    47.20    72.00    59.60    12
+Merged-2b                              57.00     8.45    46.40    65.60    58.00     4
+CommonCrawl-2.5b                       54.08    18.69    20.80    77.60    56.40    10
+MetaCLIP2-2.5b                         49.73    17.30    31.20    76.80    48.00     6
+OpenAI-400m                            48.72    15.60    12.80    66.40    53.60    19
+MetaCLIP-400m                          47.47    25.37    10.40    72.00    54.40     6
+YFCC-15m                               47.40     6.00    39.20    53.60    48.40     4
+CommonPool-128m                        40.67     3.56    36.00    45.60    40.00     6
+CommonPool-13m                         21.20     8.20    15.20    36.80    18.40     6
+
+Kruskal-Wallis: H=66.5716, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=85
+  ResNet: n=16
+  ViTamin: n=15
+  SigLIP2: n=15
+  ConvNeXt: n=12
+  SigLIP: n=11
+  CLIPA: n=7
+  MobileCLIP2: n=6
+  PE: n=5
+  EVA: n=5
+  MobileCLIP: n=4
+  NLLB-SigLIP: n=4
+  CoCa: n=4
+  XLM-RoBERTa-CLIP: n=2 [EXCLUDED]
+  NNLB-CLIP: n=2 [EXCLUDED]
+  RoBERTa-CLIP: n=1 [EXCLUDED]
+
+### Worst-Group Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+MobileCLIP2                            80.13     3.73    74.40    84.00    81.60     6
+PE                                     70.24     6.31    63.20    76.80    72.00     5
+SigLIP                                 67.85    15.19    36.80    86.40    67.20    11
+CLIPA                                  65.14    10.72    52.80    79.20    58.40     7
+ConvNeXt                               61.93     9.34    40.80    75.20    62.80    12
+NLLB-SigLIP                            61.80    27.37    20.80    77.60    74.40     4
+ViTamin                                60.85     8.09    42.40    69.60    63.20    15
+MobileCLIP                             60.60    10.62    50.40    72.00    60.00     4
+SigLIP2                                60.05    17.41    34.40    83.20    52.00    15
+EVA                                    59.84     9.69    46.40    71.20    61.60     5
+CLIP                                   53.29    18.30    10.40    84.80    56.00    85
+CoCa                                   52.00    34.17     1.60    77.60    64.40     4
+ResNet                                 50.80    13.73    20.00    66.40    52.00    16
+
+Kruskal-Wallis: H=32.1015, p=0.001335 (**)
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution Bucket (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <=240: n=120
+  301-400: n=38
+  241-300: n=29
+  >400: n=7
+
+### Worst-Group Accuracy by Resolution Bucket
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>400                                   64.57     8.39    52.00    77.60    64.00     7
+241-300                                62.46    14.32    34.40    84.00    63.20    29
+301-400                                62.44    15.23    20.80    86.40    63.60    38
+<=240                                  54.97    18.50     1.60    86.40    58.40   120
+
+Kruskal-Wallis: H=7.2522, p=0.064278 (ns)
+
+--------------------------------------------------------------------------------
+FACTOR: Params Bucket (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <200M: n=78
+  200-500M: n=52
+  500M-1B: n=34
+  >1B: n=30
+
+### Worst-Group Accuracy by Params Bucket
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>1B                                    60.48    14.14    31.20    80.00    62.00    30
+200-500M                               59.88    16.75     1.60    84.00    62.00    52
+500M-1B                                58.33    20.51    12.80    86.40    62.80    34
+<200M                                  55.41    17.40    15.20    80.80    59.60    78
+
+Kruskal-Wallis: H=2.0614, p=0.559771 (ns)
+
+--------------------------------------------------------------------------------
+NUMERIC: Parameters (M) (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Parameters (M) → Worst-Group Accuracy
+  Pearson: r=+0.0511, p=0.479082 (ns)
+  Spearman: ρ=+0.0514, p=0.476913 (ns)
+N: 194
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Image Size → Worst-Group Accuracy
+  Pearson: r=+0.1776, p=0.013244 (*)
+  Spearman: ρ=+0.1936, p=0.006846 (**)
+N: 194
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Patch Size → Worst-Group Accuracy
+  Pearson: r=-0.3748, p=0.000001 (***)
+  Spearman: ρ=-0.2158, p=0.005823 (**)
+N: 162
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Tokens → Worst-Group Accuracy
+  Pearson: r=+0.2838, p=0.000253 (***)
+  Spearman: ρ=+0.2676, p=0.000575 (***)
+N: 162
+
+--------------------------------------------------------------------------------
+NUMERIC: Embed Dim (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Embed Dim → Worst-Group Accuracy
+  Pearson: r=+0.1163, p=0.211709 (ns)
+  Spearman: ρ=+0.1001, p=0.283053 (ns)
+N: 117
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (M) (UrbanCars)
+--------------------------------------------------------------------------------
+
+### Data Size (M) → Worst-Group Accuracy
+  Pearson: r=+0.2068, p=0.003810 (**)
+  Spearman: ρ=+0.3868, p=0.000000 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: UrbanCars
+--------------------------------------------------------------------------------
+
+### Top 20 by Worst-Group Accuracy
+
+                                               model_id training_objective training_data       arch_family  total_params_M  image_size  patch_size  worst_group_accuracy
+0                        ViT-SO400M-14-SigLIP-384_webli             SigLIP     WebLI-10b            SigLIP           878.0         384        14.0                  86.4
+1                            ViT-SO400M-14-SigLIP_webli             SigLIP     WebLI-10b            SigLIP           877.4         224        14.0                  86.4
+4                              ViT-H-14-quickgelu_dfn5b               CLIP        DFN-5b              CLIP           986.1         224        14.0                  84.8
+12                               MobileCLIP2-S3_dfndr2b               CLIP      DFNDR-2b       MobileCLIP2           248.9         256         NaN                  84.0
+7                                ViT-B-16-SigLIP2_webli            SigLIP2     WebLI-10b           SigLIP2           375.2         224        16.0                  83.2
+8                              MobileCLIP2-L-14_dfndr2b               CLIP      DFNDR-2b       MobileCLIP2           427.6         224        14.0                  82.4
+11                           ViT-B-16-SigLIP2-256_webli            SigLIP2     WebLI-10b           SigLIP2           375.2         256        16.0                  82.4
+20                               MobileCLIP2-S4_dfndr2b               CLIP      DFNDR-2b       MobileCLIP2           445.4         256         NaN                  82.4
+25                                   ViT-H-14-378_dfn5b               CLIP        DFN-5b              CLIP           986.7         378        14.0                  82.4
+2                        ViT-SO400M-14-SigLIP-378_webli             SigLIP     WebLI-10b            SigLIP           878.0         378        14.0                  81.6
+21                                MobileCLIP2-B_dfndr2b               CLIP      DFNDR-2b       MobileCLIP2           149.8         224         NaN                  80.8
+17                  ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP     WebLI-10b            SigLIP          1127.4         256        16.0                  80.0
+23                           ViT-B-32-SigLIP2-256_webli            SigLIP2     WebLI-10b           SigLIP2           376.9         256        32.0                  79.2
+28                            ViT-H-14-CLIPA_datacomp1b              CLIPA   DataComp-1b             CLIPA           968.2         224        14.0                  79.2
+10  xlm-roberta-large-ViT-H-14_frozen_laion5b_s13b_b90k               CLIP      LAION-5b  XLM-RoBERTa-CLIP          1193.0         224        14.0                  79.2
+3                            ViT-B-16-SigLIP2-384_webli            SigLIP2     WebLI-10b           SigLIP2           375.5         384        16.0                  78.4
+24                        ViT-H-14-CLIPA-336_datacomp1b              CLIPA   DataComp-1b             CLIPA           968.6         336        14.0                  78.4
+9                          ViT-H-14-378-quickgelu_dfn5b               CLIP        DFN-5b              CLIP           986.7         378        14.0                  78.4
+44                       ViT-bigG-14_laion2b_s39b_b160k               CLIP      LAION-2b              CLIP          2539.6         224        14.0                  78.4
+6                            ViT-B-16-SigLIP2-512_webli            SigLIP2     WebLI-10b           SigLIP2           375.8         512        16.0                  77.6
+
+
+### Bottom 20 by Worst-Group Accuracy
+
+                                             model_id training_objective     training_data  arch_family  total_params_M  image_size  patch_size  worst_group_accuracy
+154                        ViT-L-16-SigLIP2-256_webli            SigLIP2         WebLI-10b      SigLIP2           881.5         256        16.0                  34.4
+124                      ViT-H-14_metaclip_altogether               CLIP    MetaCLIP2-2.5b         CLIP           986.1         224        14.0                  33.6
+152                     ViT-L-14-336-quickgelu_openai               CLIP       OpenAI-400m         CLIP           427.9         336        14.0                  33.6
+164                          ViT-H-14_metaclip_fullcc               CLIP  CommonCrawl-2.5b         CLIP           986.1         224        14.0                  32.8
+151     ViT-bigG-14-worldwide-378_metaclip2_worldwide               CLIP    MetaCLIP2-2.5b         CLIP          3631.2         378        14.0                  31.2
+170                              RN50-quickgelu_cc12m               CLIP            CC-12m       ResNet           102.0         224         NaN                  31.2
+172                            ViT-L-14_metaclip_400m               CLIP     MetaCLIP-400m         CLIP           427.6         224        14.0                  23.2
+186               ViT-B-32_commonpool_s_clip_s13m_b4k               CLIP    CommonPool-13m         CLIP           151.3         224        32.0                  23.2
+171                ViT-H-14-quickgelu_metaclip_fullcc               CLIP  CommonCrawl-2.5b         CLIP           986.1         224        14.0                  20.8
+165                         nllb-clip-base-siglip_mrl               CLIP         WebLI-10b  NLLB-SigLIP           507.5         384        16.0                  20.8
+180                                        RN50_cc12m               CLIP            CC-12m       ResNet           102.0         224         NaN                  20.0
+192              ViT-B-32_commonpool_s_laion_s13m_b4k               CLIP    CommonPool-13m         CLIP           151.3         224        32.0                  19.2
+175                         ViT-B-32-quickgelu_openai               CLIP       OpenAI-400m         CLIP           151.3         224        32.0                  18.4
+187              ViT-B-32_commonpool_s_basic_s13m_b4k               CLIP    CommonPool-13m         CLIP           151.3         224        32.0                  17.6
+191              ViT-B-32_commonpool_s_image_s13m_b4k               CLIP    CommonPool-13m         CLIP           151.3         224        32.0                  15.2
+189               ViT-B-32_commonpool_s_text_s13m_b4k               CLIP    CommonPool-13m         CLIP           151.3         224        32.0                  15.2
+190                      ViT-B-32_datacomp_s_s13m_b4k               CLIP      DataComp-13m         CLIP           151.3         224        32.0                  15.2
+183                                 nllb-clip-base_v1               CLIP       OpenAI-400m    NNLB-CLIP           501.9         224        32.0                  12.8
+177                  ViT-L-14-quickgelu_metaclip_400m               CLIP     MetaCLIP-400m         CLIP           427.6         224        14.0                  10.4
+193  coca_ViT-B-32_mscoco_finetuned_laion2b_s13b_b90k               CoCa          LAION-2b         CoCa           253.6         224        32.0                   1.6
+
+
+--------------------------------------------------------------------------------
+FIGURE: Landscape (UrbanCars)
+--------------------------------------------------------------------------------
+
+Pareto-optimal (1):
+  ViT-SO400M-14-SigLIP-384_webli: x=91.4%, y=86.4%
+
+--------------------------------------------------------------------------------
+FIGURE: objective (UrbanCars)
+--------------------------------------------------------------------------------
+  CoCa: mean=52.00%, std=34.17%, n=4
+  CLIP: mean=56.73%, std=17.30%, n=152
+  EVA: mean=59.84%, std=9.69%, n=5
+  SigLIP2: mean=60.05%, std=17.41%, n=15
+  CLIPA: mean=65.14%, std=10.72%, n=7
+  SigLIP: mean=67.85%, std=15.19%, n=11
+
+--------------------------------------------------------------------------------
+FIGURE: arch (UrbanCars)
+--------------------------------------------------------------------------------
+  ResNet: mean=50.80%, std=13.73%, n=16
+  CoCa: mean=52.00%, std=34.17%, n=4
+  CLIP: mean=53.29%, std=18.30%, n=85
+  EVA: mean=59.84%, std=9.69%, n=5
+  SigLIP2: mean=60.05%, std=17.41%, n=15
+  MobileCLIP: mean=60.60%, std=10.62%, n=4
+  ViTamin: mean=60.85%, std=8.09%, n=15
+  NLLB-SigLIP: mean=61.80%, std=27.37%, n=4
+  ConvNeXt: mean=61.93%, std=9.34%, n=12
+  CLIPA: mean=65.14%, std=10.72%, n=7
+  SigLIP: mean=67.85%, std=15.19%, n=11
+  PE: mean=70.24%, std=6.31%, n=5
+  MobileCLIP2: mean=80.13%, std=3.73%, n=6
+
+--------------------------------------------------------------------------------
+FIGURE: data (UrbanCars)
+--------------------------------------------------------------------------------
+  CommonPool-13m: mean=21.20%, std=8.20%, n=6
+  CommonPool-128m: mean=40.67%, std=3.56%, n=6
+  YFCC-15m: mean=47.40%, std=6.00%, n=4
+  MetaCLIP-400m: mean=47.47%, std=25.37%, n=6
+  OpenAI-400m: mean=48.72%, std=15.60%, n=19
+  MetaCLIP2-2.5b: mean=49.73%, std=17.30%, n=6
+  CommonCrawl-2.5b: mean=54.08%, std=18.69%, n=10
+  Merged-2b: mean=57.00%, std=8.45%, n=4
+  LAION-400m: mean=60.27%, std=8.83%, n=12
+  CommonPool-12.8b: mean=60.80%, std=7.20%, n=3
+  CommonPool-1b: mean=62.00%, std=7.65%, n=6
+  DataComp-1b: mean=62.01%, std=9.18%, n=29
+  LAION-2b: mean=62.23%, std=16.22%, n=23
+  DFN-2b: mean=62.80%, std=10.78%, n=4
+  WebLI-10b: mean=63.15%, std=17.80%, n=30
+  LAION-A-900m: mean=66.67%, std=4.03%, n=3
+  MetaCLIP-5.4b: mean=70.24%, std=6.31%, n=5
+  DFN-5b: mean=77.00%, std=10.08%, n=4
+  DFNDR-2b: mean=78.74%, std=5.01%, n=7
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) Scale (UrbanCars)
+--------------------------------------------------------------------------------
+Parameters (M) vs Worst-Group Accuracy: ρ=0.0514, p=0.476913
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) Scale (UrbanCars)
+--------------------------------------------------------------------------------
+Image Size (px) vs Worst-Group Accuracy: ρ=0.1936, p=0.006846
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) Scale (UrbanCars)
+--------------------------------------------------------------------------------
+Patch Size (px) vs Worst-Group Accuracy: ρ=-0.2158, p=0.005823
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens Scale (UrbanCars)
+--------------------------------------------------------------------------------
+Number of Tokens vs Worst-Group Accuracy: ρ=0.2676, p=0.000575
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) Scale (UrbanCars)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs Worst-Group Accuracy: ρ=0.3868, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (UrbanCars)
+--------------------------------------------------------------------------------
+
+Factor                          Corr      p-value
+--------------------------------------------------
+total_params_M               +0.0600     0.551115
+image_size                   +0.1841     0.065382
+patch_size_num               -0.2705**     0.006230
+num_tokens                   +0.2964**     0.002615
+embed_dim                    +0.1868     0.061482
+training_data_size_M         +0.5060***     0.000000
+
+================================================================================
+ISOLATED FACTOR ANALYSIS: URBANCARS
+================================================================================
+
+This section identifies model pairs/groups where only ONE factor varies,
+enabling stronger causal claims than correlational analysis.
+
+Note: Models without patch_size (ResNet, ConvNeXt, MobileCLIP) are excluded
+from patch size and token analyses.
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Patch Size (UrbanCars)
+--------------------------------------------------------------------------------
+
+Analyzing 162 models with valid patch_size
+Excluded 32 models without patch_size (ResNet, ConvNeXt, etc.)
+
+Found 7 matched groups where only patch size varies:
+
+Base Configuration                                 | Patch Sizes          | Worst-Group Accuracy                    
+-------------------------------------------------------------------------------------------------------------------
+CLIP / LAION-400m / B                              | 16, 32               | 16→66.4%, 32→52.0%                      
+SigLIP2 / WebLI-10b / B                            | 16, 32               | 16→80.4%, 32→79.2%                      
+CLIP / CommonCrawl-2.5b / B                        | 16, 32               | 16→70.8%, 32→69.2%                      
+CLIP / MetaCLIP-400m / B                           | 16, 32               | 16→71.2%, 32→54.4%                      
+CLIP / OpenAI-400m / B                             | 16, 32               | 16→51.2%, 32→29.6%                      
+CLIP / DataComp-1b / B                             | 16, 32               | 16→61.2%, 32→70.4%                      
+CLIP / LAION-2b / B                                | 16, 32               | 16→67.2%, 32→66.0%                      
+
+### Summary: Patch Size Effect
+
+Patch 16 → 32 (n=7 comparisons):
+  Mean effect: -6.80 pp
+  Std: 10.16 pp
+  Range: [-21.60, 9.20] pp
+  Direction: 1 positive, 6 negative, 0 no change
+
+** Overall: Increasing patch size → -6.80 pp Worst-Group Accuracy on average **
+   (Smaller patches = better robustness)
+
+### Figure: Patch Size Isolated Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Image Size (UrbanCars)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 13 matched groups where only image size varies:
+
+Base Configuration                                      | Resolutions          | Worst-Group Accuracy                    
+------------------------------------------------------------------------------------------------------------------------
+SigLIP / WebLI-10b / 16.0 / B                           | 224px, 256px, 384px, 512px | 224→62.4%, 256→61.6%, 384→67.2%, 512→65.6%
+CLIP / DFN-5b / 14.0 / H                                | 224px, 378px         | 224→73.6%, 378→80.4%                    
+CLIP / LAION-400m / 16.0 / B                            | 224px, 240px         | 224→70.4%, 240→62.4%                    
+CLIP / MetaCLIP2-2.5b / 14.0 / H                        | 224px, 378px         | 224→46.1%, 378→76.8%                    
+CLIP / OpenAI-400m / 14.0 / L                           | 224px, 336px         | 224→45.6%, 336→44.0%                    
+SigLIP2 / WebLI-10b / 16.0 / B                          | 224px, 256px, 384px, 512px | 224→83.2%, 256→82.4%, 384→78.4%, 512→77.6%
+SigLIP2 / WebLI-10b / 16.0 / L                          | 256px, 384px, 512px  | 256→34.4%, 384→38.4%, 512→52.0%         
+CLIP / MetaCLIP2-2.5b / 14.0 / bigG                     | 224px, 378px         | 224→52.0%, 378→31.2%                    
+CLIPA / DataComp-1b / 14.0 / H                          | 224px, 336px         | 224→79.2%, 336→78.4%                    
+CLIPA / DataComp-1b / 14.0 / L                          | 224px, 336px         | 224→52.8%, 336→58.4%                    
+CLIPA / DataComp-1b / 14.0 / bigG                       | 224px, 336px         | 224→58.4%, 336→58.4%                    
+SigLIP / WebLI-10b / 16.0 / L                           | 256px, 384px         | 256→36.8%, 384→56.8%                    
+SigLIP2 / WebLI-10b / 16.0 / gopt                       | 256px, 384px         | 256→50.4%, 384→73.6%                    
+
+### Summary: Image Size Effect
+
+224px → 240px (n=1 comparisons):
+  Mean effect: -8.00 pp
+  Std: 0.00 pp
+  Range: [-8.00, -8.00] pp
+
+224px → 256px (n=2 comparisons):
+  Mean effect: -0.80 pp
+  Std: 0.00 pp
+  Range: [-0.80, -0.80] pp
+
+224px → 336px (n=4 comparisons):
+  Mean effect: +0.80 pp
+  Std: 2.83 pp
+  Range: [-1.60, 5.60] pp
+
+224px → 378px (n=3 comparisons):
+  Mean effect: +5.56 pp
+  Std: 21.03 pp
+  Range: [-20.80, 30.67] pp
+
+224px → 384px (n=2 comparisons):
+  Mean effect: +0.00 pp
+  Std: 4.80 pp
+  Range: [-4.80, 4.80] pp
+
+224px → 512px (n=2 comparisons):
+  Mean effect: -1.20 pp
+  Std: 4.40 pp
+  Range: [-5.60, 3.20] pp
+
+256px → 384px (n=5 comparisons):
+  Mean effect: +9.76 pp
+  Std: 10.25 pp
+  Range: [-4.00, 23.20] pp
+
+256px → 512px (n=3 comparisons):
+  Mean effect: +5.60 pp
+  Std: 9.21 pp
+  Range: [-4.80, 17.60] pp
+
+384px → 512px (n=3 comparisons):
+  Mean effect: +3.73 pp
+  Std: 6.98 pp
+  Range: [-1.60, 13.60] pp
+
+** Overall: Increasing resolution → +3.39 pp Worst-Group Accuracy on average **
+
+### Figure: Image Size (px) Isolated Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Training Data (UrbanCars)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 7 matched groups where only training data varies:
+
+Architecture Config                           | Datasets                            | Worst-Group Accuracy
+----------------------------------------------------------------------------------------------------------------------------------
+CLIP / 224 / B / 32.0                         | DataComp-12., CommonCrawl-, LAION-2b, MetaCLIP-400, LAION-400m, DataComp-128, CommonPool-1, OpenAI-400m, CommonPool-1, DataComp-13m | DataComp-1=72.0% > CommonCraw=69.2% > LAION-2b=66.0% > MetaCLIP-4=54.4% > LAION-400m=52.0% > DataComp-1=43.2% > CommonPool=40.7% > OpenAI-400=29.6% > CommonPool=21.2% > DataComp-1=15.2%
+CLIP / 224 / B / 16.0                         | MetaCLIP-400, CommonCrawl-, DFNDR-2b, LAION-400m, LAION-2b, DFN-2b, CommonPool-1, DataComp-1b, OpenAI-400m | MetaCLIP-4=71.2% > CommonCraw=70.8% > DFNDR-2b=70.4% > LAION-400m=70.4% > LAION-2b=67.2% > DFN-2b=65.6% > CommonPool=62.0% > DataComp-1=61.2% > OpenAI-400=51.2%
+CLIP / 224 / L / 14.0                         | LAION-2b, DataComp-1b, DFN-2b, CommonPool-1, LAION-400m, CommonCrawl-, OpenAI-400m, MetaCLIP-400 | LAION-2b=72.8% > DataComp-1=64.8% > DFN-2b=61.9% > CommonPool=60.8% > LAION-400m=54.4% > CommonCraw=48.0% > OpenAI-400=45.6% > MetaCLIP-4=16.8%
+CLIP / 224 / H / 14.0                         | DFN-5b, LAION-2b, MetaCLIP2-2., CommonCrawl- | DFN-5b=73.6% > LAION-2b=48.8% > MetaCLIP2-=46.1% > CommonCraw=26.8%
+CLIP / 224 / bigG / 14.0                      | LAION-2b, CommonCrawl-, MetaCLIP2-2. | LAION-2b=78.4% > CommonCraw=55.6% > MetaCLIP2-=52.0%
+CLIP / 378 / H / 14.0                         | DFN-5b, MetaCLIP2-2.                | DFN-5b=80.4% > MetaCLIP2-=76.8%
+CLIPA / 336 / H / 14.0                        | DataComp-1b, LAION-2b               | DataComp-1=78.4% > LAION-2b=70.4%
+
+### Summary: Training Data Effect
+
+Head-to-head comparisons (positive = first dataset wins):
+
+Dataset                     Wins   Losses   Ties   Net Δ (pp)
+------------------------------------------------------------
+LAION-2b                      22        8      0       +13.66
+CommonCrawl-2.5b              16       10      3        +4.39
+LAION-400m                    13        9      2        +4.59
+MetaCLIP-400m                 13       10      1        -6.64
+DataComp-12.8b                 9        0      0       +28.50
+DFN-2b                         8        7      0        +4.68
+DataComp-1b                    8        8      0        +3.88
+DFNDR-2b                       5        1      2        +5.45
+DFN-5b                         4        0      0       +25.67
+CommonPool-12.8b               4        3      0        +8.76
+DataComp-128m                  4        5      0        -3.50
+CommonPool-128m                3        6      0        -6.31
+OpenAI-400m                    3       21      0       -14.87
+CommonPool-1b                  2        6      0        -4.00
+MetaCLIP2-2.5b                 1        5      0        -7.40
+CommonPool-13m                 1        8      0       -27.94
+DataComp-13m                   0        9      0       -34.61
+
+### Figure: Training Data Rankings
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Model Scale (UrbanCars)
+--------------------------------------------------------------------------------
+
+Analyzing 116 models with vit_size
+
+Found 11 matched groups where only vit_size varies:
+
+Base Configuration                                      | Sizes           | Worst-Group Accuracy
+------------------------------------------------------------------------------------------------------------------------
+CLIP / LAION-2b / 224 / 14.0                            | L < H < g < bigG | L=72.8% → H=48.8% → g=70.0% → bigG=78.4%
+CLIP / CommonCrawl-2.5b / 224 / 14.0                    | L < H < bigG    | L=48.0% → H=26.8% → bigG=55.6%
+CLIPA / DataComp-1b / 224 / 14.0                        | L < H < bigG    | L=52.8% → H=79.2% → bigG=58.4%
+CLIPA / DataComp-1b / 336 / 14.0                        | L < H < bigG    | L=58.4% → H=78.4% → bigG=58.4%
+SigLIP2 / WebLI-10b / 256 / 16.0                        | B < L < gopt    | B=82.4% → L=34.4% → gopt=50.4%
+SigLIP2 / WebLI-10b / 384 / 16.0                        | B < L < gopt    | B=78.4% → L=38.4% → gopt=73.6%
+CLIP / MetaCLIP2-2.5b / 224 / 14.0                      | H < bigG        | H=46.1% → bigG=52.0%
+CLIP / MetaCLIP2-2.5b / 378 / 14.0                      | H < bigG        | H=76.8% → bigG=31.2%
+SigLIP / WebLI-10b / 256 / 16.0                         | B < L           | B=61.6% → L=36.8%
+SigLIP / WebLI-10b / 384 / 16.0                         | B < L           | B=67.2% → L=56.8%
+SigLIP2 / WebLI-10b / 512 / 16.0                        | B < L           | B=77.6% → L=52.0%
+
+### Summary: Model Scale Effect
+
+Overall effect of scaling up (n=26 comparisons):
+  Mean effect: -4.22 pp
+  Std: 23.85 pp
+  12 positive, 13 negative
+
+By size transition:
+  B → L: -29.76 pp (n=5, std=13.07)
+  B → gopt: -18.40 pp (n=2, std=13.60)
+  H → bigG: -3.69 pp (n=6, std=27.60)
+  L → H: +0.30 pp (n=4, std=23.03)
+  L → bigG: +4.70 pp (n=4, std=2.83)
+  L → gopt: +25.60 pp (n=2, std=9.60)
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Training Objective (UrbanCars)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 8 matched groups where only training objective varies:
+
+Configuration                                                | Objectives                | Worst-Group Accuracy
+----------------------------------------------------------------------------------------------------------------------------------
+DataComp-1b / 224 / 400-600M / L / 14.0                      | CLIP, CLIPA               | CLIP=64.8% > CLIPA=52.8%
+LAION-2b / 224 / 200-400M / B / 32.0                         | CLIP, CoCa                | CLIP=66.4% > CoCa=32.8%
+WebLI-10b / 224 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=83.2% > SigLIP=62.4%
+WebLI-10b / 256 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=82.4% > SigLIP=61.6%
+WebLI-10b / 256 / 600M-1B / L / 16.0                         | SigLIP, SigLIP2           | SigLIP=36.8% > SigLIP2=34.4%
+WebLI-10b / 384 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=78.4% > SigLIP=67.2%
+WebLI-10b / 384 / 600M-1B / L / 16.0                         | SigLIP, SigLIP2           | SigLIP=56.8% > SigLIP2=38.4%
+WebLI-10b / 512 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=77.6% > SigLIP=65.6%
+
+### Summary: Training Objective Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTORS SUMMARY
+--------------------------------------------------------------------------------
+  patch_size: 7 matched comparisons found
+  image_size: 25 matched comparisons found
+  training_data: 120 matched comparisons found
+  model_scale: 26 matched comparisons found
+  objective: 8 matched comparisons found
+
+================================================================================
+MULTIVARIATE ANALYSIS: URBANCARS
+================================================================================
+
+This section analyzes confounded relationships between factors.
+Goal: Identify the independent contribution of each factor,
+controlling for other factors that may be correlated.
+
+--------------------------------------------------------------------------------
+MULTIVARIATE REGRESSION: UrbanCars
+--------------------------------------------------------------------------------
+
+Note: 32 models lack patch_size (ResNet, ConvNeXt, MobileCLIP, etc.)
+These will be EXCLUDED from the regression which includes patch_size as a factor.
+Regression will use 162 models with valid patch_size.
+Samples for regression: 162
+
+### Factor Distributions in Regression Sample
+
+Architecture groups:
+  CLIP: n=114
+  SigLIP: n=26
+  CLIPA: n=7
+  MobileCLIP: n=6
+  EVA: n=5
+  CoCa: n=4
+
+Dataset groups:
+  LAION: n=42
+  DataComp: n=32
+  WebLI: n=30
+  CommonPool: n=21
+  MetaCLIP: n=17
+  DFN: n=11
+  OpenAI: n=9
+
+### Model 1: Full Model (all factors)
+
+Formula: y ~ is_siglip + is_coca + is_eva + is_clipa + is_mobileclip + is_webli + is_datacomp + is_dfn + is_openai + is_metaclip + log_params_z + log_datasize_z + log_patchsize_z + log_imgsize_z
+R²: 0.3497
+Adj R²: 0.2878
+F-statistic: 5.6475
+F p-value: 0.0000
+
+Variable                        Coef         SE          t            p               95% CI   Sig
+-----------------------------------------------------------------------------------------------
+Intercept                     59.475      2.315      25.69       0.0000 [  54.90,  64.05]   ***
+is_siglip                      3.520      8.180       0.43       0.6676 [ -12.65,  19.69]      
+is_coca                       -6.793      7.960      -0.85       0.3948 [ -22.52,   8.94]      
+is_eva                        -1.555      7.195      -0.22       0.8292 [ -15.77,  12.66]      
+is_clipa                       7.185      6.528       1.10       0.2729 [  -5.72,  20.09]      
+is_mobileclip                  0.076      6.946       0.01       0.9912 [ -13.65,  13.80]      
+is_webli                     -14.098      9.088      -1.55       0.1230 [ -32.06,   3.86]      
+is_datacomp                   -1.447      3.825      -0.38       0.7058 [  -9.01,   6.11]      
+is_dfn                         7.146      5.369       1.33       0.1853 [  -3.46,  17.76]      
+is_openai                    -13.755      5.518      -2.49       0.0138 [ -24.66,  -2.85]     *
+is_metaclip                    1.546      4.602       0.34       0.7374 [  -7.55,  10.64]      
+log_params_z                  -3.823      1.551      -2.46       0.0149 [  -6.89,  -0.76]     *
+log_datasize_z                 9.624      2.045       4.71       0.0000 [   5.58,  13.67]   ***
+log_patchsize_z               -3.967      1.636      -2.42       0.0165 [  -7.20,  -0.73]     *
+log_imgsize_z                  2.444      1.498       1.63       0.1050 [  -0.52,   5.41]      
+
+### Interpretation Guide
+
+• Architecture dummies: effect vs CLIP (reference category)
+• Dataset dummies: effect vs LAION (reference category)
+• Numeric variables: standardized (1 unit = 1 SD)
+  - log_params_z: model size (log10 of params)
+  - log_datasize_z: training data size (log10)
+  - log_patchsize_z: patch size (log2)
+  - log_imgsize_z: image resolution (log2)
+
+### Significant Effects (p < 0.05)
+  ↓ is_openai: -13.75pp (p=0.0138)
+  ↓ log_params_z: -3.82pp (p=0.0149)
+  ↑ log_datasize_z: +9.62pp (p=0.0000)
+  ↓ log_patchsize_z: -3.97pp (p=0.0165)
+
+### Model 2: Hierarchical Regression (Incremental R²)
+
+How much variance does each factor GROUP add?
+
+Step                                             R²        ΔR²          F            p
+-------------------------------------------------------------------------------------
+1. Architecture                              0.0461     0.0461       1.51     0.190364
+2. + Scale (params, img, patch)              0.1754     0.1293       4.07     0.000205
+3. + Dataset Type                            0.2518     0.0764       3.83     0.000026
+4. + Dataset Size                            0.3497     0.0980       5.65     0.000000
+
+
+Alternative order (robustness check):
+
+Step                                             R²        ΔR²
+-----------------------------------------------------------------
+1. Scale                                     0.1630     0.1630
+2. + Dataset Size                            0.2670     0.1040
+3. + Dataset Type                            0.3398     0.0728
+4. + Architecture                            0.3497     0.0099
+
+--------------------------------------------------------------------------------
+PARTIAL CORRELATIONS: UrbanCars
+--------------------------------------------------------------------------------
+
+Note: Excluding 32 models without patch_size (ResNet, ConvNeXt, etc.)
+Samples: 162
+
+### Zero-Order vs Partial Correlations
+
+Zero-order: raw correlation (potentially confounded)
+Partial: correlation controlling for all other factors
+
+Factor                      Zero-Order      Partial          Δ Interpretation      
+-------------------------------------------------------------------------------------
+Architecture (SigLIP)          +0.1252      -0.1507    -0.2759 Confounded ↓        
+Model Parameters               +0.0376      -0.1910    -0.2286 Confounded ↓        
+Dataset Size                   +0.3680      +0.3713    +0.0033 Independent effect  
+Patch Size                     -0.2158      -0.2392    -0.0235 Independent effect  
+Image Size                     +0.2006      +0.1024    -0.0982 Slight confounding  
+
+### Interpretation Guide
+
+• Partial ≈ Zero-order: Factor has independent effect (not confounded)
+• Partial << Zero-order: Effect was confounded (inflated by correlations)
+• Partial >> Zero-order: Suppressor effect (other factors were masking it)
+
+### Key Findings
+• Architecture (SigLIP): Confounded ↓ (Δ = -0.276)
+• Model Parameters: Confounded ↓ (Δ = -0.229)
+
+--------------------------------------------------------------------------------
+VARIANCE PARTITIONING: UrbanCars
+--------------------------------------------------------------------------------
+
+Note: Excluding 32 models without patch_size (ResNet, ConvNeXt, etc.)
+Samples: 162
+
+### Individual Model R² Values
+
+Model                                            R²
+-------------------------------------------------------
+none                                         0.0000
+arch                                         0.0216
+scale                                        0.1630
+data                                         0.2596
+arch_scale                                   0.1692
+arch_data                                    0.2662
+scale_data                                   0.3096
+full                                         0.3131
+
+### Unique Contributions (Type III)
+
+Unique = variance explained ONLY by this factor group,
+not shared with any other factor group.
+
+Factor Group                 Unique R²   % of Total Variables                     
+-------------------------------------------------------------------------------------
+Architecture                    0.0035         1.1% SigLIP, CoCa, EVA dummies     
+Scale                           0.0469        15.0% params, img_size, patch_size  
+Data                            0.1439        46.0% dataset_type, dataset_size    
+Shared/Confounded               0.1187        37.9%
+-------------------------------------------------------------------------------------
+TOTAL EXPLAINED                 0.3131       100.0%
+Unexplained                     0.6869
+
+### Interpretation
+
+Factor importance ranking (by unique variance):
+  1. Data: 46.0% of explained variance
+  2. Scale: 15.0% of explained variance
+  3. Architecture: 1.1% of explained variance
+
+⚠ Warning: 37.9% of variance is shared (confounded).
+  Factors are highly correlated; interpret individual effects with caution.
+
+--------------------------------------------------------------------------------
+RANDOM FOREST IMPORTANCE: UrbanCars
+--------------------------------------------------------------------------------
+
+Note: 32 models lack patch_size and will be excluded.
+Samples: 101
+Features: 8
+CV R² mean: -4.2191
+CV R² std: 3.3582
+Training R²: 0.5113
+
+### Feature Importance Ranking
+
+Importance = Mean Decrease in Impurity (Gini importance)
+
+Rank  Feature                     Importance   Cumulative
+------------------------------------------------------------
+1     Dataset Size (M)                0.4421       0.4421
+2     Dataset Type                    0.2293       0.6714
+3     Num Tokens                      0.1528       0.8243
+4     Model Parameters (M)            0.0954       0.9197
+5     Patch Size                      0.0530       0.9726
+6     Embedding Dim                   0.0125       0.9851
+7     Architecture Family             0.0075       0.9926
+8     Image Size                      0.0074       1.0000
+
+### Importance by Factor Category
+
+Category               Importance
+-----------------------------------
+Architecture               0.0075
+Scale                      0.3210
+Data                       0.6714
+
+### Categorical Encodings
+
+arch_family:
+  0: CLIP
+  1: CLIPA
+  2: CoCa
+  3: ConvNeXt
+  4: EVA
+  5: MobileCLIP
+  6: MobileCLIP2
+  7: NLLB-SigLIP
+  8: NNLB-CLIP
+  9: PE
+  10: ResNet
+  11: RoBERTa-CLIP
+  12: SigLIP
+  13: SigLIP2
+  14: ViTamin
+  15: XLM-RoBERTa-CLIP
+
+training_data:
+  0: CC-12m
+  1: CommonCrawl-2.5b
+  2: CommonPool-12.8b
+  3: CommonPool-128m
+  4: CommonPool-13m
+  5: CommonPool-1b
+  6: DFN-2b
+  7: DFN-5b
+  8: DFNDR-2b
+  9: DataComp-12.8b
+  10: DataComp-128m
+  11: DataComp-13m
+  12: DataComp-1b
+  13: LAION-2b
+  14: LAION-400m
+  15: LAION-5b
+  16: LAION-A-900m
+  17: Merged-2b
+  18: MetaCLIP-400m
+  19: MetaCLIP-5.4b
+  20: MetaCLIP2-2.5b
+  21: OpenAI-400m
+  22: WebLI-10b
+  23: YFCC-15m
+
+--------------------------------------------------------------------------------
+INTERACTION ANALYSIS: UrbanCars
+--------------------------------------------------------------------------------
+Samples: 194
+
+### Testing Interaction Effects
+
+Main effects only: R² = 0.2533, Adj R² = 0.2375
+With interactions: R² = 0.2596, Adj R² = 0.2358
+Improvement: ΔR² = 0.0062
+
+F-test for interactions: F=0.785, df=(2.0, 187.0), p=0.4576
+→ No significant interaction effects detected.
+
+### Interaction Coefficients
+
+Term                                           Coef         SE            p   Sig
+--------------------------------------------------------------------------------
+Intercept                                  59.681      1.263       0.0000   ***
+is_siglip                                  -2.611      1.670       0.1197      
+log_params_z                               -2.215      1.293       0.0884      
+log_imgsize_z                               2.217      1.224       0.0718      
+log_datasize_z                              9.362      1.715       0.0000   ***
+  → is_siglip:log_params_z                     -2.118      5.022       0.6736      
+  → is_siglip:log_datasize_z                   -3.651      2.336       0.1197      
+  → log_params_z:log_datasize_z                -1.382      1.690       0.4146      
+
+### Interaction Interpretation
+
+================================================================================
+ANALYSIS: CELEBA
+================================================================================
+
+--------------------------------------------------------------------------------
+OVERALL STATISTICS: CelebA
+--------------------------------------------------------------------------------
+
+### Worst-Group Accuracy
+N: 194
+Mean: 74.1475
+Std: 16.9186
+Min: 0.0000
+Max: 89.2495
+Median: 80.2778
+P5: 33.1878
+P10: 46.3889
+P25: 71.3889
+P75: 85.3843
+P90: 86.6667
+P95: 87.2402
+
+--------------------------------------------------------------------------------
+FACTOR: Training Objective (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=152
+  SigLIP2: n=15
+  SigLIP: n=11
+  CLIPA: n=7
+  EVA: n=5
+  CoCa: n=4
+
+### Worst-Group Accuracy by Training Objective
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+SigLIP                                 87.04     1.38    84.29    89.25    87.37    11
+SigLIP2                                86.43     0.61    85.51    87.27    86.67    15
+CLIPA                                  85.78     1.43    84.09    87.42    85.56     7
+EVA                                    78.84     5.10    72.22    86.40    78.89     5
+CLIP                                   71.74    17.05     0.00    87.64    77.89   152
+CoCa                                   57.88    38.39     0.97    82.78    73.89     4
+
+Kruskal-Wallis: H=64.0790, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Training Data (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  WebLI-10b: n=30
+  DataComp-1b: n=29
+  LAION-2b: n=23
+  OpenAI-400m: n=19
+  LAION-400m: n=12
+  CommonCrawl-2.5b: n=10
+  DFNDR-2b: n=7
+  MetaCLIP-400m: n=6
+  CommonPool-128m: n=6
+  CommonPool-13m: n=6
+  CommonPool-1b: n=6
+  MetaCLIP2-2.5b: n=6
+  MetaCLIP-5.4b: n=5
+  DFN-2b: n=4
+  DFN-5b: n=4
+  Merged-2b: n=4
+  YFCC-15m: n=4
+  CommonPool-12.8b: n=3
+  LAION-A-900m: n=3
+  LAION-5b: n=2 [EXCLUDED]
+  CC-12m: n=2 [EXCLUDED]
+  DataComp-12.8b: n=1 [EXCLUDED]
+  DataComp-128m: n=1 [EXCLUDED]
+  DataComp-13m: n=1 [EXCLUDED]
+
+### Worst-Group Accuracy by Training Data
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+DFN-5b                                 86.20     0.61    85.56    87.04    86.11     4
+WebLI-10b                              84.70     5.40    66.67    89.25    86.63    30
+MetaCLIP2-2.5b                         84.24     1.53    82.78    86.14    83.89     6
+CommonPool-12.8b                       82.10     2.21    80.56    84.63    81.11     3
+LAION-A-900m                           81.57     2.26    80.00    84.17    80.56     3
+DataComp-1b                            81.11     5.97    64.44    87.22    83.33    29
+LAION-400m                             78.98     4.83    72.22    86.12    79.44    12
+Merged-2b                              78.68     5.87    72.22    86.40    78.06     4
+DFNDR-2b                               78.02     2.35    73.33    80.56    78.33     7
+CommonCrawl-2.5b                       77.67     6.28    69.44    85.56    78.89    10
+LAION-2b                               75.97    21.12     0.97    87.64    82.78    23
+MetaCLIP-400m                          74.69     7.50    64.44    85.00    73.61     6
+DFN-2b                                 73.33     7.79    66.67    82.78    71.94     4
+MetaCLIP-5.4b                          72.33     9.83    58.33    85.56    72.22     5
+OpenAI-400m                            70.61    18.24     0.00    83.89    75.00    19
+CommonPool-1b                          52.69     8.76    41.67    62.78    52.78     6
+CommonPool-13m                         44.44    12.43    32.70    66.11    42.46     6
+YFCC-15m                               41.60     9.28    29.52    51.32    42.78     4
+CommonPool-128m                        40.62    17.67    20.56    68.51    43.61     6
+
+Kruskal-Wallis: H=101.0304, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Architecture (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  CLIP: n=85
+  ResNet: n=16
+  ViTamin: n=15
+  SigLIP2: n=15
+  ConvNeXt: n=12
+  SigLIP: n=11
+  CLIPA: n=7
+  MobileCLIP2: n=6
+  PE: n=5
+  EVA: n=5
+  MobileCLIP: n=4
+  CoCa: n=4
+  NLLB-SigLIP: n=4
+  XLM-RoBERTa-CLIP: n=2 [EXCLUDED]
+  NNLB-CLIP: n=2 [EXCLUDED]
+  RoBERTa-CLIP: n=1 [EXCLUDED]
+
+### Worst-Group Accuracy by Architecture
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+SigLIP                                 87.04     1.38    84.29    89.25    87.37    11
+SigLIP2                                86.43     0.61    85.51    87.27    86.67    15
+CLIPA                                  85.78     1.43    84.09    87.42    85.56     7
+MobileCLIP                             84.58     2.28    81.67    87.22    84.72     4
+ConvNeXt                               83.74     3.46    75.56    87.06    84.31    12
+ViTamin                                79.79     5.31    68.89    86.17    79.44    15
+EVA                                    78.84     5.10    72.22    86.40    78.89     5
+MobileCLIP2                            78.80     1.24    77.22    80.56    78.89     6
+PE                                     72.33     9.83    58.33    85.56    72.22     5
+NLLB-SigLIP                            71.81     4.14    66.67    76.67    71.94     4
+CLIP                                   71.00    16.51    20.56    87.64    76.67    85
+CoCa                                   57.88    38.39     0.97    82.78    73.89     4
+ResNet                                 55.05    24.64     0.00    83.89    63.61    16
+
+Kruskal-Wallis: H=90.2147, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Resolution Bucket (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <=240: n=120
+  301-400: n=38
+  241-300: n=29
+  >400: n=7
+
+### Worst-Group Accuracy by Resolution Bucket
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+241-300                                81.62     6.41    63.33    87.75    84.67    29
+301-400                                81.00     7.13    58.33    89.25    84.23    38
+>400                                   72.55    32.26     0.00    87.83    85.64     7
+<=240                                  70.27    18.57     0.97    87.64    78.06   120
+
+Kruskal-Wallis: H=23.8885, p=0.000026 (***)
+
+--------------------------------------------------------------------------------
+FACTOR: Params Bucket (CelebA)
+--------------------------------------------------------------------------------
+
+### Group Counts
+  <200M: n=78
+  200-500M: n=52
+  500M-1B: n=34
+  >1B: n=30
+
+### Worst-Group Accuracy by Params Bucket
+
+Level                                   Mean      Std      Min      Max      Med     N
+-------------------------------------------------------------------------------------
+>1B                                    81.58    12.13    21.67    87.75    85.67    30
+200-500M                               79.66    12.38     0.97    87.83    81.67    52
+500M-1B                                78.61    15.51     0.00    89.25    83.71    34
+<200M                                  65.67    18.37    20.56    87.22    70.83    78
+
+Kruskal-Wallis: H=50.9008, p=0.000000 (***)
+
+--------------------------------------------------------------------------------
+NUMERIC: Parameters (M) (CelebA)
+--------------------------------------------------------------------------------
+
+### Parameters (M) → Worst-Group Accuracy
+  Pearson: r=+0.2934, p=0.000033 (***)
+  Spearman: ρ=+0.4794, p=0.000000 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+NUMERIC: Image Size (CelebA)
+--------------------------------------------------------------------------------
+
+### Image Size → Worst-Group Accuracy
+  Pearson: r=+0.1881, p=0.008635 (**)
+  Spearman: ρ=+0.3233, p=0.000004 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+NUMERIC: Patch Size (CelebA)
+--------------------------------------------------------------------------------
+
+### Patch Size → Worst-Group Accuracy
+  Pearson: r=-0.4922, p=0.000000 (***)
+  Spearman: ρ=-0.3784, p=0.000001 (***)
+N: 162
+
+--------------------------------------------------------------------------------
+NUMERIC: Tokens (CelebA)
+--------------------------------------------------------------------------------
+
+### Tokens → Worst-Group Accuracy
+  Pearson: r=+0.3926, p=0.000000 (***)
+  Spearman: ρ=+0.5192, p=0.000000 (***)
+N: 162
+
+--------------------------------------------------------------------------------
+NUMERIC: Embed Dim (CelebA)
+--------------------------------------------------------------------------------
+
+### Embed Dim → Worst-Group Accuracy
+  Pearson: r=+0.2778, p=0.002425 (**)
+  Spearman: ρ=+0.4899, p=0.000000 (***)
+N: 117
+
+--------------------------------------------------------------------------------
+NUMERIC: Data Size (M) (CelebA)
+--------------------------------------------------------------------------------
+
+### Data Size (M) → Worst-Group Accuracy
+  Pearson: r=+0.3364, p=0.000002 (***)
+  Spearman: ρ=+0.5271, p=0.000000 (***)
+N: 194
+
+--------------------------------------------------------------------------------
+TOP/BOTTOM MODELS: CelebA
+--------------------------------------------------------------------------------
+
+### Top 20 by Worst-Group Accuracy
+
+                                           model_id training_objective training_data arch_family  total_params_M  image_size  patch_size  worst_group_accuracy
+65                   ViT-SO400M-14-SigLIP-384_webli             SigLIP     WebLI-10b      SigLIP           878.0         384        14.0                 89.25
+71                   ViT-SO400M-14-SigLIP-378_webli             SigLIP     WebLI-10b      SigLIP           878.0         378        14.0                 88.33
+105                       ViT-B-16-SigLIP-512_webli             SigLIP     WebLI-10b      SigLIP           203.8         512        16.0                 87.83
+104             ViT-SO400M-16-SigLIP-i18n-256_webli             SigLIP     WebLI-10b      SigLIP          1127.4         256        16.0                 87.75
+106                  ViT-bigG-14_laion2b_s39b_b160k               CLIP      LAION-2b        CLIP          2539.6         224        14.0                 87.64
+140                      ViT-H-14-CLIPA-336_laion2b              CLIPA      LAION-2b       CLIPA           968.6         336        14.0                 87.42
+98                        ViT-B-16-SigLIP-256_webli             SigLIP     WebLI-10b      SigLIP           203.2         256        16.0                 87.42
+113                       ViT-B-16-SigLIP-384_webli             SigLIP     WebLI-10b      SigLIP           203.4         384        16.0                 87.37
+125                 ViT-SO400M-16-SigLIP2-384_webli            SigLIP2     WebLI-10b     SigLIP2          1136.0         384        16.0                 87.27
+130                           ViT-B-16-SigLIP_webli             SigLIP     WebLI-10b      SigLIP           203.2         224        16.0                 87.27
+60                           ViT-B-16-SigLIP2_webli            SigLIP2     WebLI-10b     SigLIP2           375.2         224        16.0                 87.22
+39                          MobileCLIP-B_datacompdr               CLIP   DataComp-1b  MobileCLIP           149.8         224        14.0                 87.22
+144                       ViT-L-14-CLIPA_datacomp1b              CLIPA   DataComp-1b       CLIPA           414.2         224        14.0                 87.12
+150                   ViT-L-14-CLIPA-336_datacomp1b              CLIPA   DataComp-1b       CLIPA           414.5         336        14.0                 87.10
+129                 ViT-SO400M-14-SigLIP2-378_webli            SigLIP2     WebLI-10b     SigLIP2          1136.0         378        14.0                 87.09
+142       convnext_xxlarge_laion2b_s34b_b82k_augreg               CLIP      LAION-2b    ConvNeXt          1200.6         256         NaN                 87.06
+114                        ViT-H-14-quickgelu_dfn5b               CLIP        DFN-5b        CLIP           986.1         224        14.0                 87.04
+133                     ViT-SO400M-14-SigLIP2_webli            SigLIP2     WebLI-10b     SigLIP2          1135.5         224        14.0                 86.82
+152  convnext_xxlarge_laion2b_s34b_b82k_augreg_soup               CLIP      LAION-2b    ConvNeXt          1200.6         256         NaN                 86.72
+47                       ViT-B-32-SigLIP2-256_webli            SigLIP2     WebLI-10b     SigLIP2           376.9         256        32.0                 86.67
+
+
+### Bottom 20 by Worst-Group Accuracy
+
+                                             model_id training_objective    training_data arch_family  total_params_M  image_size  patch_size  worst_group_accuracy
+183                           RN101-quickgelu_yfcc15m               CLIP         YFCC-15m      ResNet           119.7         224         NaN                 45.56
+187                   ViT-B-32_commonpool_m_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0                 45.20
+169              ViT-B-32_commonpool_m_clip_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0                 45.00
+35                ViT-B-16_commonpool_l_image_s1b_b8k               CLIP    CommonPool-1b        CLIP           149.6         224        16.0                 45.00
+186              ViT-B-32_commonpool_s_laion_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0                 44.79
+177             ViT-B-32_commonpool_m_laion_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0                 42.22
+100                     ViT-B-16_commonpool_l_s1b_b8k               CLIP    CommonPool-1b        CLIP           149.6         224        16.0                 41.67
+188              ViT-B-32_commonpool_s_basic_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0                 40.14
+179                                     RN101_yfcc15m               CLIP         YFCC-15m      ResNet           119.7         224         NaN                 40.00
+191                    ViT-B-32_commonpool_s_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0                 33.45
+189                      ViT-B-32_datacomp_s_s13m_b4k               CLIP     DataComp-13m        CLIP           151.3         224        32.0                 32.70
+190              ViT-B-32_commonpool_s_image_s13m_b4k               CLIP   CommonPool-13m        CLIP           151.3         224        32.0                 32.70
+185                            RN50-quickgelu_yfcc15m               CLIP         YFCC-15m      ResNet           102.0         224         NaN                 29.52
+87                                         RN50_cc12m               CLIP           CC-12m      ResNet           102.0         224         NaN                 27.78
+81                               RN50-quickgelu_cc12m               CLIP           CC-12m      ResNet           102.0         224         NaN                 26.11
+166             ViT-B-32_commonpool_m_image_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0                 22.22
+40                                 nllb-clip-large_v1               CLIP         LAION-2b   NNLB-CLIP          1399.2         224        14.0                 21.67
+147             ViT-B-32_commonpool_m_basic_s128m_b4k               CLIP  CommonPool-128m        CLIP           151.3         224        32.0                 20.56
+192  coca_ViT-B-32_mscoco_finetuned_laion2b_s13b_b90k               CoCa         LAION-2b        CoCa           253.6         224        32.0                  0.97
+193                          RN50x64-quickgelu_openai               CLIP      OpenAI-400m      ResNet           623.3         448         NaN                  0.00
+
+
+--------------------------------------------------------------------------------
+FIGURE: Landscape (CelebA)
+--------------------------------------------------------------------------------
+
+Pareto-optimal (8):
+  ViT-B-16-quickgelu_dfn2b: x=92.8%, y=66.7%
+  ViT-L-14_dfn2b: x=92.6%, y=67.2%
+  MobileCLIP2-S4_dfndr2b: x=92.3%, y=77.2%
+  MobileCLIP2-S3_dfndr2b: x=92.2%, y=79.4%
+  MobileCLIP2-L-14_dfndr2b: x=91.9%, y=80.6%
+  MobileCLIP-S1_datacompdr: x=91.6%, y=85.0%
+  MobileCLIP-B_datacompdr: x=91.0%, y=87.2%
+  ViT-SO400M-14-SigLIP-384_webli: x=90.5%, y=89.2%
+
+--------------------------------------------------------------------------------
+FIGURE: objective (CelebA)
+--------------------------------------------------------------------------------
+  CoCa: mean=57.88%, std=38.39%, n=4
+  CLIP: mean=71.74%, std=17.05%, n=152
+  EVA: mean=78.84%, std=5.10%, n=5
+  CLIPA: mean=85.78%, std=1.43%, n=7
+  SigLIP2: mean=86.43%, std=0.61%, n=15
+  SigLIP: mean=87.04%, std=1.38%, n=11
+
+--------------------------------------------------------------------------------
+FIGURE: arch (CelebA)
+--------------------------------------------------------------------------------
+  ResNet: mean=55.05%, std=24.64%, n=16
+  CoCa: mean=57.88%, std=38.39%, n=4
+  CLIP: mean=71.00%, std=16.51%, n=85
+  NLLB-SigLIP: mean=71.81%, std=4.14%, n=4
+  PE: mean=72.33%, std=9.83%, n=5
+  MobileCLIP2: mean=78.80%, std=1.24%, n=6
+  EVA: mean=78.84%, std=5.10%, n=5
+  ViTamin: mean=79.79%, std=5.31%, n=15
+  ConvNeXt: mean=83.74%, std=3.46%, n=12
+  MobileCLIP: mean=84.58%, std=2.28%, n=4
+  CLIPA: mean=85.78%, std=1.43%, n=7
+  SigLIP2: mean=86.43%, std=0.61%, n=15
+  SigLIP: mean=87.04%, std=1.38%, n=11
+
+--------------------------------------------------------------------------------
+FIGURE: data (CelebA)
+--------------------------------------------------------------------------------
+  CommonPool-128m: mean=40.62%, std=17.67%, n=6
+  YFCC-15m: mean=41.60%, std=9.28%, n=4
+  CommonPool-13m: mean=44.44%, std=12.43%, n=6
+  CommonPool-1b: mean=52.69%, std=8.76%, n=6
+  OpenAI-400m: mean=70.61%, std=18.24%, n=19
+  MetaCLIP-5.4b: mean=72.33%, std=9.83%, n=5
+  DFN-2b: mean=73.33%, std=7.79%, n=4
+  MetaCLIP-400m: mean=74.69%, std=7.50%, n=6
+  LAION-2b: mean=75.97%, std=21.12%, n=23
+  CommonCrawl-2.5b: mean=77.67%, std=6.28%, n=10
+  DFNDR-2b: mean=78.02%, std=2.35%, n=7
+  Merged-2b: mean=78.68%, std=5.87%, n=4
+  LAION-400m: mean=78.98%, std=4.83%, n=12
+  DataComp-1b: mean=81.11%, std=5.97%, n=29
+  LAION-A-900m: mean=81.57%, std=2.26%, n=3
+  CommonPool-12.8b: mean=82.10%, std=2.21%, n=3
+  MetaCLIP2-2.5b: mean=84.24%, std=1.53%, n=6
+  WebLI-10b: mean=84.70%, std=5.40%, n=30
+  DFN-5b: mean=86.20%, std=0.61%, n=4
+
+--------------------------------------------------------------------------------
+FIGURE: Parameters (M) Scale (CelebA)
+--------------------------------------------------------------------------------
+Parameters (M) vs Worst-Group Accuracy: ρ=0.4794, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Image Size (px) Scale (CelebA)
+--------------------------------------------------------------------------------
+Image Size (px) vs Worst-Group Accuracy: ρ=0.3233, p=0.000004
+
+--------------------------------------------------------------------------------
+FIGURE: Patch Size (px) Scale (CelebA)
+--------------------------------------------------------------------------------
+Patch Size (px) vs Worst-Group Accuracy: ρ=-0.3784, p=0.000001
+
+--------------------------------------------------------------------------------
+FIGURE: Number of Tokens Scale (CelebA)
+--------------------------------------------------------------------------------
+Number of Tokens vs Worst-Group Accuracy: ρ=0.5192, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Training Data Size (M) Scale (CelebA)
+--------------------------------------------------------------------------------
+Training Data Size (M) vs Worst-Group Accuracy: ρ=0.5271, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Correlations (CelebA)
+--------------------------------------------------------------------------------
+
+Factor                          Corr      p-value
+--------------------------------------------------
+total_params_M               +0.5595***     0.000000
+image_size                   +0.3070**     0.001791
+patch_size_num               -0.5995***     0.000000
+num_tokens                   +0.6204***     0.000000
+embed_dim                    +0.6374***     0.000000
+training_data_size_M         +0.3330***     0.000667
+
+================================================================================
+ISOLATED FACTOR ANALYSIS: CELEBA
+================================================================================
+
+This section identifies model pairs/groups where only ONE factor varies,
+enabling stronger causal claims than correlational analysis.
+
+Note: Models without patch_size (ResNet, ConvNeXt, MobileCLIP) are excluded
+from patch size and token analyses.
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Patch Size (CelebA)
+--------------------------------------------------------------------------------
+
+Analyzing 162 models with valid patch_size
+Excluded 32 models without patch_size (ResNet, ConvNeXt, etc.)
+
+Found 7 matched groups where only patch size varies:
+
+Base Configuration                                 | Patch Sizes          | Worst-Group Accuracy                    
+-------------------------------------------------------------------------------------------------------------------
+CLIP / LAION-400m / B                              | 16, 32               | 16→77.4%, 32→81.9%                      
+SigLIP2 / WebLI-10b / B                            | 16, 32               | 16→86.8%, 32→86.7%                      
+CLIP / CommonCrawl-2.5b / B                        | 16, 32               | 16→69.4%, 32→76.4%                      
+CLIP / MetaCLIP-400m / B                           | 16, 32               | 16→70.3%, 32→70.8%                      
+CLIP / OpenAI-400m / B                             | 16, 32               | 16→72.2%, 32→75.8%                      
+CLIP / DataComp-1b / B                             | 16, 32               | 16→75.6%, 32→72.2%                      
+CLIP / LAION-2b / B                                | 16, 32               | 16→81.1%, 32→80.3%                      
+
+### Summary: Patch Size Effect
+
+Patch 16 → 32 (n=7 comparisons):
+  Mean effect: +1.63 pp
+  Std: 3.29 pp
+  Range: [-3.33, 6.94] pp
+  Direction: 4 positive, 3 negative, 0 no change
+
+** Overall: Increasing patch size → +1.63 pp Worst-Group Accuracy on average **
+   (Larger patches = better robustness)
+
+### Figure: Patch Size Isolated Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Image Size (CelebA)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 13 matched groups where only image size varies:
+
+Base Configuration                                      | Resolutions          | Worst-Group Accuracy                    
+------------------------------------------------------------------------------------------------------------------------
+SigLIP / WebLI-10b / 16.0 / B                           | 224px, 256px, 384px, 512px | 224→87.3%, 256→86.6%, 384→87.4%, 512→87.8%
+CLIP / DFN-5b / 14.0 / H                                | 224px, 378px         | 224→86.6%, 378→85.8%                    
+CLIP / LAION-400m / 16.0 / B                            | 224px, 240px         | 224→80.3%, 240→74.4%                    
+CLIP / MetaCLIP2-2.5b / 14.0 / H                        | 224px, 378px         | 224→83.0%, 378→84.4%                    
+CLIP / OpenAI-400m / 14.0 / L                           | 224px, 336px         | 224→80.6%, 336→78.9%                    
+SigLIP2 / WebLI-10b / 16.0 / B                          | 224px, 256px, 384px, 512px | 224→87.2%, 256→86.7%, 384→86.7%, 512→86.7%
+SigLIP2 / WebLI-10b / 16.0 / L                          | 256px, 384px, 512px  | 256→85.5%, 384→85.5%, 512→85.6%         
+CLIP / MetaCLIP2-2.5b / 14.0 / bigG                     | 224px, 378px         | 224→86.1%, 378→86.0%                    
+CLIPA / DataComp-1b / 14.0 / H                          | 224px, 336px         | 224→84.1%, 336→84.2%                    
+CLIPA / DataComp-1b / 14.0 / L                          | 224px, 336px         | 224→87.1%, 336→87.1%                    
+CLIPA / DataComp-1b / 14.0 / bigG                       | 224px, 336px         | 224→85.6%, 336→85.0%                    
+SigLIP / WebLI-10b / 16.0 / L                           | 256px, 384px         | 256→85.9%, 384→84.3%                    
+SigLIP2 / WebLI-10b / 16.0 / gopt                       | 256px, 384px         | 256→85.9%, 384→85.8%                    
+
+### Summary: Image Size Effect
+
+224px → 240px (n=1 comparisons):
+  Mean effect: -5.83 pp
+  Std: 0.00 pp
+  Range: [-5.83, -5.83] pp
+
+224px → 256px (n=2 comparisons):
+  Mean effect: -0.60 pp
+  Std: 0.04 pp
+  Range: [-0.64, -0.56] pp
+
+224px → 336px (n=4 comparisons):
+  Mean effect: -0.54 pp
+  Std: 0.69 pp
+  Range: [-1.67, 0.08] pp
+
+224px → 378px (n=3 comparisons):
+  Mean effect: +0.19 pp
+  Std: 0.94 pp
+  Range: [-0.74, 1.48] pp
+
+224px → 384px (n=2 comparisons):
+  Mean effect: -0.23 pp
+  Std: 0.32 pp
+  Range: [-0.56, 0.09] pp
+
+224px → 512px (n=2 comparisons):
+  Mean effect: -0.00 pp
+  Std: 0.55 pp
+  Range: [-0.56, 0.55] pp
+
+256px → 384px (n=5 comparisons):
+  Mean effect: -0.21 pp
+  Std: 0.78 pp
+  Range: [-1.64, 0.73] pp
+
+256px → 512px (n=3 comparisons):
+  Mean effect: +0.44 pp
+  Std: 0.54 pp
+  Range: [0.00, 1.19] pp
+
+384px → 512px (n=3 comparisons):
+  Mean effect: +0.19 pp
+  Std: 0.20 pp
+  Range: [0.00, 0.46] pp
+
+** Overall: Increasing resolution → -0.33 pp Worst-Group Accuracy on average **
+
+### Figure: Image Size (px) Isolated Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Training Data (CelebA)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 7 matched groups where only training data varies:
+
+Architecture Config                           | Datasets                            | Worst-Group Accuracy
+----------------------------------------------------------------------------------------------------------------------------------
+CLIP / 224 / B / 32.0                         | DataComp-12., LAION-400m, LAION-2b, CommonCrawl-, OpenAI-400m, MetaCLIP-400, DataComp-128, CommonPool-1, CommonPool-1, DataComp-13m | DataComp-1=83.3% > LAION-400m=81.9% > LAION-2b=80.3% > CommonCraw=76.4% > OpenAI-400=75.8% > MetaCLIP-4=70.8% > DataComp-1=48.3% > CommonPool=44.4% > CommonPool=40.6% > DataComp-1=32.7%
+CLIP / 224 / B / 16.0                         | LAION-2b, LAION-400m, DataComp-1b, DFNDR-2b, OpenAI-400m, MetaCLIP-400, CommonCrawl-, DFN-2b, CommonPool-1 | LAION-2b=81.1% > LAION-400m=80.3% > DataComp-1=75.6% > DFNDR-2b=73.3% > OpenAI-400=72.2% > MetaCLIP-4=70.3% > CommonCraw=69.4% > DFN-2b=66.7% > CommonPool=52.7%
+CLIP / 224 / L / 14.0                         | CommonCrawl-, LAION-2b, MetaCLIP-400, CommonPool-1, DataComp-1b, OpenAI-400m, DFN-2b, LAION-400m | CommonCraw=84.4% > LAION-2b=83.3% > MetaCLIP-4=82.9% > CommonPool=82.1% > DataComp-1=80.6% > OpenAI-400=80.6% > DFN-2b=75.6% > LAION-400m=72.5%
+CLIP / 224 / H / 14.0                         | DFN-5b, LAION-2b, MetaCLIP2-2., CommonCrawl- | DFN-5b=86.6% > LAION-2b=84.4% > MetaCLIP2-=83.0% > CommonCraw=79.2%
+CLIP / 224 / bigG / 14.0                      | LAION-2b, MetaCLIP2-2., CommonCrawl- | LAION-2b=87.6% > MetaCLIP2-=86.1% > CommonCraw=78.9%
+CLIP / 378 / H / 14.0                         | DFN-5b, MetaCLIP2-2.                | DFN-5b=85.8% > MetaCLIP2-=84.4%
+CLIPA / 336 / H / 14.0                        | LAION-2b, DataComp-1b               | LAION-2b=87.4% > DataComp-1=84.2%
+
+### Summary: Training Data Effect
+
+Head-to-head comparisons (positive = first dataset wins):
+
+Dataset                     Wins   Losses   Ties   Net Δ (pp)
+------------------------------------------------------------
+LAION-2b                      25        4      1        +9.98
+LAION-400m                    15        9      0        +8.49
+CommonCrawl-2.5b              15       14      0        +3.92
+MetaCLIP-400m                 12       11      1        +3.59
+OpenAI-400m                   11       12      1        +5.60
+DataComp-12.8b                 9        0      0       +22.07
+DataComp-1b                    8        7      1        +2.35
+DFNDR-2b                       5        3      0        +2.30
+DFN-5b                         4        0      0        +3.63
+CommonPool-12.8b               4        3      0        +2.12
+DataComp-128m                  3        6      0       -16.82
+MetaCLIP2-2.5b                 2        4      0        +0.51
+CommonPool-13m                 2        7      0       -21.15
+DFN-2b                         2       13      0        -5.27
+CommonPool-128m                1        8      0       -25.39
+CommonPool-1b                  0        8      0       -20.93
+DataComp-13m                   0        9      0       -34.19
+
+### Figure: Training Data Rankings
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Model Scale (CelebA)
+--------------------------------------------------------------------------------
+
+Analyzing 116 models with vit_size
+
+Found 11 matched groups where only vit_size varies:
+
+Base Configuration                                      | Sizes           | Worst-Group Accuracy
+------------------------------------------------------------------------------------------------------------------------
+CLIP / LAION-2b / 224 / 14.0                            | L < H < g < bigG | L=83.3% → H=84.4% → g=78.9% → bigG=87.6%
+CLIP / CommonCrawl-2.5b / 224 / 14.0                    | L < H < bigG    | L=84.4% → H=79.2% → bigG=78.9%
+CLIPA / DataComp-1b / 224 / 14.0                        | L < H < bigG    | L=87.1% → H=84.1% → bigG=85.6%
+CLIPA / DataComp-1b / 336 / 14.0                        | L < H < bigG    | L=87.1% → H=84.2% → bigG=85.0%
+SigLIP2 / WebLI-10b / 256 / 16.0                        | B < L < gopt    | B=86.7% → L=85.5% → gopt=85.9%
+SigLIP2 / WebLI-10b / 384 / 16.0                        | B < L < gopt    | B=86.7% → L=85.5% → gopt=85.8%
+CLIP / MetaCLIP2-2.5b / 224 / 14.0                      | H < bigG        | H=83.0% → bigG=86.1%
+CLIP / MetaCLIP2-2.5b / 378 / 14.0                      | H < bigG        | H=84.4% → bigG=86.0%
+SigLIP / WebLI-10b / 256 / 16.0                         | B < L           | B=86.6% → L=85.9%
+SigLIP / WebLI-10b / 384 / 16.0                         | B < L           | B=87.4% → L=84.3%
+SigLIP2 / WebLI-10b / 512 / 16.0                        | B < L           | B=86.7% → L=85.6%
+
+### Summary: Model Scale Effect
+
+Overall effect of scaling up (n=26 comparisons):
+  Mean effect: -0.56 pp
+  Std: 3.18 pp
+  10 positive, 16 negative
+
+By size transition:
+  B → L: -1.42 pp (n=5, std=0.84)
+  B → gopt: -0.82 pp (n=2, std=0.07)
+  H → bigG: +1.65 pp (n=6, std=1.24)
+  L → H: -2.53 pp (n=4, std=2.30)
+  L → bigG: -1.23 pp (n=4, std=3.54)
+  L → gopt: +0.33 pp (n=2, std=0.08)
+
+--------------------------------------------------------------------------------
+ISOLATED FACTOR: Training Objective (CelebA)
+--------------------------------------------------------------------------------
+
+Analyzing 194 models
+
+Found 8 matched groups where only training objective varies:
+
+Configuration                                                | Objectives                | Worst-Group Accuracy
+----------------------------------------------------------------------------------------------------------------------------------
+DataComp-1b / 224 / 400-600M / L / 14.0                      | CLIPA, CLIP               | CLIPA=87.1% > CLIP=80.6%
+LAION-2b / 224 / 200-400M / B / 32.0                         | CLIP, CoCa                | CLIP=77.8% > CoCa=34.9%
+WebLI-10b / 224 / 200-400M / B / 16.0                        | SigLIP, SigLIP2           | SigLIP=87.3% > SigLIP2=87.2%
+WebLI-10b / 256 / 200-400M / B / 16.0                        | SigLIP2, SigLIP           | SigLIP2=86.7% > SigLIP=86.6%
+WebLI-10b / 256 / 600M-1B / L / 16.0                         | SigLIP, SigLIP2           | SigLIP=85.9% > SigLIP2=85.5%
+WebLI-10b / 384 / 200-400M / B / 16.0                        | SigLIP, SigLIP2           | SigLIP=87.4% > SigLIP2=86.7%
+WebLI-10b / 384 / 600M-1B / L / 16.0                         | SigLIP2, SigLIP           | SigLIP2=85.5% > SigLIP=84.3%
+WebLI-10b / 512 / 200-400M / B / 16.0                        | SigLIP, SigLIP2           | SigLIP=87.8% > SigLIP2=86.7%
+
+### Summary: Training Objective Effect
+
+--------------------------------------------------------------------------------
+ISOLATED FACTORS SUMMARY
+--------------------------------------------------------------------------------
+  patch_size: 7 matched comparisons found
+  image_size: 25 matched comparisons found
+  training_data: 120 matched comparisons found
+  model_scale: 26 matched comparisons found
+  objective: 8 matched comparisons found
+
+================================================================================
+MULTIVARIATE ANALYSIS: CELEBA
+================================================================================
+
+This section analyzes confounded relationships between factors.
+Goal: Identify the independent contribution of each factor,
+controlling for other factors that may be correlated.
+
+--------------------------------------------------------------------------------
+MULTIVARIATE REGRESSION: CelebA
+--------------------------------------------------------------------------------
+
+Note: 32 models lack patch_size (ResNet, ConvNeXt, MobileCLIP, etc.)
+These will be EXCLUDED from the regression which includes patch_size as a factor.
+Regression will use 162 models with valid patch_size.
+Samples for regression: 162
+
+### Factor Distributions in Regression Sample
+
+Architecture groups:
+  CLIP: n=114
+  SigLIP: n=26
+  CLIPA: n=7
+  MobileCLIP: n=6
+  EVA: n=5
+  CoCa: n=4
+
+Dataset groups:
+  LAION: n=42
+  DataComp: n=32
+  WebLI: n=30
+  CommonPool: n=21
+  MetaCLIP: n=17
+  DFN: n=11
+  OpenAI: n=9
+
+### Model 1: Full Model (all factors)
+
+Formula: y ~ is_siglip + is_coca + is_eva + is_clipa + is_mobileclip + is_webli + is_datacomp + is_dfn + is_openai + is_metaclip + log_params_z + log_datasize_z + log_patchsize_z + log_imgsize_z
+R²: 0.4741
+Adj R²: 0.4240
+F-statistic: 9.4659
+F p-value: 0.0000
+
+Variable                        Coef         SE          t            p               95% CI   Sig
+-----------------------------------------------------------------------------------------------
+Intercept                     71.119      1.817      39.14       0.0000 [  67.53,  74.71]   ***
+is_siglip                     16.225      6.420       2.53       0.0126 [   3.54,  28.91]     *
+is_coca                      -14.933      6.248      -2.39       0.0181 [ -27.28,  -2.59]     *
+is_eva                         3.929      5.647       0.70       0.4876 [  -7.23,  15.09]      
+is_clipa                       5.867      5.124       1.15       0.2540 [  -4.26,  15.99]      
+is_mobileclip                  8.334      5.452       1.53       0.1285 [  -2.44,  19.11]      
+is_webli                     -13.938      7.133      -1.95       0.0526 [ -28.04,   0.16]      
+is_datacomp                    4.994      3.002       1.66       0.0984 [  -0.94,  10.93]      
+is_dfn                         1.773      4.214       0.42       0.6747 [  -6.56,  10.10]      
+is_openai                     10.622      4.331       2.45       0.0154 [   2.06,  19.18]     *
+is_metaclip                    9.190      3.612       2.54       0.0120 [   2.05,  16.33]     *
+log_params_z                   2.342      1.218       1.92       0.0563 [  -0.06,   4.75]      
+log_datasize_z                 7.763      1.605       4.84       0.0000 [   4.59,  10.94]   ***
+log_patchsize_z               -2.329      1.284      -1.81       0.0718 [  -4.87,   0.21]      
+log_imgsize_z                  0.427      1.176       0.36       0.7170 [  -1.90,   2.75]      
+
+### Interpretation Guide
+
+• Architecture dummies: effect vs CLIP (reference category)
+• Dataset dummies: effect vs LAION (reference category)
+• Numeric variables: standardized (1 unit = 1 SD)
+  - log_params_z: model size (log10 of params)
+  - log_datasize_z: training data size (log10)
+  - log_patchsize_z: patch size (log2)
+  - log_imgsize_z: image resolution (log2)
+
+### Significant Effects (p < 0.05)
+  ↑ is_siglip: +16.23pp (p=0.0126)
+  ↓ is_coca: -14.93pp (p=0.0181)
+  ↑ is_openai: +10.62pp (p=0.0154)
+  ↑ is_metaclip: +9.19pp (p=0.0120)
+  ↑ log_datasize_z: +7.76pp (p=0.0000)
+
+### Model 2: Hierarchical Regression (Incremental R²)
+
+How much variance does each factor GROUP add?
+
+Step                                             R²        ΔR²          F            p
+-------------------------------------------------------------------------------------
+1. Architecture                              0.1789     0.1789       6.80     0.000009
+2. + Scale (params, img, patch)              0.3662     0.1873      11.05     0.000000
+3. + Dataset Type                            0.3904     0.0243       7.29     0.000000
+4. + Dataset Size                            0.4741     0.0837       9.47     0.000000
+
+
+Alternative order (robustness check):
+
+Step                                             R²        ΔR²
+-----------------------------------------------------------------
+1. Scale                                     0.2853     0.2853
+2. + Dataset Size                            0.3649     0.0795
+3. + Dataset Type                            0.4157     0.0508
+4. + Architecture                            0.4741     0.0584
+
+--------------------------------------------------------------------------------
+PARTIAL CORRELATIONS: CelebA
+--------------------------------------------------------------------------------
+
+Note: Excluding 32 models without patch_size (ResNet, ConvNeXt, etc.)
+Samples: 162
+
+### Zero-Order vs Partial Correlations
+
+Zero-order: raw correlation (potentially confounded)
+Partial: correlation controlling for all other factors
+
+Factor                      Zero-Order      Partial          Δ Interpretation      
+-------------------------------------------------------------------------------------
+Architecture (SigLIP)          +0.5581      +0.0803    -0.4777 Confounded ↓        
+Model Parameters               +0.4534      +0.1161    -0.3373 Confounded ↓        
+Dataset Size                   +0.4915      +0.2384    -0.2531 Confounded ↓        
+Patch Size                     -0.3784      -0.2884    +0.0901 Slight confounding  
+Image Size                     +0.3811      +0.0340    -0.3470 Confounded ↓        
+
+### Interpretation Guide
+
+• Partial ≈ Zero-order: Factor has independent effect (not confounded)
+• Partial << Zero-order: Effect was confounded (inflated by correlations)
+• Partial >> Zero-order: Suppressor effect (other factors were masking it)
+
+### Key Findings
+• Architecture (SigLIP): Confounded ↓ (Δ = -0.478)
+• Image Size: Confounded ↓ (Δ = -0.347)
+• Model Parameters: Confounded ↓ (Δ = -0.337)
+• Dataset Size: Confounded ↓ (Δ = -0.253)
+
+--------------------------------------------------------------------------------
+VARIANCE PARTITIONING: CelebA
+--------------------------------------------------------------------------------
+
+Note: Excluding 32 models without patch_size (ResNet, ConvNeXt, etc.)
+Samples: 162
+
+### Individual Model R² Values
+
+Model                                            R²
+-------------------------------------------------------
+none                                         0.0000
+arch                                         0.1323
+scale                                        0.2853
+data                                         0.2779
+arch_scale                                   0.3458
+arch_data                                    0.3362
+scale_data                                   0.3757
+full                                         0.4270
+
+### Unique Contributions (Type III)
+
+Unique = variance explained ONLY by this factor group,
+not shared with any other factor group.
+
+Factor Group                 Unique R²   % of Total Variables                     
+-------------------------------------------------------------------------------------
+Architecture                    0.0513        12.0% SigLIP, CoCa, EVA dummies     
+Scale                           0.0907        21.2% params, img_size, patch_size  
+Data                            0.0812        19.0% dataset_type, dataset_size    
+Shared/Confounded               0.2038        47.7%
+-------------------------------------------------------------------------------------
+TOTAL EXPLAINED                 0.4270       100.0%
+Unexplained                     0.5730
+
+### Interpretation
+
+Factor importance ranking (by unique variance):
+  1. Scale: 21.2% of explained variance
+  2. Data: 19.0% of explained variance
+  3. Architecture: 12.0% of explained variance
+
+⚠ Warning: 47.7% of variance is shared (confounded).
+  Factors are highly correlated; interpret individual effects with caution.
+
+--------------------------------------------------------------------------------
+RANDOM FOREST IMPORTANCE: CelebA
+--------------------------------------------------------------------------------
+
+Note: 32 models lack patch_size and will be excluded.
+Samples: 101
+Features: 8
+CV R² mean: -0.1545
+CV R² std: 0.6061
+Training R²: 0.5803
+
+### Feature Importance Ranking
+
+Importance = Mean Decrease in Impurity (Gini importance)
+
+Rank  Feature                     Importance   Cumulative
+------------------------------------------------------------
+1     Dataset Size (M)                0.4910       0.4910
+2     Dataset Type                    0.1713       0.6623
+3     Model Parameters (M)            0.1289       0.7912
+4     Num Tokens                      0.0907       0.8819
+5     Architecture Family             0.0541       0.9360
+6     Embedding Dim                   0.0437       0.9798
+7     Patch Size                      0.0190       0.9988
+8     Image Size                      0.0012       1.0000
+
+### Importance by Factor Category
+
+Category               Importance
+-----------------------------------
+Architecture               0.0541
+Scale                      0.2836
+Data                       0.6623
+
+### Categorical Encodings
+
+arch_family:
+  0: CLIP
+  1: CLIPA
+  2: CoCa
+  3: ConvNeXt
+  4: EVA
+  5: MobileCLIP
+  6: MobileCLIP2
+  7: NLLB-SigLIP
+  8: NNLB-CLIP
+  9: PE
+  10: ResNet
+  11: RoBERTa-CLIP
+  12: SigLIP
+  13: SigLIP2
+  14: ViTamin
+  15: XLM-RoBERTa-CLIP
+
+training_data:
+  0: CC-12m
+  1: CommonCrawl-2.5b
+  2: CommonPool-12.8b
+  3: CommonPool-128m
+  4: CommonPool-13m
+  5: CommonPool-1b
+  6: DFN-2b
+  7: DFN-5b
+  8: DFNDR-2b
+  9: DataComp-12.8b
+  10: DataComp-128m
+  11: DataComp-13m
+  12: DataComp-1b
+  13: LAION-2b
+  14: LAION-400m
+  15: LAION-5b
+  16: LAION-A-900m
+  17: Merged-2b
+  18: MetaCLIP-400m
+  19: MetaCLIP-5.4b
+  20: MetaCLIP2-2.5b
+  21: OpenAI-400m
+  22: WebLI-10b
+  23: YFCC-15m
+
+--------------------------------------------------------------------------------
+INTERACTION ANALYSIS: CelebA
+--------------------------------------------------------------------------------
+Samples: 194
+
+### Testing Interaction Effects
+
+Main effects only: R² = 0.3592, Adj R² = 0.3457
+With interactions: R² = 0.4042, Adj R² = 0.3851
+Improvement: ΔR² = 0.0450
+
+F-test for interactions: F=7.055, df=(2.0, 187.0), p=0.0011
+→ Interaction effects are statistically significant!
+
+### Interaction Coefficients
+
+Term                                           Coef         SE            p   Sig
+--------------------------------------------------------------------------------
+Intercept                                  75.547      1.107       0.0000   ***
+is_siglip                                   1.201      1.464       0.4129      
+log_params_z                                2.873      1.133       0.0121     *
+log_imgsize_z                              -0.209      1.073       0.8457      
+log_datasize_z                              5.707      1.503       0.0002   ***
+  → is_siglip:log_params_z                      4.354      4.401       0.3238      
+  → is_siglip:log_datasize_z                    1.680      2.047       0.4129      
+  → log_params_z:log_datasize_z                -5.392      1.481       0.0004   ***
+
+### Interaction Interpretation
+
+• Size × Data: Larger models benefit LESS from larger datasets
+
+--------------------------------------------------------------------------------
+ROBUSTNESS METRICS: ImageNet vs UrbanCars
+--------------------------------------------------------------------------------
+Models in ImageNet: 194
+Models in UrbanCars: 194
+Overlapping models: 194
+
+### Robustness Gap Statistics
+Mean gap: 9.68pp
+Std gap: 18.57pp
+Min gap: -36.89pp
+Max gap: 65.84pp
+
+### Robustness Ratio Statistics
+Mean ratio: 1.066
+Std ratio: 1.153
+Min ratio: 0.025
+Max ratio: 13.660
+
+### Correlation: ImageNet vs WG
+  Pearson: r=0.4917, p=0.000000
+  Spearman: ρ=0.2660, p=0.000177
+
+--------------------------------------------------------------------------------
+FIGURE: ImageNet vs UrbanCars WG
+--------------------------------------------------------------------------------
+Correlation: ρ=0.2660, p=0.000177
+
+--------------------------------------------------------------------------------
+FIGURE: Robustness Gap (UrbanCars)
+--------------------------------------------------------------------------------
+
+Top 5 most robust (smallest gap):
+  nllb-clip-large_v1: gap=-36.89pp
+  nllb-clip-base-siglip_v1: gap=-36.87pp
+  ViT-B-32_commonpool_s_s13m_b4k: gap=-34.11pp
+  nllb-clip-large-siglip_v1: gap=-29.10pp
+  nllb-clip-large-siglip_mrl: gap=-27.85pp
+
+Top 5 least robust (largest gap):
+  ViT-L-14_metaclip_400m: gap=49.99pp
+  ViT-bigG-14-worldwide-378_metaclip2_worldwide: gap=51.82pp
+  ViT-H-14-quickgelu_metaclip_fullcc: gap=59.71pp
+  coca_ViT-B-32_mscoco_finetuned_laion2b_s13b_b90k: gap=61.71pp
+  ViT-L-14-quickgelu_metaclip_400m: gap=65.84pp
+
+--------------------------------------------------------------------------------
+FIGURE: Gap by Objective (UrbanCars)
+--------------------------------------------------------------------------------
+  CLIP: gap=7.53pp ± 18.44pp (n=152)
+  SigLIP: gap=11.84pp ± 14.27pp (n=11)
+  CLIPA: gap=15.98pp ± 10.73pp (n=7)
+  CoCa: gap=16.67pp ± 30.79pp (n=4)
+  EVA: gap=18.70pp ± 10.82pp (n=5)
+  SigLIP2: gap=22.02pp ± 19.37pp (n=15)
+
+--------------------------------------------------------------------------------
+FIGURE: Gap by Architecture (UrbanCars)
+--------------------------------------------------------------------------------
+  NLLB-SigLIP: gap=-19.39pp ± 24.10pp (n=4)
+  MobileCLIP2: gap=-1.36pp ± 2.75pp (n=6)
+  ResNet: gap=3.33pp ± 14.16pp (n=16)
+  PE: gap=3.89pp ± 8.95pp (n=5)
+  CLIP: gap=8.74pp ± 20.03pp (n=85)
+  SigLIP: gap=11.84pp ± 14.27pp (n=11)
+  ConvNeXt: gap=12.20pp ± 12.66pp (n=12)
+  MobileCLIP: gap=14.66pp ± 10.43pp (n=4)
+  CLIPA: gap=15.98pp ± 10.73pp (n=7)
+  CoCa: gap=16.67pp ± 30.79pp (n=4)
+  ViTamin: gap=16.70pp ± 13.07pp (n=15)
+  EVA: gap=18.70pp ± 10.82pp (n=5)
+  SigLIP2: gap=22.02pp ± 19.37pp (n=15)
+
+--------------------------------------------------------------------------------
+ROBUSTNESS METRICS: ImageNet vs CelebA
+--------------------------------------------------------------------------------
+Models in ImageNet: 194
+Models in CelebA: 194
+Overlapping models: 194
+
+### Robustness Gap Statistics
+Mean gap: -6.57pp
+Std gap: 13.56pp
+Min gap: -61.06pp
+Max gap: 73.91pp
+
+### Robustness Ratio Statistics
+Mean ratio: 1.472
+Std ratio: 1.952
+Min ratio: 0.000
+Max ratio: 14.696
+
+### Correlation: ImageNet vs WG
+  Pearson: r=0.7278, p=0.000000
+  Spearman: ρ=0.6834, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: ImageNet vs CelebA WG
+--------------------------------------------------------------------------------
+Correlation: ρ=0.6834, p=0.000000
+
+--------------------------------------------------------------------------------
+FIGURE: Robustness Gap (CelebA)
+--------------------------------------------------------------------------------
+
+Top 5 most robust (smallest gap):
+  ViT-B-32_commonpool_s_clip_s13m_b4k: gap=-61.06pp
+  ViT-B-32_commonpool_s_text_s13m_b4k: gap=-44.84pp
+  ViT-B-32_commonpool_m_text_s128m_b4k: gap=-43.00pp
+  nllb-clip-base_v1: gap=-41.81pp
+  ViT-B-32_commonpool_s_laion_s13m_b4k: gap=-41.75pp
+
+Top 5 least robust (largest gap):
+  ViT-L-14_dfn2b: gap=13.33pp
+  nllb-clip-large_v1: gap=15.05pp
+  PE-Core-L-14-336_meta: gap=25.15pp
+  coca_ViT-B-32_mscoco_finetuned_laion2b_s13b_b90k: gap=62.34pp
+  RN50x64-quickgelu_openai: gap=73.91pp
+
+--------------------------------------------------------------------------------
+FIGURE: Gap by Objective (CelebA)
+--------------------------------------------------------------------------------
+  CLIP: gap=-7.48pp ± 14.07pp (n=152)
+  SigLIP: gap=-7.34pp ± 2.99pp (n=11)
+  CLIPA: gap=-4.66pp ± 2.75pp (n=7)
+  SigLIP2: gap=-4.36pp ± 3.22pp (n=15)
+  EVA: gap=-0.30pp ± 5.38pp (n=5)
+  CoCa: gap=10.79pp ± 34.51pp (n=4)
+
+--------------------------------------------------------------------------------
+FIGURE: Gap by Architecture (CelebA)
+--------------------------------------------------------------------------------
+  NLLB-SigLIP: gap=-29.40pp ± 7.10pp (n=4)
+  ConvNeXt: gap=-9.61pp ± 4.20pp (n=12)
+  MobileCLIP: gap=-9.32pp ± 3.40pp (n=4)
+  CLIP: gap=-8.96pp ± 13.09pp (n=85)
+  SigLIP: gap=-7.34pp ± 2.99pp (n=11)
+  CLIPA: gap=-4.66pp ± 2.75pp (n=7)
+  SigLIP2: gap=-4.36pp ± 3.22pp (n=15)
+  ViTamin: gap=-2.24pp ± 6.78pp (n=15)
+  ResNet: gap=-0.93pp ± 22.61pp (n=16)
+  EVA: gap=-0.30pp ± 5.38pp (n=5)
+  MobileCLIP2: gap=-0.02pp ± 3.59pp (n=6)
+  PE: gap=1.80pp ± 14.27pp (n=5)
+  CoCa: gap=10.79pp ± 34.51pp (n=4)
+
+--------------------------------------------------------------------------------
+FIGURE: 3-Way Correlation Matrix
+--------------------------------------------------------------------------------
+Models in all 3 datasets: 194
+
+### Pairwise Correlations (Spearman)
+  ImageNet vs UrbanCars_WG: ρ=0.2660, p=0.000177
+  ImageNet vs CelebA_WG: ρ=0.6834, p=0.000000
+  UrbanCars_WG vs CelebA_WG: ρ=0.2776, p=0.000089
+
+--------------------------------------------------------------------------------
+FIGURE: 3-Way Pareto Analysis
+--------------------------------------------------------------------------------
+
+3-Way Pareto-optimal models (7):
+  ViT-gopt-16-SigLIP2-384_webli: IN=85.0%, UC=73.6%, CA=85.8%
+  ViT-gopt-16-SigLIP2-256_webli: IN=84.5%, UC=50.4%, CA=85.9%
+  ViT-H-14-378-quickgelu_dfn5b: IN=84.3%, UC=78.4%, CA=86.1%
+  ViT-SO400M-16-SigLIP2-512_webli: IN=84.3%, UC=64.0%, CA=86.6%
+  ViT-SO400M-16-SigLIP2-384_webli: IN=84.2%, UC=48.8%, CA=87.3%
+  ViT-H-14-quickgelu_dfn5b: IN=83.4%, UC=84.8%, CA=87.0%
+  ViT-SO400M-14-SigLIP-384_webli: IN=83.1%, UC=86.4%, CA=89.2%
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+
+### ImageNet Key Findings
+
+Top 5 by Top-1 Accuracy:
+  ViT-gopt-16-SigLIP2-384_webli: Top-1=85.0%, SigLIP2
+  ViT-gopt-16-SigLIP2-256_webli: Top-1=84.5%, SigLIP2
+  ViT-H-14-378-quickgelu_dfn5b: Top-1=84.3%, CLIP
+  ViT-SO400M-16-SigLIP2-512_webli: Top-1=84.3%, SigLIP2
+  ViT-SO400M-16-SigLIP2-384_webli: Top-1=84.2%, SigLIP2
+
+### UrbanCars Key Findings
+
+Top 5 by WG Accuracy:
+  ViT-SO400M-14-SigLIP-384_webli: WG=86.4%, SigLIP
+  ViT-SO400M-14-SigLIP_webli: WG=86.4%, SigLIP
+  ViT-H-14-quickgelu_dfn5b: WG=84.8%, CLIP
+  MobileCLIP2-S3_dfndr2b: WG=84.0%, CLIP
+  ViT-B-16-SigLIP2_webli: WG=83.2%, SigLIP2
+
+### Robustness Analysis (UrbanCars)
+
+ImageNet vs WG correlation: ρ=0.266 (p=1.77e-04)
+Mean robustness gap: 9.7pp
+Models with <10pp gap: 105
+
+### CelebA Key Findings
+
+Top 5 by WG Accuracy:
+  ViT-SO400M-14-SigLIP-384_webli: WG=89.2%, SigLIP
+  ViT-SO400M-14-SigLIP-378_webli: WG=88.3%, SigLIP
+  ViT-B-16-SigLIP-512_webli: WG=87.8%, SigLIP
+  ViT-SO400M-16-SigLIP-i18n-256_webli: WG=87.8%, SigLIP
+  ViT-bigG-14_laion2b_s39b_b160k: WG=87.6%, CLIP

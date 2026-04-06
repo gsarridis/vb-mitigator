@@ -1,0 +1,18 @@
+{
+  "model_name": "ViTamin-S",
+  "pretrained_tag": "datacomp1b",
+  "model_id": "ViTamin-S_datacomp1b",
+  "arch_family": "ViT",
+  "vit_size": null,
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "total_params_M": 62.5,
+  "top1_accuracy": 62.22,
+  "top5_accuracy": 87.902,
+  "total_images": 50000,
+  "load_time_s": 1.8,
+  "classifier_time_s": 5.0,
+  "eval_time_s": 55.9
+}

@@ -1,0 +1,18 @@
+{
+  "model_name": "ViT-L-16-SigLIP2-256",
+  "pretrained_tag": "webli",
+  "model_id": "ViT-L-16-SigLIP2-256_webli",
+  "arch_family": "ViT",
+  "vit_size": "L",
+  "patch_size": 16,
+  "image_size": 256,
+  "training_data": "WebLI",
+  "quickgelu": false,
+  "total_params_M": 881.5,
+  "top1_accuracy": 82.35,
+  "top5_accuracy": 96.778,
+  "total_images": 50000,
+  "load_time_s": 93.4,
+  "classifier_time_s": 32.6,
+  "eval_time_s": 86.8
+}

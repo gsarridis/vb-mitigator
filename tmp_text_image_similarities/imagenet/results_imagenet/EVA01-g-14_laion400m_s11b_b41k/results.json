@@ -1,0 +1,17 @@
+{
+  "model_name": "EVA01-g-14",
+  "pretrained_tag": "laion400m_s11b_b41k",
+  "model_id": "EVA01-g-14_laion400m_s11b_b41k",
+  "arch_family": "EVA",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "LAION-400M",
+  "quickgelu": false,
+  "total_params_M": 1136.4,
+  "top1_accuracy": 78.5,
+  "top5_accuracy": 95.496,
+  "total_images": 50000,
+  "load_time_s": 41.8,
+  "classifier_time_s": 20.5,
+  "eval_time_s": 422.6
+}

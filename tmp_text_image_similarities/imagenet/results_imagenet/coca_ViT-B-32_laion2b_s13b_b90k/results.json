@@ -1,0 +1,19 @@
+{
+  "model_name": "coca_ViT-B-32",
+  "pretrained_tag": "laion2b_s13b_b90k",
+  "model_id": "coca_ViT-B-32_laion2b_s13b_b90k",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 32,
+  "image_size": 224,
+  "training_data": "LAION-2B",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 253.6,
+  "top1_accuracy": 63.586,
+  "top5_accuracy": 88.054,
+  "total_images": 50000,
+  "load_time_s": 19.0,
+  "classifier_time_s": 11.7,
+  "eval_time_s": 56.8
+}

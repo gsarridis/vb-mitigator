@@ -1,0 +1,17 @@
+{
+  "model_name": "convnext_base_w_320",
+  "pretrained_tag": "laion_aesthetic_s13b_b82k_augreg",
+  "model_id": "convnext_base_w_320_laion_aesthetic_s13b_b82k_augreg",
+  "arch_family": "ConvNeXt",
+  "patch_size": null,
+  "image_size": 320,
+  "training_data": "laion_aesthetic_s13b_b82k_augreg",
+  "quickgelu": false,
+  "total_params_M": 179.4,
+  "top1_accuracy": 71.264,
+  "top5_accuracy": 92.47,
+  "total_images": 50000,
+  "load_time_s": 14.5,
+  "classifier_time_s": 15.4,
+  "eval_time_s": 96.1
+}

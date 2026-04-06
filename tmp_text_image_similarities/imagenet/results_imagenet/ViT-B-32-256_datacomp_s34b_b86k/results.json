@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-B-32-256",
+  "pretrained_tag": "datacomp_s34b_b86k",
+  "model_id": "ViT-B-32-256_datacomp_s34b_b86k",
+  "arch_family": "ViT",
+  "vit_size": "B",
+  "patch_size": 32,
+  "image_size": 256,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "embed_dim": 512,
+  "total_params_M": 151.3,
+  "top1_accuracy": 72.81,
+  "top5_accuracy": 92.574,
+  "total_images": 50000,
+  "load_time_s": 11.3,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 62.3
+}

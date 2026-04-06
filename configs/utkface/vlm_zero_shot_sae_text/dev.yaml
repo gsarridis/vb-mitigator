@@ -1,0 +1,55 @@
+# SAE Text-Aligned Zero-Shot Classification for UTKFace
+#
+# This approach uses text embeddings from DATASET_CLASS_NAMES to determine
+# which SAE neurons correspond to which class - no labeled data needed!
+#
+# How it works:
+# 1. Encode class names ("male", "female") with VLM text encoder
+# 2. For each SAE decoder column (neuron direction), compute similarity to each class
+# 3. Assign neurons to their most aligned class
+# 4. For classification: filter image features using each class's neurons
+#
+# Key advantage: Fully zero-shot! No need for analysis_results.json from training.
+
+EXPERIMENT:
+  NAME: "sae_text_aligned_zero_shot"
+  TAG: "race"
+  PROJECT: "utkface_zero_shot"
+
+DATASET:
+  TYPE: "utkface"
+  UTKFACE:
+    BIAS: "race"
+    IMAGE_SIZE: 224
+MITIGATOR:
+  TYPE: "sae_text_aligned_zero_shot"
+  SAE_TEXT_ALIGNED_ZERO_SHOT:
+    # VLM Encoder
+    ENCODER_TYPE: "openclip"
+    MODEL_NAME: "ViT-B-32"
+    
+    # SAE paths (set these to your trained SAE)
+    SAE_CHECKPOINT_PATH: "outputs/utkface_sae/race_analysis/sae/sae_checkpoints/ae.pt"  # e.g., "outputs/utkface_sae/sae/sae_checkpoints/ae.pt"
+    
+    
+    # How to align neurons with text
+    ALIGNMENT_METHOD: "decoder"
+    ALIGNMENT_THRESHOLD: 0.08
+    ALIGNMENT_MARGIN: 0.05
+    
+    # Class prompts
+    CLASS_NAME_VARIANT: "default"
+    
+    TEMPERATURE: 100.0
+
+MODEL:
+  TYPE: "zero_shot"
+  PRETRAINED: True
+
+SOLVER:
+  BATCH_SIZE: 64
+
+METRIC: "wg_ovr"
+
+LOG:
+  PREFIX: "./outputs"

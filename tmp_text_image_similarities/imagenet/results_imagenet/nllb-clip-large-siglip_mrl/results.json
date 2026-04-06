@@ -1,0 +1,17 @@
+{
+  "model_name": "nllb-clip-large-siglip",
+  "pretrained_tag": "mrl",
+  "model_id": "nllb-clip-large-siglip_mrl",
+  "arch_family": "SigLIP",
+  "patch_size": null,
+  "image_size": 384,
+  "training_data": "mrl",
+  "quickgelu": false,
+  "total_params_M": 1195.5,
+  "top1_accuracy": 46.548,
+  "top5_accuracy": 70.244,
+  "total_images": 50000,
+  "load_time_s": 32.1,
+  "classifier_time_s": 59.7,
+  "eval_time_s": 342.2
+}

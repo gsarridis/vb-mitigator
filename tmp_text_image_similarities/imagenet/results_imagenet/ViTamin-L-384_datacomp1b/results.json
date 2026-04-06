@@ -1,0 +1,18 @@
+{
+  "model_name": "ViTamin-L-384",
+  "pretrained_tag": "datacomp1b",
+  "model_id": "ViTamin-L-384_datacomp1b",
+  "arch_family": "ViT",
+  "vit_size": null,
+  "patch_size": null,
+  "image_size": 384,
+  "training_data": "DataComp",
+  "quickgelu": false,
+  "total_params_M": 457.4,
+  "top1_accuracy": 81.794,
+  "top5_accuracy": 96.434,
+  "total_images": 50000,
+  "load_time_s": 10.3,
+  "classifier_time_s": 12.9,
+  "eval_time_s": 316.4
+}

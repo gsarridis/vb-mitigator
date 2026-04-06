@@ -1,0 +1,19 @@
+{
+  "model_name": "ViT-H-14",
+  "pretrained_tag": "metaclip_altogether",
+  "model_id": "ViT-H-14_metaclip_altogether",
+  "arch_family": "ViT",
+  "vit_size": "H",
+  "patch_size": 14,
+  "image_size": 224,
+  "training_data": "MetaCLIP",
+  "quickgelu": false,
+  "embed_dim": 1024,
+  "total_params_M": 986.1,
+  "top1_accuracy": 81.932,
+  "top5_accuracy": 96.502,
+  "total_images": 50000,
+  "load_time_s": 56.2,
+  "classifier_time_s": 65.6,
+  "eval_time_s": 285.8
+}

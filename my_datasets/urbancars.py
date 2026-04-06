@@ -5,6 +5,7 @@ This source code is licensed under the license found in the
 LICENSE file in the root directory of this source tree.
 """
 
+from collections import defaultdict
 import os
 import glob
 import torch
@@ -39,6 +40,7 @@ class UrbanCars(Dataset):
         split: str,
         group_label="both",
         transform=None,
+        max_samples_per_subgroup: int = None,
     ):
         if split == "train":
             bg_ratio = 0.95
@@ -88,6 +90,9 @@ class UrbanCars(Dataset):
             self.obj_bg_co_occur_obj_label_list, dtype=torch.long
         )
 
+        if max_samples_per_subgroup is not None:
+            self._limit_samples_per_subgroup(max_samples_per_subgroup)
+
         self.obj_label = self.obj_bg_co_occur_obj_label_list[:, 0]
         self.bg_label = self.obj_bg_co_occur_obj_label_list[:, 1]
         self.co_occur_obj_label = self.obj_bg_co_occur_obj_label_list[:, 2]
@@ -97,6 +102,50 @@ class UrbanCars(Dataset):
 
         self.domain_label = shortcut_label
         self.set_num_group_and_group_array(num_shortcut_category, shortcut_label)
+
+    def _limit_samples_per_subgroup(self, max_samples: int):
+        """Limit the number of samples per subgroup (obj x bg x co_occur_obj)."""
+
+        # Group indices by subgroup
+        subgroup_to_indices = defaultdict(list)
+        for idx, (obj_id, bg_id, co_obj_id) in enumerate(
+            self.obj_bg_co_occur_obj_label_list.tolist()
+        ):
+            subgroup_key = (obj_id, bg_id, co_obj_id)
+            subgroup_to_indices[subgroup_key].append(idx)
+
+        # Select up to max_samples from each subgroup
+        selected_indices = []
+        for subgroup_key, indices in subgroup_to_indices.items():
+            if len(indices) > max_samples:
+                # Randomly sample max_samples
+                selected = random.sample(indices, max_samples)
+            else:
+                selected = indices
+            selected_indices.extend(selected)
+
+        # Sort to maintain some order (optional)
+        selected_indices.sort()
+
+        # Filter all lists
+        self.img_fpath_list = [self.img_fpath_list[i] for i in selected_indices]
+        self.obj_bg_co_occur_obj_label_list = self.obj_bg_co_occur_obj_label_list[
+            selected_indices
+        ]
+
+        # Recompute derived labels
+        self.obj_label = self.obj_bg_co_occur_obj_label_list[:, 0]
+        self.bg_label = self.obj_bg_co_occur_obj_label_list[:, 1]
+        self.co_occur_obj_label = self.obj_bg_co_occur_obj_label_list[:, 2]
+        self.targets = self.obj_label
+
+        shortcut_label = self.bg_label * 2 + self.co_occur_obj_label
+        self.domain_label = shortcut_label
+        self.set_num_group_and_group_array(4, shortcut_label)
+
+        print(
+            f"Limited to {max_samples} samples per subgroup: {len(self)} total samples"
+        )
 
     def _get_subsample_group_indices(self):
         bg_ratio = self.bg_ratio
@@ -200,7 +249,9 @@ def get_urbancars_loader(
                 ]
             )
         # Load the train and test datasets with the custom dataset class
-        train_dataset = UrbanCars(root=root, split="train", transform=transform)
+        train_dataset = UrbanCars(
+            root=root, split="train", transform=transform, max_samples_per_subgroup=10
+        )
         train_loader = DataLoader(
             train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
         )
@@ -215,8 +266,15 @@ def get_urbancars_loader(
                     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
                 ]
             )
-
-        test_dataset = UrbanCars(root=root, split="test", transform=transform)
+        if split == "val":
+            test_dataset = UrbanCars(
+                root=root,
+                split=split,
+                transform=transform,
+                max_samples_per_subgroup=1000,
+            )
+        else:
+            test_dataset = UrbanCars(root=root, split=split, transform=transform)
         test_loader = DataLoader(
             test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers
         )

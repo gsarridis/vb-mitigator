@@ -1,0 +1,41 @@
+# CLIP Distillation for Waterbirds
+# Teacher: ViT-L-14 (larger, better zero-shot)
+# Student: ViT-B-32 (smaller) + learnable linear projection
+EXPERIMENT:
+  NAME: "probing"
+  TAG: "urbancars"
+  PROJECT: "clip_classifier"
+
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+  URBANCARS:
+    IMAGE_SIZE: 224  # CRITICAL: Must match OpenCLIP's expected input size
+  
+ 
+MITIGATOR:
+  TYPE: "openclip_classifier"
+  OPENCLIP_CLASSIFIER:
+    # OpenCLIP model (frozen encoder)
+    ARCH: "ViT-B-16"
+    PRETRAINED: "openai"
+    
+    # Alternative: use SigLIP
+    # ARCH: "ViT-SO400M-14-SigLIP"
+    # PRETRAINED: "webli"
+    
+    # Classifier head
+    CLASSIFIER_TYPE: "mlp"  # or "mlp"
+    HIDDEN_DIM: 512            # Only used if CLASSIFIER_TYPE = "mlp"
+    NUM_LAYERS: 1              # Number of hidden layers for MLP
+    DROPOUT: 0.0
+    
+    # Training
+    EPOCHS: 50
+    LR: 1e-3
+    WEIGHT_DECAY: 1e-4
+    BATCH_SIZE: 256
+    
+    # Precompute features (recommended for faster training)
+    PRECOMPUTE_FEATURES: True
+ 

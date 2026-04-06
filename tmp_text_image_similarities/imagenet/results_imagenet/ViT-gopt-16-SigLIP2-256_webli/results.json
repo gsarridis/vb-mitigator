@@ -1,0 +1,18 @@
+{
+  "model_name": "ViT-gopt-16-SigLIP2-256",
+  "pretrained_tag": "webli",
+  "model_id": "ViT-gopt-16-SigLIP2-256_webli",
+  "arch_family": "ViT",
+  "vit_size": "gopt",
+  "patch_size": 16,
+  "image_size": 256,
+  "training_data": "WebLI",
+  "quickgelu": false,
+  "total_params_M": 1871.4,
+  "top1_accuracy": 84.458,
+  "top5_accuracy": 97.36,
+  "total_images": 50000,
+  "load_time_s": 272.2,
+  "classifier_time_s": 43.5,
+  "eval_time_s": 271.7
+}

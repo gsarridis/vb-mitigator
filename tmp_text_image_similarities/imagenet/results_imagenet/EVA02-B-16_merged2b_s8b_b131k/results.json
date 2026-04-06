@@ -1,0 +1,17 @@
+{
+  "model_name": "EVA02-B-16",
+  "pretrained_tag": "merged2b_s8b_b131k",
+  "model_id": "EVA02-B-16_merged2b_s8b_b131k",
+  "arch_family": "EVA",
+  "patch_size": 16,
+  "image_size": 224,
+  "training_data": "Merged",
+  "quickgelu": false,
+  "total_params_M": 149.7,
+  "top1_accuracy": 74.73,
+  "top5_accuracy": 94.244,
+  "total_images": 50000,
+  "load_time_s": 12.4,
+  "classifier_time_s": 11.0,
+  "eval_time_s": 66.9
+}

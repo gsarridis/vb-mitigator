@@ -1,0 +1,9 @@
+Feature,Column,Importance
+Dataset Size (M),training_data_size_M,0.44209607151476943
+Dataset Type,training_data_enc,0.22934177610893813
+Num Tokens,num_tokens,0.15281506782672716
+Model Parameters (M),total_params_M,0.09541025428311911
+Patch Size,patch_size_num,0.05295468208823377
+Embedding Dim,embed_dim,0.012484131859863959
+Architecture Family,arch_family_enc,0.007525872297971022
+Image Size,image_size,0.007372144020377341

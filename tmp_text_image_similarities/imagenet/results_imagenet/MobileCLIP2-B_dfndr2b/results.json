@@ -1,0 +1,17 @@
+{
+  "model_name": "MobileCLIP2-B",
+  "pretrained_tag": "dfndr2b",
+  "model_id": "MobileCLIP2-B_dfndr2b",
+  "arch_family": "MobileCLIP",
+  "patch_size": null,
+  "image_size": 224,
+  "training_data": "DFN",
+  "quickgelu": false,
+  "total_params_M": 149.8,
+  "top1_accuracy": 79.358,
+  "top5_accuracy": 96.098,
+  "total_images": 50000,
+  "load_time_s": 22.2,
+  "classifier_time_s": 7.3,
+  "eval_time_s": 46.9
+}

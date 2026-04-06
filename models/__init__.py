@@ -12,6 +12,24 @@ from .lstm_classifier_mfcc import LSTM_Attn_Classifier_MFCC
 from .cnn_classifier_mfcc import CNNModel
 from .resnet3d import VResNet18, VResNet50
 from .swin_t3d import SwinTransformer3D
+from .tag_supervised_sae import (
+    TagSupervisedSAE,
+    TagSupervisionLoss,
+    TagSupervisedSAETrainer,
+    load_tag_supervised_sae,
+)
+from .tag_sae_debias import TagSAEDebiaser, TagSAEClassifier
+# OpenCLIP models
+from .openclip import (
+    OpenCLIPEncoder,
+    OpenCLIPEncoderWithHead,
+    openclip_vit_b_32,
+    openclip_vit_b_16,
+    openclip_vit_l_14,
+    openclip_vit_h_14,
+    openclip_vit_g_14,
+    create_openclip_encoder,
+)
 
 models_dict = {
     "simple_conv": SimpleConvNet,
@@ -34,4 +52,9 @@ models_dict = {
     "resnet3d18": VResNet18,
     "resnet3d50": VResNet50,
     "swin_t3d": SwinTransformer3D,
+    "openclip_vit_b_32": openclip_vit_b_32,
+    "openclip_vit_b_16": openclip_vit_b_16,
+    "openclip_vit_l_14": openclip_vit_l_14,
+    "openclip_vit_h_14": openclip_vit_h_14,
+    "openclip_vit_g_14": openclip_vit_g_14,
 }

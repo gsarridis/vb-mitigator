@@ -1,0 +1,83 @@
+# Tag-Supervised SAE Training
+#
+# This config trains an SAE where specific neurons are supervised
+# to activate based on the presence of irrelevant tags (from MAVIAS).
+#
+# Prerequisites:
+#   1. Run MAVIAS to generate train_tags.csv with irrelevant_tags column
+#   2. Have a pretrained model checkpoint (optional)
+#
+# The trained SAE can be used for debiasing by zeroing out
+# the tag-associated neurons during inference.
+
+EXPERIMENT:
+  NAME: "tag_only_sae"
+  TAG: "waterbirds_irrelevant"
+  PROJECT: "tag_only_supervised_sae"
+
+DATASET:
+  TYPE: "waterbirds"
+  WATERBIRDS:
+    IMAGE_SIZE: 224
+
+MITIGATOR:
+  TYPE: "tag_only_sae"
+  
+  TAG_ONLY_SAE:
+    # ---- Tags from MAVIAS Pipeline ----
+    # Path to tags CSV (relative to data root or absolute)
+    TAGS_CSV_PATH: "train_tags_bu.csv"
+
+    # SAE_CHECKPOINT_PATH: "./outputs/tag_supervised_sae/waterbirds_irrelevant/tag_sae/tag_sae/tag_sae.pt"
+
+    
+    # Use irrelevant tags for supervision
+    # Column with ALL tags (used for SAE training)
+    ALL_TAGS_COLUMN: "tags"
+    
+    # Column with irrelevant/bias tags (used for debiasing)
+    IRRELEVANT_TAGS_COLUMN: "irrelevant_tags"
+    TAG_SEPARATOR: " | "
+    
+    # Only use tags that appear at least 10 times
+    MIN_TAG_FREQUENCY: 10
+    
+    
+    # ---- Training ----
+    STEPS: 10000
+    BATCH_SIZE: 256
+    LR: 1e-3
+    
+    # ---- Loss Weights ----
+    LAMBDA_RECONSTRUCTION: 1.0
+    LAMBDA_SPARSITY: 0.1
+    LAMBDA_TAG: 1.0
+    
+    # ---- Tag Supervision ----
+    # Loss type: "bce", "hinge", or "mse"
+    TAG_LOSS_TYPE: "mse"
+    
+    # Weights for positive (tag present) vs negative (tag absent)
+    POSITIVE_WEIGHT: 1.0
+    NEGATIVE_WEIGHT: 0.0
+    
+    # Whether to penalize activation when tag is absent
+    USE_NEGATIVE_SUPERVISION: False
+    
+    # For hinge loss
+    MARGIN: 0.5
+    
+    # For MSE loss
+    TARGET_ACTIVATION: 1.0
+
+MODEL:
+  TYPE: "openclip_vit_b_32"
+  PRETRAINED: True
+  FREEZE_BACKBONE: True  # Keep CLIP encoder frozen
+
+SOLVER:
+  BATCH_SIZE: 256
+  LR: 1e-3
+
+LOG:
+  PREFIX: "./outputs"

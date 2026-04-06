@@ -1,0 +1,4028 @@
+diff --git a/configs/bias_in_bios/bias_ensemble/dev.yaml b/configs/bias_in_bios/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..8b650be
+--- /dev/null
++++ b/configs/bias_in_bios/bias_ensemble/dev.yaml
+@@ -0,0 +1,24 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "bias_in_bios_baselines"
++DATASET:
++  TYPE: "bias_in_bios"
++  BIASES: ["gender"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 50
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [16, 33]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/bias_in_bios/bpa/dev.yaml b/configs/bias_in_bios/bpa/dev.yaml
+new file mode 100644
+index 0000000..13b5824
+--- /dev/null
++++ b/configs/bias_in_bios/bpa/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "bias_in_bios_baselines"
++DATASET:
++  TYPE: "bias_in_bios"
++  BIASES: ["gender"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bpa"
++  BPA:
++    NUM_PSEUDO_ATTRS: 2
++    DISCOVERY_EPOCHS: 50
++    LOSS_WEIGHT: 1.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 50
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [16, 33]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/bias_in_bios/george/dev.yaml b/configs/bias_in_bios/george/dev.yaml
+new file mode 100644
+index 0000000..e81beee
+--- /dev/null
++++ b/configs/bias_in_bios/george/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "bias_in_bios_baselines"
++DATASET:
++  TYPE: "bias_in_bios"
++  BIASES: ["gender"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "george"
++  GEORGE:
++    NUM_CLUSTERS: 2
++    DISCOVERY_EPOCHS: 50
++    ROBUST_STEP_SIZE: 0.01
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 50
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [16, 33]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/bias_in_bios/gerne/dev.yaml b/configs/bias_in_bios/gerne/dev.yaml
+new file mode 100644
+index 0000000..1a172fc
+--- /dev/null
++++ b/configs/bias_in_bios/gerne/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "bias_in_bios_baselines"
++DATASET:
++  TYPE: "bias_in_bios"
++  BIASES: ["gender"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "gerne"
++  GERNE:
++    GCE_Q: 0.7
++    EXTRAPOLATION_LAMBDA: 1.0
++    REG_LAMBDA: 0.1
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 50
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [16, 33]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/celeba/bias_ensemble/blonde.yaml b/configs/celeba/bias_ensemble/blonde.yaml
+new file mode 100644
+index 0000000..b442d0c
+--- /dev/null
++++ b/configs/celeba/bias_ensemble/blonde.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "blonde"
++  PROJECT: "celeba_baselines"
++DATASET:
++  TYPE: "celeba"
++  BIASES: ["gender"]
++  CELEBA:
++    BIAS: "gender"
++    TARGET: "blonde"
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 128
++  EPOCHS: 40
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [13, 26]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++  FREEZE_BACKBONE: False
++METRIC: "wg_ovr_tags"
+diff --git a/configs/celeba/bpa/blonde.yaml b/configs/celeba/bpa/blonde.yaml
+new file mode 100644
+index 0000000..cc22a52
+--- /dev/null
++++ b/configs/celeba/bpa/blonde.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "blonde"
++  PROJECT: "celeba_baselines"
++DATASET:
++  TYPE: "celeba"
++  BIASES: ["gender"]
++  CELEBA:
++    BIAS: "gender"
++    TARGET: "blonde"
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 128
++  EPOCHS: 40
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [13, 26]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++  FREEZE_BACKBONE: False
++METRIC: "wg_ovr_tags"
+diff --git a/configs/celeba/george/blonde.yaml b/configs/celeba/george/blonde.yaml
+new file mode 100644
+index 0000000..b50c306
+--- /dev/null
++++ b/configs/celeba/george/blonde.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "blonde"
++  PROJECT: "celeba_baselines"
++DATASET:
++  TYPE: "celeba"
++  BIASES: ["gender"]
++  CELEBA:
++    BIAS: "gender"
++    TARGET: "blonde"
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 128
++  EPOCHS: 40
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [13, 26]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++  FREEZE_BACKBONE: False
++METRIC: "wg_ovr_tags"
+diff --git a/configs/celeba/gerne/blonde.yaml b/configs/celeba/gerne/blonde.yaml
+new file mode 100644
+index 0000000..547b4ab
+--- /dev/null
++++ b/configs/celeba/gerne/blonde.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "blonde"
++  PROJECT: "celeba_baselines"
++DATASET:
++  TYPE: "celeba"
++  BIASES: ["gender"]
++  CELEBA:
++    BIAS: "gender"
++    TARGET: "blonde"
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 128
++  EPOCHS: 40
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [13, 26]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++  FREEZE_BACKBONE: False
++METRIC: "wg_ovr_tags"
+diff --git a/configs/cfg.py b/configs/cfg.py
+index 59a1818..36cda26 100644
+--- a/configs/cfg.py
++++ b/configs/cfg.py
+@@ -151,6 +151,9 @@ CFG.DATASET.JIGSAW_TOXIC_COMMENTS.CLASSIFICATION_HEAD = CN()
+ CFG.DATASET.JIGSAW_TOXIC_COMMENTS.CLASSIFICATION_HEAD.INPUT_DIM = 368
+ CFG.DATASET.JIGSAW_TOXIC_COMMENTS.CLASSIFICATION_HEAD.HIDDEN_DIM = 256
+ 
++CFG.DATASET.CHEXPERT_NIH = CN()
++CFG.DATASET.CHEXPERT_NIH.BIAS_RATIO = 0.9
++
+ 
+ CFG.DATASET.BIAS_IN_BIOS = CN()
+ CFG.DATASET.BIAS_IN_BIOS.ROOT = "./data/bias_in_bios"
+@@ -164,6 +167,7 @@ CFG.DATASET.BIAS_IN_BIOS.CLASSIFICATION_HEAD.HIDDEN_DIM = 256
+ CFG.DATASET.SPEECH_ACCENT_ARCHIVE = CN()
+ CFG.DATASET.SPEECH_ACCENT_ARCHIVE.ROOT = "./data/speech_accent_archive"
+ CFG.DATASET.SPEECH_ACCENT_ARCHIVE.AUDIO_ENCODER = "RealAudioEncoder"
++CFG.DATASET.SPEECH_ACCENT_ARCHIVE.BIAS_RATIO = 9
+ CFG.DATASET.SPEECH_ACCENT_ARCHIVE.CLASSIFICATION_HEAD = CN()
+ CFG.DATASET.SPEECH_ACCENT_ARCHIVE.CLASSIFICATION_HEAD.INPUT_DIM = 768
+ CFG.DATASET.SPEECH_ACCENT_ARCHIVE.CLASSIFICATION_HEAD.HIDDEN_DIM = 256
+@@ -318,3 +322,27 @@ CFG.MITIGATOR.END = CN()
+ CFG.MITIGATOR.END.ALPHA = 1
+ CFG.MITIGATOR.END.BETA = 1
+ CFG.MITIGATOR.END.WEIGHT = 1
++
++# BIAS ENSEMBLE (Lee et al., AAAI 2023)
++CFG.MITIGATOR.BIAS_ENSEMBLE = CN()
++CFG.MITIGATOR.BIAS_ENSEMBLE.GCE_Q = 0.7
++CFG.MITIGATOR.BIAS_ENSEMBLE.TEMPERATURE = 1.0
++CFG.MITIGATOR.BIAS_ENSEMBLE.SWAP_EPOCH = 0
++
++# GEORGE (Sohoni et al., NeurIPS 2020)
++CFG.MITIGATOR.GEORGE = CN()
++CFG.MITIGATOR.GEORGE.NUM_CLUSTERS = 2
++CFG.MITIGATOR.GEORGE.DISCOVERY_EPOCHS = 50
++CFG.MITIGATOR.GEORGE.ROBUST_STEP_SIZE = 0.01
++
++# BPA (Seo et al., CVPR 2022)
++CFG.MITIGATOR.BPA = CN()
++CFG.MITIGATOR.BPA.NUM_PSEUDO_ATTRS = 2
++CFG.MITIGATOR.BPA.DISCOVERY_EPOCHS = 50
++CFG.MITIGATOR.BPA.LOSS_WEIGHT = 1.0
++
++# GERNE (Asaad et al., ICCV 2025)
++CFG.MITIGATOR.GERNE = CN()
++CFG.MITIGATOR.GERNE.GCE_Q = 0.7
++CFG.MITIGATOR.GERNE.EXTRAPOLATION_LAMBDA = 1.0
++CFG.MITIGATOR.GERNE.REG_LAMBDA = 0.1
+diff --git a/configs/chexpert_nih/badd/sensitivity_0_7.yaml b/configs/chexpert_nih/badd/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..a863b60
+--- /dev/null
++++ b/configs/chexpert_nih/badd/sensitivity_0_7.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "badd"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "badd"
++  BADD:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    M: 2.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/badd/sensitivity_0_8.yaml b/configs/chexpert_nih/badd/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..714329a
+--- /dev/null
++++ b/configs/chexpert_nih/badd/sensitivity_0_8.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "badd"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "badd"
++  BADD:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    M: 2.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/badd/sensitivity_0_95.yaml b/configs/chexpert_nih/badd/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..4af4e4f
+--- /dev/null
++++ b/configs/chexpert_nih/badd/sensitivity_0_95.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "badd"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "badd"
++  BADD:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    M: 2.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bias_ensemble/dev.yaml b/configs/chexpert_nih/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..9bf9579
+--- /dev/null
++++ b/configs/chexpert_nih/bias_ensemble/dev.yaml
+@@ -0,0 +1,23 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "chexpert_nih_baselines"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bias_ensemble/sensitivity_0_7.yaml b/configs/chexpert_nih/bias_ensemble/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..17fe48d
+--- /dev/null
++++ b/configs/chexpert_nih/bias_ensemble/sensitivity_0_7.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bias_ensemble/sensitivity_0_8.yaml b/configs/chexpert_nih/bias_ensemble/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..e1d7f28
+--- /dev/null
++++ b/configs/chexpert_nih/bias_ensemble/sensitivity_0_8.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bias_ensemble/sensitivity_0_95.yaml b/configs/chexpert_nih/bias_ensemble/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..72d982f
+--- /dev/null
++++ b/configs/chexpert_nih/bias_ensemble/sensitivity_0_95.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bpa/dev.yaml b/configs/chexpert_nih/bpa/dev.yaml
+new file mode 100644
+index 0000000..6af57ac
+--- /dev/null
++++ b/configs/chexpert_nih/bpa/dev.yaml
+@@ -0,0 +1,27 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "chexpert_nih_baselines"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bpa"
++  BPA:
++    NUM_PSEUDO_ATTRS: 2
++    DISCOVERY_EPOCHS: 20
++    LOSS_WEIGHT: 1.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bpa/sensitivity_0_7.yaml b/configs/chexpert_nih/bpa/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..39fce5e
+--- /dev/null
++++ b/configs/chexpert_nih/bpa/sensitivity_0_7.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bpa/sensitivity_0_8.yaml b/configs/chexpert_nih/bpa/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..606ee98
+--- /dev/null
++++ b/configs/chexpert_nih/bpa/sensitivity_0_8.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/bpa/sensitivity_0_95.yaml b/configs/chexpert_nih/bpa/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..fd97405
+--- /dev/null
++++ b/configs/chexpert_nih/bpa/sensitivity_0_95.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/erm/sensitivity_0_7.yaml b/configs/chexpert_nih/erm/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..889e2b6
+--- /dev/null
++++ b/configs/chexpert_nih/erm/sensitivity_0_7.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "erm"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "erm"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/erm/sensitivity_0_8.yaml b/configs/chexpert_nih/erm/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..efdfb47
+--- /dev/null
++++ b/configs/chexpert_nih/erm/sensitivity_0_8.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "erm"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "erm"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/erm/sensitivity_0_95.yaml b/configs/chexpert_nih/erm/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..e5dfb07
+--- /dev/null
++++ b/configs/chexpert_nih/erm/sensitivity_0_95.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "erm"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "erm"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/flac/sensitivity_0_7.yaml b/configs/chexpert_nih/flac/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..79fb9b0
+--- /dev/null
++++ b/configs/chexpert_nih/flac/sensitivity_0_7.yaml
+@@ -0,0 +1,29 @@
++EXPERIMENT:
++  NAME: "flac"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "flac"
++  FLAC:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 1000.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/flac/sensitivity_0_8.yaml b/configs/chexpert_nih/flac/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..c736d7f
+--- /dev/null
++++ b/configs/chexpert_nih/flac/sensitivity_0_8.yaml
+@@ -0,0 +1,29 @@
++EXPERIMENT:
++  NAME: "flac"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "flac"
++  FLAC:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 1000.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/flac/sensitivity_0_95.yaml b/configs/chexpert_nih/flac/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..f5028e8
+--- /dev/null
++++ b/configs/chexpert_nih/flac/sensitivity_0_95.yaml
+@@ -0,0 +1,29 @@
++EXPERIMENT:
++  NAME: "flac"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "flac"
++  FLAC:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 1000.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/george/dev.yaml b/configs/chexpert_nih/george/dev.yaml
+new file mode 100644
+index 0000000..49e9e89
+--- /dev/null
++++ b/configs/chexpert_nih/george/dev.yaml
+@@ -0,0 +1,27 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "chexpert_nih_baselines"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "george"
++  GEORGE:
++    NUM_CLUSTERS: 2
++    DISCOVERY_EPOCHS: 20
++    ROBUST_STEP_SIZE: 0.01
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/george/sensitivity_0_7.yaml b/configs/chexpert_nih/george/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..2875483
+--- /dev/null
++++ b/configs/chexpert_nih/george/sensitivity_0_7.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/george/sensitivity_0_8.yaml b/configs/chexpert_nih/george/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..cb50e9b
+--- /dev/null
++++ b/configs/chexpert_nih/george/sensitivity_0_8.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/george/sensitivity_0_95.yaml b/configs/chexpert_nih/george/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..76c4393
+--- /dev/null
++++ b/configs/chexpert_nih/george/sensitivity_0_95.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/gerne/dev.yaml b/configs/chexpert_nih/gerne/dev.yaml
+new file mode 100644
+index 0000000..80be795
+--- /dev/null
++++ b/configs/chexpert_nih/gerne/dev.yaml
+@@ -0,0 +1,27 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "chexpert_nih_baselines"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "gerne"
++  GERNE:
++    GCE_Q: 0.7
++    EXTRAPOLATION_LAMBDA: 1.0
++    REG_LAMBDA: 0.1
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/gerne/sensitivity_0_7.yaml b/configs/chexpert_nih/gerne/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..724e3b0
+--- /dev/null
++++ b/configs/chexpert_nih/gerne/sensitivity_0_7.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/gerne/sensitivity_0_8.yaml b/configs/chexpert_nih/gerne/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..647166d
+--- /dev/null
++++ b/configs/chexpert_nih/gerne/sensitivity_0_8.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/gerne/sensitivity_0_95.yaml b/configs/chexpert_nih/gerne/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..3db16a8
+--- /dev/null
++++ b/configs/chexpert_nih/gerne/sensitivity_0_95.yaml
+@@ -0,0 +1,25 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/maviasb/sensitivity_0_7.yaml b/configs/chexpert_nih/maviasb/sensitivity_0_7.yaml
+new file mode 100644
+index 0000000..eca5cf6
+--- /dev/null
++++ b/configs/chexpert_nih/maviasb/sensitivity_0_7.yaml
+@@ -0,0 +1,30 @@
++EXPERIMENT:
++  NAME: "maviasb"
++  TAG: "sensitivity_bias_ratio_0_7"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.7
++MITIGATOR:
++  TYPE: "maviasb"
++  MAVIASB:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 0.01
++      LAMBDA: 0.5
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/maviasb/sensitivity_0_8.yaml b/configs/chexpert_nih/maviasb/sensitivity_0_8.yaml
+new file mode 100644
+index 0000000..99f892f
+--- /dev/null
++++ b/configs/chexpert_nih/maviasb/sensitivity_0_8.yaml
+@@ -0,0 +1,30 @@
++EXPERIMENT:
++  NAME: "maviasb"
++  TAG: "sensitivity_bias_ratio_0_8"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.8
++MITIGATOR:
++  TYPE: "maviasb"
++  MAVIASB:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 0.01
++      LAMBDA: 0.5
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/chexpert_nih/maviasb/sensitivity_0_95.yaml b/configs/chexpert_nih/maviasb/sensitivity_0_95.yaml
+new file mode 100644
+index 0000000..ea2ab74
+--- /dev/null
++++ b/configs/chexpert_nih/maviasb/sensitivity_0_95.yaml
+@@ -0,0 +1,30 @@
++EXPERIMENT:
++  NAME: "maviasb"
++  TAG: "sensitivity_bias_ratio_0_95"
++  PROJECT: "chexpert_nih_sensitivity"
++DATASET:
++  TYPE: "chexpert_nih"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  CHEXPERT_NIH:
++    BIAS_RATIO: 0.95
++MITIGATOR:
++  TYPE: "maviasb"
++  MAVIASB:
++    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 0.01
++      LAMBDA: 0.5
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 20
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [6, 13]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet18"
++  PRETRAINED: True
++METRIC: "wg_ovr"
+diff --git a/configs/jigsaw_toxic_comments/bias_ensemble/dev.yaml b/configs/jigsaw_toxic_comments/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..116aea4
+--- /dev/null
++++ b/configs/jigsaw_toxic_comments/bias_ensemble/dev.yaml
+@@ -0,0 +1,24 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "jigsaw_toxic_comments_baselines"
++DATASET:
++  TYPE: "jigsaw_toxic_comments"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 200
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [70, 140]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "val"
+diff --git a/configs/jigsaw_toxic_comments/bpa/dev.yaml b/configs/jigsaw_toxic_comments/bpa/dev.yaml
+new file mode 100644
+index 0000000..45200f6
+--- /dev/null
++++ b/configs/jigsaw_toxic_comments/bpa/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "jigsaw_toxic_comments_baselines"
++DATASET:
++  TYPE: "jigsaw_toxic_comments"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bpa"
++  BPA:
++    NUM_PSEUDO_ATTRS: 2
++    DISCOVERY_EPOCHS: 200
++    LOSS_WEIGHT: 1.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 200
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [70, 140]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "val"
+diff --git a/configs/jigsaw_toxic_comments/george/dev.yaml b/configs/jigsaw_toxic_comments/george/dev.yaml
+new file mode 100644
+index 0000000..f410730
+--- /dev/null
++++ b/configs/jigsaw_toxic_comments/george/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "jigsaw_toxic_comments_baselines"
++DATASET:
++  TYPE: "jigsaw_toxic_comments"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "george"
++  GEORGE:
++    NUM_CLUSTERS: 2
++    DISCOVERY_EPOCHS: 200
++    ROBUST_STEP_SIZE: 0.01
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 200
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [70, 140]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "val"
+diff --git a/configs/jigsaw_toxic_comments/gerne/dev.yaml b/configs/jigsaw_toxic_comments/gerne/dev.yaml
+new file mode 100644
+index 0000000..a894157
+--- /dev/null
++++ b/configs/jigsaw_toxic_comments/gerne/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "jigsaw_toxic_comments_baselines"
++DATASET:
++  TYPE: "jigsaw_toxic_comments"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "gerne"
++  GERNE:
++    GCE_Q: 0.7
++    EXTRAPOLATION_LAMBDA: 1.0
++    REG_LAMBDA: 0.1
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 200
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [70, 140]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "classification_head"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "val"
+diff --git a/configs/speech_accent_archive/badd/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/badd/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..cd69a90
+--- /dev/null
++++ b/configs/speech_accent_archive/badd/sensitivity_ratio_19.yaml
+@@ -0,0 +1,29 @@
++EXPERIMENT:
++  NAME: "badd"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "badd"
++  BADD:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    M: 2.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/badd/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/badd/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..ba52120
+--- /dev/null
++++ b/configs/speech_accent_archive/badd/sensitivity_ratio_3.yaml
+@@ -0,0 +1,29 @@
++EXPERIMENT:
++  NAME: "badd"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "badd"
++  BADD:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    M: 2.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/badd/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/badd/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..c648661
+--- /dev/null
++++ b/configs/speech_accent_archive/badd/sensitivity_ratio_5.yaml
+@@ -0,0 +1,29 @@
++EXPERIMENT:
++  NAME: "badd"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "badd"
++  BADD:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    M: 2.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bias_ensemble/dev.yaml b/configs/speech_accent_archive/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..9c2daab
+--- /dev/null
++++ b/configs/speech_accent_archive/bias_ensemble/dev.yaml
+@@ -0,0 +1,24 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "speech_accent_archive_baselines"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..b7ff911
+--- /dev/null
++++ b/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_19.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..01381c3
+--- /dev/null
++++ b/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_3.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..95e6608
+--- /dev/null
++++ b/configs/speech_accent_archive/bias_ensemble/sensitivity_ratio_5.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bpa/dev.yaml b/configs/speech_accent_archive/bpa/dev.yaml
+new file mode 100644
+index 0000000..cd2b96c
+--- /dev/null
++++ b/configs/speech_accent_archive/bpa/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "speech_accent_archive_baselines"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bpa"
++  BPA:
++    NUM_PSEUDO_ATTRS: 2
++    DISCOVERY_EPOCHS: 100
++    LOSS_WEIGHT: 1.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bpa/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/bpa/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..7642fff
+--- /dev/null
++++ b/configs/speech_accent_archive/bpa/sensitivity_ratio_19.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bpa/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/bpa/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..820d726
+--- /dev/null
++++ b/configs/speech_accent_archive/bpa/sensitivity_ratio_3.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/bpa/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/bpa/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..d5e7b2b
+--- /dev/null
++++ b/configs/speech_accent_archive/bpa/sensitivity_ratio_5.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/erm/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/erm/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..91c9488
+--- /dev/null
++++ b/configs/speech_accent_archive/erm/sensitivity_ratio_19.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "erm"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "erm"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/erm/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/erm/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..2b97af1
+--- /dev/null
++++ b/configs/speech_accent_archive/erm/sensitivity_ratio_3.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "erm"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "erm"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/erm/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/erm/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..8842c8a
+--- /dev/null
++++ b/configs/speech_accent_archive/erm/sensitivity_ratio_5.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "erm"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "erm"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/flac/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/flac/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..eaedcf8
+--- /dev/null
++++ b/configs/speech_accent_archive/flac/sensitivity_ratio_19.yaml
+@@ -0,0 +1,30 @@
++EXPERIMENT:
++  NAME: "flac"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "flac"
++  FLAC:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 1000.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/flac/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/flac/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..a727fca
+--- /dev/null
++++ b/configs/speech_accent_archive/flac/sensitivity_ratio_3.yaml
+@@ -0,0 +1,30 @@
++EXPERIMENT:
++  NAME: "flac"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "flac"
++  FLAC:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 1000.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/flac/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/flac/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..6154946
+--- /dev/null
++++ b/configs/speech_accent_archive/flac/sensitivity_ratio_5.yaml
+@@ -0,0 +1,30 @@
++EXPERIMENT:
++  NAME: "flac"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "flac"
++  FLAC:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 1000.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/george/dev.yaml b/configs/speech_accent_archive/george/dev.yaml
+new file mode 100644
+index 0000000..6682989
+--- /dev/null
++++ b/configs/speech_accent_archive/george/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "speech_accent_archive_baselines"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "george"
++  GEORGE:
++    NUM_CLUSTERS: 2
++    DISCOVERY_EPOCHS: 100
++    ROBUST_STEP_SIZE: 0.01
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/george/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/george/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..28624c4
+--- /dev/null
++++ b/configs/speech_accent_archive/george/sensitivity_ratio_19.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/george/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/george/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..591a854
+--- /dev/null
++++ b/configs/speech_accent_archive/george/sensitivity_ratio_3.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/george/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/george/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..f3343b0
+--- /dev/null
++++ b/configs/speech_accent_archive/george/sensitivity_ratio_5.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/gerne/dev.yaml b/configs/speech_accent_archive/gerne/dev.yaml
+new file mode 100644
+index 0000000..cbf907e
+--- /dev/null
++++ b/configs/speech_accent_archive/gerne/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "speech_accent_archive_baselines"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "gerne"
++  GERNE:
++    GCE_Q: 0.7
++    EXTRAPOLATION_LAMBDA: 1.0
++    REG_LAMBDA: 0.1
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/gerne/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/gerne/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..2f75c3a
+--- /dev/null
++++ b/configs/speech_accent_archive/gerne/sensitivity_ratio_19.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/gerne/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/gerne/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..02ef07d
+--- /dev/null
++++ b/configs/speech_accent_archive/gerne/sensitivity_ratio_3.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/gerne/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/gerne/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..4c8a4fc
+--- /dev/null
++++ b/configs/speech_accent_archive/gerne/sensitivity_ratio_5.yaml
+@@ -0,0 +1,26 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/maviasb/sensitivity_ratio_19.yaml b/configs/speech_accent_archive/maviasb/sensitivity_ratio_19.yaml
+new file mode 100644
+index 0000000..406674b
+--- /dev/null
++++ b/configs/speech_accent_archive/maviasb/sensitivity_ratio_19.yaml
+@@ -0,0 +1,31 @@
++EXPERIMENT:
++  NAME: "maviasb"
++  TAG: "sensitivity_bias_ratio_19"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 19
++MITIGATOR:
++  TYPE: "maviasb"
++  MAVIASB:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 0.01
++      LAMBDA: 0.5
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/maviasb/sensitivity_ratio_3.yaml b/configs/speech_accent_archive/maviasb/sensitivity_ratio_3.yaml
+new file mode 100644
+index 0000000..2f54230
+--- /dev/null
++++ b/configs/speech_accent_archive/maviasb/sensitivity_ratio_3.yaml
+@@ -0,0 +1,31 @@
++EXPERIMENT:
++  NAME: "maviasb"
++  TAG: "sensitivity_bias_ratio_3"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 3
++MITIGATOR:
++  TYPE: "maviasb"
++  MAVIASB:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 0.01
++      LAMBDA: 0.5
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/speech_accent_archive/maviasb/sensitivity_ratio_5.yaml b/configs/speech_accent_archive/maviasb/sensitivity_ratio_5.yaml
+new file mode 100644
+index 0000000..19fa227
+--- /dev/null
++++ b/configs/speech_accent_archive/maviasb/sensitivity_ratio_5.yaml
+@@ -0,0 +1,31 @@
++EXPERIMENT:
++  NAME: "maviasb"
++  TAG: "sensitivity_bias_ratio_5"
++  PROJECT: "speech_accent_archive_sensitivity"
++DATASET:
++  TYPE: "speech_accent_archive"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++  SPEECH_ACCENT_ARCHIVE:
++    BIAS_RATIO: 5
++MITIGATOR:
++  TYPE: "maviasb"
++  MAVIASB:
++    BCC_PATH: "./output/speech_accent_archive_baselines/bcc/erm/best"
++    LOSS:
++      ALPHA: 0.01
++      LAMBDA: 0.5
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 0.0
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "lstm_classifier"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/ucf101/bias_ensemble/scuba_swin.yaml b/configs/ucf101/bias_ensemble/scuba_swin.yaml
+new file mode 100644
+index 0000000..8c8735e
+--- /dev/null
++++ b/configs/ucf101/bias_ensemble/scuba_swin.yaml
+@@ -0,0 +1,27 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev_in_out_scuba_swin"
++  PROJECT: "ucf101_baselines"
++DATASET:
++  TYPE: "ucf101"
++  UCF101:
++    TEST_BENCHMARK: "scuba"
++    SAMPLE_DURATION: 32
++  BIASES: ["bias"]
++  NUM_WORKERS: 4
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 16
++  EPOCHS: 30
++  LR: 0.0000125
++  TYPE: "AdamW"
++  WEIGHT_DECAY: 0.01
++  SCHEDULER:
++    TYPE: "cosine_with_warmup"
++    LINEAR_WARMUP: 2.5
++MODEL:
++  TYPE: "swin_t3d"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/ucf101/bpa/scuba_swin.yaml b/configs/ucf101/bpa/scuba_swin.yaml
+new file mode 100644
+index 0000000..311efce
+--- /dev/null
++++ b/configs/ucf101/bpa/scuba_swin.yaml
+@@ -0,0 +1,31 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev_in_out_scuba_swin"
++  PROJECT: "ucf101_baselines"
++DATASET:
++  TYPE: "ucf101"
++  UCF101:
++    TEST_BENCHMARK: "scuba"
++    SAMPLE_DURATION: 32
++  BIASES: ["bias"]
++  NUM_WORKERS: 4
++MITIGATOR:
++  TYPE: "bpa"
++  BPA:
++    NUM_PSEUDO_ATTRS: 2
++    DISCOVERY_EPOCHS: 30
++    LOSS_WEIGHT: 1.0
++SOLVER:
++  BATCH_SIZE: 16
++  EPOCHS: 30
++  LR: 0.0000125
++  TYPE: "AdamW"
++  WEIGHT_DECAY: 0.01
++  SCHEDULER:
++    TYPE: "cosine_with_warmup"
++    LINEAR_WARMUP: 2.5
++MODEL:
++  TYPE: "swin_t3d"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/ucf101/george/scuba_swin.yaml b/configs/ucf101/george/scuba_swin.yaml
+new file mode 100644
+index 0000000..bd6a6ed
+--- /dev/null
++++ b/configs/ucf101/george/scuba_swin.yaml
+@@ -0,0 +1,31 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev_in_out_scuba_swin"
++  PROJECT: "ucf101_baselines"
++DATASET:
++  TYPE: "ucf101"
++  UCF101:
++    TEST_BENCHMARK: "scuba"
++    SAMPLE_DURATION: 32
++  BIASES: ["bias"]
++  NUM_WORKERS: 4
++MITIGATOR:
++  TYPE: "george"
++  GEORGE:
++    NUM_CLUSTERS: 2
++    DISCOVERY_EPOCHS: 30
++    ROBUST_STEP_SIZE: 0.01
++SOLVER:
++  BATCH_SIZE: 16
++  EPOCHS: 30
++  LR: 0.0000125
++  TYPE: "AdamW"
++  WEIGHT_DECAY: 0.01
++  SCHEDULER:
++    TYPE: "cosine_with_warmup"
++    LINEAR_WARMUP: 2.5
++MODEL:
++  TYPE: "swin_t3d"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/ucf101/gerne/scuba_swin.yaml b/configs/ucf101/gerne/scuba_swin.yaml
+new file mode 100644
+index 0000000..4006d86
+--- /dev/null
++++ b/configs/ucf101/gerne/scuba_swin.yaml
+@@ -0,0 +1,31 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev_in_out_scuba_swin"
++  PROJECT: "ucf101_baselines"
++DATASET:
++  TYPE: "ucf101"
++  UCF101:
++    TEST_BENCHMARK: "scuba"
++    SAMPLE_DURATION: 32
++  BIASES: ["bias"]
++  NUM_WORKERS: 4
++MITIGATOR:
++  TYPE: "gerne"
++  GERNE:
++    GCE_Q: 0.7
++    EXTRAPOLATION_LAMBDA: 1.0
++    REG_LAMBDA: 0.1
++SOLVER:
++  BATCH_SIZE: 16
++  EPOCHS: 30
++  LR: 0.0000125
++  TYPE: "AdamW"
++  WEIGHT_DECAY: 0.01
++  SCHEDULER:
++    TYPE: "cosine_with_warmup"
++    LINEAR_WARMUP: 2.5
++MODEL:
++  TYPE: "swin_t3d"
++METRIC: "acc"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/urbancars/bias_ensemble/dev.yaml b/configs/urbancars/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..c518373
+--- /dev/null
++++ b/configs/urbancars/bias_ensemble/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "urbancars_baselines"
++DATASET:
++  TYPE: "urbancars"
++  BIASES: ["bj_cooc_obj"]
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 150
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/urbancars/bpa/dev.yaml b/configs/urbancars/bpa/dev.yaml
+new file mode 100644
+index 0000000..2610c55
+--- /dev/null
++++ b/configs/urbancars/bpa/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "urbancars_baselines"
++DATASET:
++  TYPE: "urbancars"
++  BIASES: ["bj_cooc_obj"]
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 150
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/urbancars/george/dev.yaml b/configs/urbancars/george/dev.yaml
+new file mode 100644
+index 0000000..1bb8105
+--- /dev/null
++++ b/configs/urbancars/george/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "urbancars_baselines"
++DATASET:
++  TYPE: "urbancars"
++  BIASES: ["bj_cooc_obj"]
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 150
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/urbancars/gerne/dev.yaml b/configs/urbancars/gerne/dev.yaml
+new file mode 100644
+index 0000000..d2d8535
+--- /dev/null
++++ b/configs/urbancars/gerne/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "urbancars_baselines"
++DATASET:
++  TYPE: "urbancars"
++  BIASES: ["bj_cooc_obj"]
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 150
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/urbansounds/bias_ensemble/dev.yaml b/configs/urbansounds/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..b1f6ef3
+--- /dev/null
++++ b/configs/urbansounds/bias_ensemble/dev.yaml
+@@ -0,0 +1,24 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "urbansounds_baselines"
++DATASET:
++  TYPE: "urbansounds"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "cnn_classifier_mfcc"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/urbansounds/bpa/dev.yaml b/configs/urbansounds/bpa/dev.yaml
+new file mode 100644
+index 0000000..8fd614a
+--- /dev/null
++++ b/configs/urbansounds/bpa/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "urbansounds_baselines"
++DATASET:
++  TYPE: "urbansounds"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "bpa"
++  BPA:
++    NUM_PSEUDO_ATTRS: 2
++    DISCOVERY_EPOCHS: 100
++    LOSS_WEIGHT: 1.0
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "cnn_classifier_mfcc"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/urbansounds/george/dev.yaml b/configs/urbansounds/george/dev.yaml
+new file mode 100644
+index 0000000..a6aff50
+--- /dev/null
++++ b/configs/urbansounds/george/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "urbansounds_baselines"
++DATASET:
++  TYPE: "urbansounds"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "george"
++  GEORGE:
++    NUM_CLUSTERS: 2
++    DISCOVERY_EPOCHS: 100
++    ROBUST_STEP_SIZE: 0.01
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "cnn_classifier_mfcc"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/urbansounds/gerne/dev.yaml b/configs/urbansounds/gerne/dev.yaml
+new file mode 100644
+index 0000000..e87ef20
+--- /dev/null
++++ b/configs/urbansounds/gerne/dev.yaml
+@@ -0,0 +1,28 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "urbansounds_baselines"
++DATASET:
++  TYPE: "urbansounds"
++  BIASES: ["bias"]
++  NUM_WORKERS: 0
++MITIGATOR:
++  TYPE: "gerne"
++  GERNE:
++    GCE_Q: 0.7
++    EXTRAPOLATION_LAMBDA: 1.0
++    REG_LAMBDA: 0.1
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "Adam"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [33, 66]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "cnn_classifier_mfcc"
++METRIC: "wg_ovr"
++LOG:
++  SAVE_CRITERION: "test"
+diff --git a/configs/waterbirds/bias_ensemble/dev.yaml b/configs/waterbirds/bias_ensemble/dev.yaml
+new file mode 100644
+index 0000000..5c437f8
+--- /dev/null
++++ b/configs/waterbirds/bias_ensemble/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "bias_ensemble"
++  TAG: "dev"
++  PROJECT: "waterbirds_baselines"
++DATASET:
++  TYPE: "waterbirds"
++  BIASES: ["background"]
++MITIGATOR:
++  TYPE: "bias_ensemble"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/waterbirds/bpa/dev.yaml b/configs/waterbirds/bpa/dev.yaml
+new file mode 100644
+index 0000000..355c96e
+--- /dev/null
++++ b/configs/waterbirds/bpa/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "bpa"
++  TAG: "dev"
++  PROJECT: "waterbirds_baselines"
++DATASET:
++  TYPE: "waterbirds"
++  BIASES: ["background"]
++MITIGATOR:
++  TYPE: "bpa"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/waterbirds/george/dev.yaml b/configs/waterbirds/george/dev.yaml
+new file mode 100644
+index 0000000..bb36664
+--- /dev/null
++++ b/configs/waterbirds/george/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "george"
++  TAG: "dev"
++  PROJECT: "waterbirds_baselines"
++DATASET:
++  TYPE: "waterbirds"
++  BIASES: ["background"]
++MITIGATOR:
++  TYPE: "george"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/configs/waterbirds/gerne/dev.yaml b/configs/waterbirds/gerne/dev.yaml
+new file mode 100644
+index 0000000..5cf6c0c
+--- /dev/null
++++ b/configs/waterbirds/gerne/dev.yaml
+@@ -0,0 +1,22 @@
++EXPERIMENT:
++  NAME: "gerne"
++  TAG: "dev"
++  PROJECT: "waterbirds_baselines"
++DATASET:
++  TYPE: "waterbirds"
++  BIASES: ["background"]
++MITIGATOR:
++  TYPE: "gerne"
++SOLVER:
++  BATCH_SIZE: 64
++  EPOCHS: 100
++  LR: 0.001
++  TYPE: "SGD"
++  WEIGHT_DECAY: 1e-4
++  SCHEDULER:
++    LR_DECAY_STAGES: [1000]
++    LR_DECAY_RATE: 0.1
++MODEL:
++  TYPE: "resnet50"
++  PRETRAINED: True
++METRIC: "wg_ovr_tags"
+diff --git a/mitigators/__init__.py b/mitigators/__init__.py
+index a35a81d..604fd2a 100644
+--- a/mitigators/__init__.py
++++ b/mitigators/__init__.py
+@@ -16,6 +16,10 @@ from .softcon import SoftConTrainer
+ from .erm_bcc import ERMBCCTrainer
+ from .maviasb import MAVIASBTrainer
+ from .erm_dev import ERMDevTrainer
++from .bias_ensemble import BiasEnsembleTrainer
++from .george import GeorgeTrainer
++from .bpa import BPATrainer
++from .gerne import GERNETrainer
+ 
+ method_to_trainer = {
+     "erm": ERMTrainer,
+@@ -36,4 +40,8 @@ method_to_trainer = {
+     "erm_bcc": ERMBCCTrainer,
+     "maviasb": MAVIASBTrainer,
+     "erm_dev": ERMDevTrainer,
++    "bias_ensemble": BiasEnsembleTrainer,
++    "george": GeorgeTrainer,
++    "bpa": BPATrainer,
++    "gerne": GERNETrainer,
+ }
+diff --git a/mitigators/bias_ensemble.py b/mitigators/bias_ensemble.py
+new file mode 100644
+index 0000000..90e1ec8
+--- /dev/null
++++ b/mitigators/bias_ensemble.py
+@@ -0,0 +1,155 @@
++# Bias Ensemble (Lee et al., AAAI 2023)
++# "Revisiting the importance of amplifying bias for debiasing"
++#
++# Key idea: Train multiple biased models (an ensemble) using GCE loss
++# to amplify bias learning. Use the ensemble's predictions to identify
++# bias-aligned vs bias-conflicting samples, then reweight the main
++# model's loss accordingly.
++
++import os
++import torch
++import torch.nn as nn
++import torch.nn.functional as F
++
++from models.builder import get_model
++from tools.utils import load_checkpoint, log_msg, save_checkpoint
++from .base_trainer import BaseTrainer
++from .losses import GeneralizedCECriterion
++
++
++class BiasEnsembleTrainer(BaseTrainer):
++    """
++    Bias Ensemble trainer.
++
++    The method works in two phases:
++    1. Train a biased model using GCE loss to amplify bias (similar to LfF).
++    2. Use the biased model's loss to compute sample weights via a
++       softmax-based reweighting scheme that upweights bias-conflicting
++       samples (those the biased model finds hard).
++
++    The key difference from LfF is the reweighting strategy: instead of
++    using a relative difficulty ratio, Bias Ensemble uses a softmax over
++    the biased model's per-sample losses to derive weights, effectively
++    creating an ensemble-style focus on hard (bias-conflicting) samples.
++    """
++
++    def _method_specific_setups(self):
++        train_target_attr = self.dataloaders["train"].dataset.targets
++        self.swap_epoch = self.cfg.MITIGATOR.BIAS_ENSEMBLE.SWAP_EPOCH
++
++    def _setup_models(self):
++        super()._setup_models()
++        self.bias_model = get_model(
++            self.cfg.MODEL.TYPE,
++            self.num_class,
++        )
++        self.bias_model.to(self.device)
++
++    def _setup_criterion(self):
++        super()._setup_criterion()
++        self.criterion_train = nn.CrossEntropyLoss(reduction="none")
++        self.gce_criterion = GeneralizedCECriterion(
++            q=self.cfg.MITIGATOR.BIAS_ENSEMBLE.GCE_Q
++        )
++
++    def _setup_optimizer(self):
++        super()._setup_optimizer()
++        if self.cfg.SOLVER.TYPE == "SGD":
++            self.optimizer_bias = torch.optim.SGD(
++                self.bias_model.parameters(),
++                lr=self.cfg.SOLVER.LR,
++                momentum=self.cfg.SOLVER.MOMENTUM,
++                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
++            )
++        elif self.cfg.SOLVER.TYPE in ("Adam", "AdamW"):
++            self.optimizer_bias = torch.optim.Adam(
++                self.bias_model.parameters(),
++                lr=self.cfg.SOLVER.LR,
++                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
++            )
++        else:
++            raise ValueError(f"Unsupported optimizer type: {self.cfg.SOLVER.TYPE}")
++
++    def _set_train(self):
++        super()._set_train()
++        self.bias_model.train()
++
++    def _set_eval(self):
++        super()._set_eval()
++        self.bias_model.eval()
++
++    def _train_iter(self, batch):
++        inputs = batch["inputs"].to(self.device)
++        targets = batch["targets"].to(self.device)
++
++        # Forward pass through biased model
++        bias_logits = self.bias_model(inputs)
++        if isinstance(bias_logits, tuple):
++            bias_logits, _ = bias_logits
++
++        # Forward pass through main model
++        target_logits = self.model(inputs)
++        if isinstance(target_logits, tuple):
++            target_logits, _ = target_logits
++
++        # Train biased model with GCE to amplify bias
++        gce_loss = self.gce_criterion(bias_logits, targets).mean()
++
++        # Compute per-sample CE loss for the biased model
++        with torch.no_grad():
++            bias_loss_per_sample = self.criterion_train(bias_logits.detach(), targets)
++
++        # Reweight: samples that the biased model finds hard (high loss)
++        # are likely bias-conflicting -> upweight them
++        # Use softmax-based reweighting over per-sample losses
++        bias_loss_normalized = bias_loss_per_sample / (
++            bias_loss_per_sample.mean() + 1e-8
++        )
++        sample_weights = F.softmax(
++            bias_loss_normalized / self.cfg.MITIGATOR.BIAS_ENSEMBLE.TEMPERATURE, dim=0
++        ) * len(targets)
++
++        # Compute reweighted CE loss for main model
++        ce_loss_per_sample = self.criterion_train(target_logits, targets)
++        ce_loss = (ce_loss_per_sample * sample_weights.detach()).mean()
++
++        # Combined loss
++        loss = ce_loss + gce_loss
++
++        self.optimizer.zero_grad()
++        self.optimizer_bias.zero_grad()
++        self._loss_backward(loss)
++        self.optimizer.step()
++        self.optimizer_bias.step()
++        self.scheduler.step()
++
++        return {"train_cls_loss": ce_loss, "train_gce_loss": gce_loss}
++
++    def _save_checkpoint(self, tag):
++        state = {
++            "epoch": self.current_epoch,
++            "model": self.model.state_dict(),
++            "optimizer": self.optimizer.state_dict(),
++            "best_performance": self.best_performance,
++            "scheduler": self.scheduler.state_dict(),
++            "bias_model": self.bias_model.state_dict(),
++            "optimizer_bias": self.optimizer_bias.state_dict(),
++        }
++        save_checkpoint(state, os.path.join(self.log_path, tag))
++
++    def load_checkpoint(self, tag):
++        checkpoint = load_checkpoint(os.path.join(self.log_path, tag))
++        self.model.load_state_dict(checkpoint["model"])
++        self.optimizer.load_state_dict(checkpoint["optimizer"])
++        self.scheduler.load_state_dict(checkpoint["scheduler"])
++        self.best_performance = checkpoint["best_performance"]
++        self.current_epoch = checkpoint["epoch"]
++        self.bias_model.load_state_dict(checkpoint["bias_model"])
++        self.optimizer_bias.load_state_dict(checkpoint["optimizer_bias"])
++        print(
++            log_msg(
++                f"Loaded checkpoint from {os.path.join(self.log_path, tag)}",
++                "INFO",
++                self.logger,
++            )
++        )
+diff --git a/mitigators/bpa.py b/mitigators/bpa.py
+new file mode 100644
+index 0000000..ede6187
+--- /dev/null
++++ b/mitigators/bpa.py
+@@ -0,0 +1,268 @@
++# BPA - Unsupervised Learning of Debiased Representations with
++# Pseudo-Attributes (Seo et al., CVPR 2022)
++#
++# Key idea:
++# 1. Train an ERM model to discover pseudo bias-attributes via
++#    clustering of misclassified vs correctly classified samples.
++# 2. Use the pseudo-attributes to apply bias-balanced (BB-style)
++#    logit correction during retraining.
++#
++# The method is BLU (Bias Label Unaware) since it discovers bias
++# structure from model behavior rather than requiring explicit
++# bias annotations.
++
++import os
++import numpy as np
++import torch
++import torch.nn as nn
++import torch.nn.functional as F
++from sklearn.cluster import KMeans
++
++from my_datasets.builder import get_dataset
++from models.builder import get_model
++from tools.utils import load_checkpoint, log_msg, save_checkpoint
++from .base_trainer import BaseTrainer
++from .losses import GeneralizedCECriterion
++
++
++class BPATrainer(BaseTrainer):
++    """
++    BPA trainer.
++
++    Phase 1: Train an ERM model, identify bias-aligned (easy/correct)
++             vs bias-conflicting (hard/misclassified) samples.
++    Phase 2: Cluster embeddings within each class to discover
++             pseudo bias-attribute groups.
++    Phase 3: Retrain with logit adjustment using the pseudo-attribute
++             prior (similar to BB but with discovered pseudo-attributes).
++    """
++
++    def _setup_criterion(self):
++        if self.cfg.SOLVER.CRITERION == "CE":
++            self.criterion_train = nn.CrossEntropyLoss(reduction="none")
++            self.criterion = nn.CrossEntropyLoss()
++        else:
++            raise ValueError(f"Unsupported criterion type: {self.cfg.SOLVER.CRITERION}")
++
++    def _method_specific_setups(self):
++        self._discover_pseudo_attributes()
++
++    def _discover_pseudo_attributes(self):
++        """
++        Phase 1 & 2: Train ERM, extract embeddings, cluster to find
++        pseudo bias-attributes based on model confidence patterns.
++        """
++        cfg = self.cfg
++        discovery_epochs = cfg.MITIGATOR.BPA.DISCOVERY_EPOCHS
++        MODEL_SAVE_PATH = os.path.join(self.log_path, "bpa_discovery_model")
++        PSEUDO_SAVE_PATH = os.path.join(self.log_path, "bpa_pseudo_attrs.pt")
++
++        # Check if pseudo-attributes already computed
++        if os.path.exists(PSEUDO_SAVE_PATH):
++            print("Loading pre-computed BPA pseudo-attributes...")
++            pseudo_data = torch.load(PSEUDO_SAVE_PATH, map_location=self.device)
++            self.pseudo_attrs = pseudo_data["pseudo_attrs"]
++            self.bias_prior = pseudo_data["bias_prior"]
++            self._setup_models()
++            self._setup_optimizer()
++            return
++
++        # Phase 1: Train ERM model
++        if os.path.exists(MODEL_SAVE_PATH):
++            print("Loading pre-trained BPA discovery model...")
++            self.model.load_state_dict(
++                torch.load(MODEL_SAVE_PATH, map_location=self.device)
++            )
++        else:
++            print(
++                f"BPA: Training ERM for {discovery_epochs} epochs for pseudo-attribute discovery."
++            )
++            erm_optimizer = torch.optim.Adam(
++                self.model.parameters(),
++                lr=cfg.SOLVER.LR,
++                weight_decay=cfg.SOLVER.WEIGHT_DECAY,
++            )
++            self.model.train()
++            for epoch in range(discovery_epochs):
++                total_loss = 0.0
++                correct = 0
++                total = 0
++                for batch in self.dataloaders["train"]:
++                    inputs = batch["inputs"].to(self.device)
++                    targets = batch["targets"].to(self.device)
++                    outputs = self.model(inputs)
++                    if isinstance(outputs, tuple):
++                        outputs, _ = outputs
++                    loss = self.criterion(outputs, targets)
++                    loss.backward()
++                    erm_optimizer.step()
++                    erm_optimizer.zero_grad(set_to_none=True)
++                    total_loss += loss.item()
++                    predicted = outputs.argmax(dim=1)
++                    correct += (predicted == targets).sum().item()
++                    total += targets.size(0)
++                avg_loss = total_loss / len(self.dataloaders["train"])
++                accuracy = correct / total * 100 if total > 0 else 0
++                print(
++                    f"BPA Discovery Epoch [{epoch+1}/{discovery_epochs}] - "
++                    f"Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%"
++                )
++            os.makedirs(os.path.dirname(MODEL_SAVE_PATH), exist_ok=True)
++            torch.save(self.model.state_dict(), MODEL_SAVE_PATH)
++
++        # Phase 2: Extract embeddings and discover pseudo-attributes
++        print("BPA: Extracting embeddings for pseudo-attribute discovery...")
++        self.model.eval()
++        all_features = []
++        all_targets = []
++        all_losses = []
++
++        ordered_loader = torch.utils.data.DataLoader(
++            self.sets["train"],
++            batch_size=cfg.SOLVER.BATCH_SIZE,
++            shuffle=False,
++            num_workers=cfg.DATASET.NUM_WORKERS,
++            pin_memory=True,
++            persistent_workers=cfg.DATASET.NUM_WORKERS > 0,
++        )
++
++        with torch.no_grad():
++            for batch in ordered_loader:
++                inputs = batch["inputs"].to(self.device)
++                targets = batch["targets"].to(self.device)
++                outputs = self.model(inputs)
++                if isinstance(outputs, tuple):
++                    _, feats = outputs
++                    outputs_logits = self.model(inputs)
++                    if isinstance(outputs_logits, tuple):
++                        outputs_logits, _ = outputs_logits
++                else:
++                    feats = outputs
++                    outputs_logits = outputs
++
++                per_sample_loss = self.criterion_train(outputs_logits, targets)
++                all_features.append(feats.cpu())
++                all_targets.append(targets.cpu())
++                all_losses.append(per_sample_loss.cpu())
++
++        all_features = torch.cat(all_features, dim=0).numpy()
++        all_targets = torch.cat(all_targets, dim=0).numpy()
++        all_losses = torch.cat(all_losses, dim=0).numpy()
++
++        # Cluster within each class using loss + features
++        num_pseudo = cfg.MITIGATOR.BPA.NUM_PSEUDO_ATTRS
++        print(f"BPA: Discovering {num_pseudo} pseudo-attributes per class...")
++
++        pseudo_attrs = np.zeros(len(all_targets), dtype=np.int64)
++        for class_idx in range(self.num_class):
++            class_mask = all_targets == class_idx
++            class_features = all_features[class_mask]
++            class_losses = all_losses[class_mask].reshape(-1, 1)
++
++            if len(class_features) < num_pseudo:
++                pseudo_attrs[class_mask] = 0
++                continue
++
++            # Combine features with normalized loss for clustering
++            loss_weight = cfg.MITIGATOR.BPA.LOSS_WEIGHT
++            normalized_losses = (class_losses - class_losses.mean()) / (
++                class_losses.std() + 1e-8
++            )
++            # Normalize features
++            feat_norms = np.linalg.norm(class_features, axis=1, keepdims=True)
++            normalized_features = class_features / (feat_norms + 1e-8)
++            clustering_features = np.concatenate(
++                [normalized_features, loss_weight * normalized_losses], axis=1
++            )
++
++            kmeans = KMeans(
++                n_clusters=num_pseudo,
++                random_state=cfg.EXPERIMENT.SEED,
++                n_init=10,
++            )
++            cluster_ids = kmeans.fit_predict(clustering_features)
++            pseudo_attrs[class_mask] = cluster_ids
++
++        self.pseudo_attrs = torch.from_numpy(pseudo_attrs).long()
++
++        # Compute bias prior: p(pseudo_attr | class)
++        # Shape: [num_pseudo_attrs, num_class]
++        bias_prior = torch.zeros(num_pseudo, self.num_class)
++        for class_idx in range(self.num_class):
++            class_mask = torch.from_numpy(all_targets) == class_idx
++            class_pseudo = self.pseudo_attrs[class_mask]
++            for attr_idx in range(num_pseudo):
++                bias_prior[attr_idx, class_idx] = (class_pseudo == attr_idx).float().mean()
++
++        self.bias_prior = bias_prior
++
++        # Save
++        os.makedirs(os.path.dirname(PSEUDO_SAVE_PATH) if os.path.dirname(PSEUDO_SAVE_PATH) else ".", exist_ok=True)
++        torch.save(
++            {
++                "pseudo_attrs": self.pseudo_attrs,
++                "bias_prior": self.bias_prior,
++            },
++            PSEUDO_SAVE_PATH,
++        )
++        print(f"BPA: Discovered pseudo-attributes for {len(self.pseudo_attrs)} samples.")
++
++        # Reset model for retraining phase
++        self._setup_models()
++        self._setup_optimizer()
++
++    def _train_iter(self, batch):
++        inputs = batch["inputs"].to(self.device)
++        targets = batch["targets"].to(self.device)
++        indices = batch["index"]
++
++        self.optimizer.zero_grad()
++        outputs = self.model(inputs)
++        if isinstance(outputs, tuple):
++            outputs, _ = outputs
++
++        # Look up pseudo bias-attributes for this batch
++        pseudo_attr = self.pseudo_attrs[indices].to(self.device)
++
++        # Logit adjustment using pseudo-attribute prior (BB-style)
++        # For each sample, subtract log p(pseudo_attr | class) from logits
++        bias_prior_device = self.bias_prior.to(self.device)
++        # Get the prior vector for each sample's pseudo attribute
++        # bias_prior[pseudo_attr[i], :] gives the prior over classes for that pseudo-attr
++        prior_vectors = bias_prior_device[pseudo_attr]  # [batch, num_class]
++        adjusted_logits = outputs - torch.log(prior_vectors + 1e-9)
++
++        loss = self.criterion(adjusted_logits, targets)
++        self._loss_backward(loss)
++        self._optimizer_step()
++        self.scheduler.step()
++        return {"train_cls_loss": loss}
++
++    def _save_checkpoint(self, tag):
++        state = {
++            "epoch": self.current_epoch,
++            "model": self.model.state_dict(),
++            "optimizer": self.optimizer.state_dict(),
++            "best_performance": self.best_performance,
++            "scheduler": self.scheduler.state_dict(),
++            "pseudo_attrs": self.pseudo_attrs,
++            "bias_prior": self.bias_prior,
++        }
++        save_checkpoint(state, os.path.join(self.log_path, tag))
++
++    def load_checkpoint(self, tag):
++        checkpoint = load_checkpoint(os.path.join(self.log_path, tag))
++        self.model.load_state_dict(checkpoint["model"])
++        self.optimizer.load_state_dict(checkpoint["optimizer"])
++        self.scheduler.load_state_dict(checkpoint["scheduler"])
++        self.best_performance = checkpoint["best_performance"]
++        self.current_epoch = checkpoint["epoch"]
++        self.pseudo_attrs = checkpoint["pseudo_attrs"]
++        self.bias_prior = checkpoint["bias_prior"]
++        print(
++            log_msg(
++                f"Loaded checkpoint from {os.path.join(self.log_path, tag)}",
++                "INFO",
++                self.logger,
++            )
++        )
+diff --git a/mitigators/george.py b/mitigators/george.py
+new file mode 100644
+index 0000000..3ca8249
+--- /dev/null
++++ b/mitigators/george.py
+@@ -0,0 +1,258 @@
++# George (Sohoni et al., NeurIPS 2020)
++# "No Subclass Left Behind: Fine-Grained Robustness in Coarse-Grained
++#  Classification Problems"
++#
++# Key idea: Two-stage approach:
++# 1. Train an ERM model, extract embeddings, cluster them within each
++#    class to discover hidden subgroups (pseudo-groups).
++# 2. Retrain with GroupDRO-style optimization over the discovered
++#    pseudo-groups.
++
++import os
++import numpy as np
++import torch
++import torch.nn as nn
++from sklearn.cluster import KMeans
++
++from my_datasets.builder import get_dataset
++from models.builder import get_model
++from tools.utils import load_checkpoint, log_msg, save_checkpoint
++from .base_trainer import BaseTrainer
++
++
++class GeorgeTrainer(BaseTrainer):
++    """
++    George trainer (GEORGE: Group-aware ERM with Oversampling and
++    Reweighting for Group-Enhanced robustness).
++
++    Phase 1: Train an ERM model for a set number of epochs.
++    Phase 2: Extract feature embeddings, cluster within each class
++             using k-means to discover pseudo-groups.
++    Phase 3: Retrain with GroupDRO over the discovered pseudo-groups.
++    """
++
++    def _setup_dataset(self):
++        dataset = get_dataset(self.cfg)
++        self.num_class = dataset["num_class"]
++        self.biases = dataset["biases"]
++        self.dataloaders = dataset["dataloaders"]
++        self.data_root = dataset["root"]
++        self.sets = dataset["sets"]
++        self.target2name = dataset["target2name"]
++        self.ba_groups = dataset["ba_groups"] if "ba_groups" in dataset else None
++
++        # Total pseudo-groups = num_class * num_clusters_per_class
++        self.num_clusters = self.cfg.MITIGATOR.GEORGE.NUM_CLUSTERS
++        self.num_group = self.num_class * self.num_clusters
++        self.num_biases = self.num_clusters
++        return
++
++    def _setup_criterion(self):
++        if self.cfg.SOLVER.CRITERION == "CE":
++            self.criterion_train = nn.CrossEntropyLoss(reduction="none")
++            self.criterion = nn.CrossEntropyLoss()
++        else:
++            raise ValueError(f"Unsupported criterion type: {self.cfg.SOLVER.CRITERION}")
++
++    def _method_specific_setups(self):
++        # Run the subgroup discovery pipeline
++        self._discover_subgroups()
++
++        # Initialize GroupDRO parameters over discovered pseudo-groups
++        self.adv_probs = torch.ones(self.num_group, device=self.device) / self.num_group
++        self.group_range = torch.arange(
++            self.num_group, dtype=torch.long, device=self.device
++        ).unsqueeze(1)
++
++    def _discover_subgroups(self):
++        """
++        Phase 1 & 2: Train ERM model briefly, extract embeddings,
++        cluster to discover pseudo-groups.
++        """
++        cfg = self.cfg
++        discovery_epochs = cfg.MITIGATOR.GEORGE.DISCOVERY_EPOCHS
++        MODEL_SAVE_PATH = os.path.join(self.log_path, "george_discovery_model")
++        CLUSTERS_SAVE_PATH = os.path.join(self.log_path, "george_clusters.pt")
++
++        # Check if clusters already computed
++        if os.path.exists(CLUSTERS_SAVE_PATH):
++            print("Loading pre-computed George clusters...")
++            cluster_data = torch.load(CLUSTERS_SAVE_PATH, map_location=self.device)
++            self.pseudo_group_labels = cluster_data["pseudo_group_labels"]
++            self._setup_models()
++            self._setup_optimizer()
++            return
++
++        # Phase 1: Train ERM model
++        if os.path.exists(MODEL_SAVE_PATH):
++            print("Loading pre-trained George discovery model...")
++            self.model.load_state_dict(
++                torch.load(MODEL_SAVE_PATH, map_location=self.device)
++            )
++        else:
++            print(
++                f"George: Training ERM for {discovery_epochs} epochs for subgroup discovery."
++            )
++            erm_optimizer = torch.optim.Adam(
++                self.model.parameters(),
++                lr=cfg.SOLVER.LR,
++                weight_decay=cfg.SOLVER.WEIGHT_DECAY,
++            )
++            self.model.train()
++            for epoch in range(discovery_epochs):
++                total_loss = 0.0
++                correct = 0
++                total = 0
++                for batch in self.dataloaders["train"]:
++                    inputs = batch["inputs"].to(self.device)
++                    targets = batch["targets"].to(self.device)
++                    outputs = self.model(inputs)
++                    if isinstance(outputs, tuple):
++                        outputs, _ = outputs
++                    loss = self.criterion(outputs, targets)
++                    loss.backward()
++                    erm_optimizer.step()
++                    erm_optimizer.zero_grad(set_to_none=True)
++                    total_loss += loss.item()
++                    predicted = outputs.argmax(dim=1)
++                    correct += (predicted == targets).sum().item()
++                    total += targets.size(0)
++                avg_loss = total_loss / len(self.dataloaders["train"])
++                accuracy = correct / total * 100 if total > 0 else 0
++                print(
++                    f"George Discovery Epoch [{epoch+1}/{discovery_epochs}] - "
++                    f"Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%"
++                )
++            os.makedirs(os.path.dirname(MODEL_SAVE_PATH), exist_ok=True)
++            torch.save(self.model.state_dict(), MODEL_SAVE_PATH)
++
++        # Phase 2: Extract embeddings and cluster
++        print("George: Extracting embeddings for clustering...")
++        self.model.eval()
++        all_features = []
++        all_targets = []
++
++        ordered_loader = torch.utils.data.DataLoader(
++            self.sets["train"],
++            batch_size=cfg.SOLVER.BATCH_SIZE,
++            shuffle=False,
++            num_workers=cfg.DATASET.NUM_WORKERS,
++            pin_memory=True,
++            persistent_workers=cfg.DATASET.NUM_WORKERS > 0,
++        )
++
++        with torch.no_grad():
++            for batch in ordered_loader:
++                inputs = batch["inputs"].to(self.device)
++                targets = batch["targets"]
++                outputs = self.model(inputs)
++                if isinstance(outputs, tuple):
++                    _, feats = outputs
++                else:
++                    # If model doesn't return features, use penultimate layer
++                    feats = outputs
++                all_features.append(feats.cpu())
++                all_targets.append(targets)
++
++        all_features = torch.cat(all_features, dim=0).numpy()
++        all_targets = torch.cat(all_targets, dim=0).numpy()
++
++        # Cluster within each class
++        print(
++            f"George: Clustering with {self.num_clusters} clusters per class..."
++        )
++        pseudo_group_labels = np.zeros(len(all_targets), dtype=np.int64)
++        for class_idx in range(self.num_class):
++            class_mask = all_targets == class_idx
++            class_features = all_features[class_mask]
++
++            if len(class_features) < self.num_clusters:
++                # Not enough samples; assign all to group 0
++                pseudo_group_labels[class_mask] = class_idx * self.num_clusters
++                continue
++
++            kmeans = KMeans(
++                n_clusters=self.num_clusters,
++                random_state=cfg.EXPERIMENT.SEED,
++                n_init=10,
++            )
++            cluster_ids = kmeans.fit_predict(class_features)
++            pseudo_group_labels[class_mask] = (
++                class_idx * self.num_clusters + cluster_ids
++            )
++
++        self.pseudo_group_labels = torch.from_numpy(pseudo_group_labels).long()
++
++        # Save clusters
++        os.makedirs(os.path.dirname(CLUSTERS_SAVE_PATH) if os.path.dirname(CLUSTERS_SAVE_PATH) else ".", exist_ok=True)
++        torch.save(
++            {"pseudo_group_labels": self.pseudo_group_labels}, CLUSTERS_SAVE_PATH
++        )
++        print(f"George: Discovered {self.num_group} pseudo-groups.")
++
++        # Reset model for phase 3
++        self._setup_models()
++        self._setup_optimizer()
++
++    def _train_iter(self, batch):
++        inputs = batch["inputs"].to(self.device)
++        targets = batch["targets"].to(self.device)
++        indices = batch["index"]
++
++        # Look up pseudo-group labels
++        group_index = self.pseudo_group_labels[indices].to(self.device)
++
++        self.optimizer.zero_grad()
++        outputs = self.model(inputs)
++        if isinstance(outputs, tuple):
++            outputs, _ = outputs
++        loss_per_sample = self.criterion_train(outputs, targets)
++
++        # GroupDRO over pseudo-groups
++        group_map = (group_index.unsqueeze(0) == self.group_range).float()
++        group_count = group_map.sum(1)
++        group_denom = group_count + (group_count == 0).float()
++        group_loss = (group_map @ loss_per_sample.flatten()) / group_denom
++
++        # Update adversarial probabilities
++        with torch.no_grad():
++            self.adv_probs = self.adv_probs * torch.exp(
++                self.cfg.MITIGATOR.GEORGE.ROBUST_STEP_SIZE * group_loss.detach()
++            )
++            self.adv_probs = self.adv_probs / (self.adv_probs.sum())
++
++        # Reweighted robust loss
++        loss = group_loss @ self.adv_probs
++        self._loss_backward(loss)
++        self._optimizer_step()
++        self.scheduler.step()
++        return {"train_cls_loss": loss}
++
++    def _save_checkpoint(self, tag):
++        state = {
++            "epoch": self.current_epoch,
++            "model": self.model.state_dict(),
++            "optimizer": self.optimizer.state_dict(),
++            "best_performance": self.best_performance,
++            "scheduler": self.scheduler.state_dict(),
++            "adv_probs": self.adv_probs,
++            "pseudo_group_labels": self.pseudo_group_labels,
++        }
++        save_checkpoint(state, os.path.join(self.log_path, tag))
++
++    def load_checkpoint(self, tag):
++        checkpoint = load_checkpoint(os.path.join(self.log_path, tag))
++        self.model.load_state_dict(checkpoint["model"])
++        self.optimizer.load_state_dict(checkpoint["optimizer"])
++        self.scheduler.load_state_dict(checkpoint["scheduler"])
++        self.best_performance = checkpoint["best_performance"]
++        self.current_epoch = checkpoint["epoch"]
++        self.adv_probs = checkpoint["adv_probs"]
++        self.pseudo_group_labels = checkpoint["pseudo_group_labels"]
++        print(
++            log_msg(
++                f"Loaded checkpoint from {os.path.join(self.log_path, tag)}",
++                "INFO",
++                self.logger,
++            )
++        )
+diff --git a/mitigators/gerne.py b/mitigators/gerne.py
+new file mode 100644
+index 0000000..739ccdb
+--- /dev/null
++++ b/mitigators/gerne.py
+@@ -0,0 +1,193 @@
++# GERNE - Gradient Extrapolation for Debiased Representation Learning
++# (Asaad, Shadaydeh & Denzler, ICCV 2025)
++#
++# Key idea: Use gradient-based analysis to distinguish bias-aligned from
++# bias-conflicting samples. The method computes per-sample gradients and
++# uses the direction of gradient updates to identify samples that the
++# model is learning via spurious features. It then extrapolates gradients
++# in a direction that promotes learning of causal features.
++#
++# Simplified implementation: We use the loss-based proxy for gradient
++# direction (high-loss samples are bias-conflicting) combined with a
++# gradient penalty that encourages the model to maintain consistent
++# gradient directions across easy and hard samples.
++
++import os
++import torch
++import torch.nn as nn
++import torch.nn.functional as F
++
++from models.builder import get_model
++from tools.utils import load_checkpoint, log_msg, save_checkpoint
++from .base_trainer import BaseTrainer
++from .losses import GeneralizedCECriterion
++
++
++class GERNETrainer(BaseTrainer):
++    """
++    GERNE trainer.
++
++    The method identifies bias-conflicting samples using gradient signals:
++    1. Train a biased auxiliary model (using GCE) that captures spurious features.
++    2. Use the auxiliary model's per-sample losses to estimate bias alignment.
++    3. Apply gradient extrapolation: amplify gradient contributions from
++       bias-conflicting samples by scaling their loss based on the discrepancy
++       between main and auxiliary model predictions.
++    4. Add a regularization term that penalizes the model for learning
++       representations that align with the biased model's feature space.
++    """
++
++    def _method_specific_setups(self):
++        self.ema_bias_loss = None
++        self.ema_main_loss = None
++        self.ema_alpha = 0.9
++
++    def _setup_models(self):
++        super()._setup_models()
++        self.bias_model = get_model(
++            self.cfg.MODEL.TYPE,
++            self.num_class,
++        )
++        self.bias_model.to(self.device)
++
++    def _setup_criterion(self):
++        super()._setup_criterion()
++        self.criterion_train = nn.CrossEntropyLoss(reduction="none")
++        self.gce_criterion = GeneralizedCECriterion(
++            q=self.cfg.MITIGATOR.GERNE.GCE_Q
++        )
++
++    def _setup_optimizer(self):
++        super()._setup_optimizer()
++        if self.cfg.SOLVER.TYPE == "SGD":
++            self.optimizer_bias = torch.optim.SGD(
++                self.bias_model.parameters(),
++                lr=self.cfg.SOLVER.LR,
++                momentum=self.cfg.SOLVER.MOMENTUM,
++                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
++            )
++        elif self.cfg.SOLVER.TYPE in ("Adam", "AdamW"):
++            self.optimizer_bias = torch.optim.Adam(
++                self.bias_model.parameters(),
++                lr=self.cfg.SOLVER.LR,
++                weight_decay=self.cfg.SOLVER.WEIGHT_DECAY,
++            )
++        else:
++            raise ValueError(f"Unsupported optimizer type: {self.cfg.SOLVER.TYPE}")
++
++    def _set_train(self):
++        super()._set_train()
++        self.bias_model.train()
++
++    def _set_eval(self):
++        super()._set_eval()
++        self.bias_model.eval()
++
++    def _train_iter(self, batch):
++        inputs = batch["inputs"].to(self.device)
++        targets = batch["targets"].to(self.device)
++
++        # Forward pass through biased model
++        bias_outputs = self.bias_model(inputs)
++        if isinstance(bias_outputs, tuple):
++            bias_logits, bias_feats = bias_outputs
++        else:
++            bias_logits = bias_outputs
++            bias_feats = None
++
++        # Forward pass through main model
++        main_outputs = self.model(inputs)
++        if isinstance(main_outputs, tuple):
++            main_logits, main_feats = main_outputs
++        else:
++            main_logits = main_outputs
++            main_feats = None
++
++        # Train biased model with GCE loss
++        gce_loss = self.gce_criterion(bias_logits, targets).mean()
++
++        # Compute per-sample losses
++        with torch.no_grad():
++            bias_loss_per_sample = self.criterion_train(
++                bias_logits.detach(), targets
++            )
++            main_loss_per_sample = self.criterion_train(
++                main_logits.detach(), targets
++            )
++
++        # Gradient extrapolation weights:
++        # High bias loss = bias-conflicting (hard for biased model)
++        # Low bias loss = bias-aligned (easy for biased model)
++        # We want to upweight bias-conflicting samples
++        with torch.no_grad():
++            # Normalize losses
++            bias_loss_norm = bias_loss_per_sample / (
++                bias_loss_per_sample.mean() + 1e-8
++            )
++            # Extrapolation: weight = 1 + lambda * (normalized_bias_loss - 1)
++            # This amplifies gradients for samples the biased model finds hard
++            extrapolation_lambda = self.cfg.MITIGATOR.GERNE.EXTRAPOLATION_LAMBDA
++            weights = 1.0 + extrapolation_lambda * (bias_loss_norm - 1.0)
++            weights = torch.clamp(weights, min=0.1)  # ensure non-negative
++            weights = weights / weights.mean()  # normalize
++
++        # Reweighted main model loss
++        ce_loss_per_sample = self.criterion_train(main_logits, targets)
++        ce_loss = (ce_loss_per_sample * weights).mean()
++
++        # Feature decorrelation regularization
++        # Penalize alignment between main and biased model features
++        reg_loss = torch.tensor(0.0, device=self.device)
++        if main_feats is not None and bias_feats is not None:
++            reg_lambda = self.cfg.MITIGATOR.GERNE.REG_LAMBDA
++            # Normalize features
++            main_feats_norm = F.normalize(main_feats, dim=1)
++            bias_feats_norm = F.normalize(bias_feats.detach(), dim=1)
++            # Penalize cosine similarity
++            cosine_sim = (main_feats_norm * bias_feats_norm).sum(dim=1)
++            reg_loss = reg_lambda * cosine_sim.mean()
++
++        # Total loss
++        loss = ce_loss + gce_loss + reg_loss
++
++        self.optimizer.zero_grad()
++        self.optimizer_bias.zero_grad()
++        self._loss_backward(loss)
++        self.optimizer.step()
++        self.optimizer_bias.step()
++        self.scheduler.step()
++
++        return {
++            "train_cls_loss": ce_loss,
++            "train_gce_loss": gce_loss,
++            "train_reg_loss": reg_loss,
++        }
++
++    def _save_checkpoint(self, tag):
++        state = {
++            "epoch": self.current_epoch,
++            "model": self.model.state_dict(),
++            "optimizer": self.optimizer.state_dict(),
++            "best_performance": self.best_performance,
++            "scheduler": self.scheduler.state_dict(),
++            "bias_model": self.bias_model.state_dict(),
++            "optimizer_bias": self.optimizer_bias.state_dict(),
++        }
++        save_checkpoint(state, os.path.join(self.log_path, tag))
++
++    def load_checkpoint(self, tag):
++        checkpoint = load_checkpoint(os.path.join(self.log_path, tag))
++        self.model.load_state_dict(checkpoint["model"])
++        self.optimizer.load_state_dict(checkpoint["optimizer"])
++        self.scheduler.load_state_dict(checkpoint["scheduler"])
++        self.best_performance = checkpoint["best_performance"]
++        self.current_epoch = checkpoint["epoch"]
++        self.bias_model.load_state_dict(checkpoint["bias_model"])
++        self.optimizer_bias.load_state_dict(checkpoint["optimizer_bias"])
++        print(
++            log_msg(
++                f"Loaded checkpoint from {os.path.join(self.log_path, tag)}",
++                "INFO",
++                self.logger,
++            )
++        )
+diff --git a/my_datasets/builder.py b/my_datasets/builder.py
+index 4b28c47..a546282 100644
+--- a/my_datasets/builder.py
++++ b/my_datasets/builder.py
+@@ -1100,6 +1100,7 @@ def get_dataset(cfg):
+                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
+             )
+     elif dataset_name == "speech_accent_archive":
++        bias_ratio = cfg.DATASET.SPEECH_ACCENT_ARCHIVE.BIAS_RATIO
+         if method_name == "groupdro":
+             (
+                 train_loader,
+@@ -1114,6 +1115,7 @@ def get_dataset(cfg):
+                 num_workers=cfg.DATASET.NUM_WORKERS,
+                 encoder_name=cfg.DATASET.SPEECH_ACCENT_ARCHIVE.AUDIO_ENCODER,
+                 sampler="weighted",
++                desired_bias_ratio=bias_ratio,
+             )
+         else:
+             (
+@@ -1128,6 +1130,7 @@ def get_dataset(cfg):
+                 batch_size=cfg.SOLVER.BATCH_SIZE,
+                 num_workers=cfg.DATASET.NUM_WORKERS,
+                 encoder_name=cfg.DATASET.SPEECH_ACCENT_ARCHIVE.AUDIO_ENCODER,
++                desired_bias_ratio=bias_ratio,
+             )
+ 
+         dataset = {}
+@@ -1285,6 +1288,7 @@ def get_dataset(cfg):
+                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
+             )
+     elif dataset_name == "chexpert_nih":
++        bias_ratio = cfg.DATASET.CHEXPERT_NIH.BIAS_RATIO
+         if method_name == "groupdro":
+             (
+                 train_loader,
+@@ -1296,6 +1300,7 @@ def get_dataset(cfg):
+             ) = get_chexpert_nih_loader(
+                 batch_size=cfg.SOLVER.BATCH_SIZE,
+                 sampler="weighted",
++                bias_ratio=bias_ratio,
+             )
+         else:
+             (
+@@ -1307,6 +1312,7 @@ def get_dataset(cfg):
+                 test_dataset,
+             ) = get_chexpert_nih_loader(
+                 batch_size=cfg.SOLVER.BATCH_SIZE,
++                bias_ratio=bias_ratio,
+             )
+ 
+         dataset = {}
+diff --git a/my_datasets/chexpert_nih.py b/my_datasets/chexpert_nih.py
+index 96896a8..118f331 100644
+--- a/my_datasets/chexpert_nih.py
++++ b/my_datasets/chexpert_nih.py
+@@ -247,7 +247,7 @@ class CustomChestXrayDataset(Dataset):
+ 
+ 
+ def get_chexpert_nih_loader(
+-    batch_size=64, n_workers=4, transform=None, sampler=None
++    batch_size=64, n_workers=4, transform=None, sampler=None, bias_ratio=0.9
+ ) -> None:
+     target_resolution = (256, 256)
+     transform_test = transform
+@@ -280,7 +280,7 @@ def get_chexpert_nih_loader(
+             ]
+         )
+ 
+-    train_dataset, test_dataset = create_custom_split()
++    train_dataset, test_dataset = create_custom_split(bias_ratio=bias_ratio)
+     train_dataset = CustomChestXrayDataset(train_dataset, transform=transform_train)
+     test_dataset = CustomChestXrayDataset(test_dataset, transform_test)
+     if sampler == "weighted":
+diff --git a/scripts/run_new_methods.sh b/scripts/run_new_methods.sh
+new file mode 100644
+index 0000000..4a7055f
+--- /dev/null
++++ b/scripts/run_new_methods.sh
+@@ -0,0 +1,54 @@
++#!/bin/bash
++#SBATCH -c1
++#SBATCH --mem=6G
++#SBATCH --gres shard:4
++#SBATCH --job-name="new-methods"
++#SBATCH --output=slurm/slurm_%x_%A_%a.out
++#SBATCH --error=slurm/slurm_%x_%A_%a.err
++#SBATCH --array=0-99   # 5 datasets × 4 methods × 5 seeds
++#SBATCH --time=06:00:00
++
++# Environment setup
++export PYTHONPATH="/mnt/cephfs/home/gsarridis/projects/vb-mitigator/"
++cd /mnt/cephfs/home/gsarridis/projects/vb-mitigator
++
++source /mnt/cephfs/home/gsarridis/anaconda3/etc/profile.d/conda.sh
++conda activate dl310
++
++# Define datasets, methods, and seeds
++DATASETS="bias_in_bios jigsaw_toxic_comments speech_accent_archive urbansounds chexpert_nih"
++METHODS="bias_ensemble george bpa gerne"
++SEEDS="1 2 3 4 5"
++
++# Convert to arrays
++set -- $DATASETS; DATASET_ARR=("$@")
++set -- $METHODS; METHOD_ARR=("$@")
++set -- $SEEDS; SEED_ARR=("$@")
++
++NUM_DATASETS=${#DATASET_ARR[@]}
++NUM_METHODS=${#METHOD_ARR[@]}
++NUM_SEEDS=${#SEED_ARR[@]}
++
++EXPERIMENT_ID=$SLURM_ARRAY_TASK_ID
++
++# Compute indices
++DATASET_IDX=$(( EXPERIMENT_ID / (NUM_METHODS * NUM_SEEDS) ))
++METHOD_IDX=$(( (EXPERIMENT_ID / NUM_SEEDS) % NUM_METHODS ))
++SEED_IDX=$(( EXPERIMENT_ID % NUM_SEEDS ))
++
++DATASET=${DATASET_ARR[$DATASET_IDX]}
++METHOD=${METHOD_ARR[$METHOD_IDX]}
++SEED=${SEED_ARR[$SEED_IDX]}
++
++CONFIG_PATH="configs/$DATASET/$METHOD/dev.yaml"
++
++echo "====================================="
++echo "SLURM Job ID: $SLURM_JOB_ID"
++echo "SLURM Array Task ID: $SLURM_ARRAY_TASK_ID"
++echo "Node: $(hostname)"
++echo "GPUs Allocated: $CUDA_VISIBLE_DEVICES"
++echo "Running experiment: Dataset=$DATASET, Method=$METHOD, Seed=$SEED"
++echo "Config: $CONFIG_PATH"
++echo "====================================="
++
++srun python tools/train.py --cfg "$CONFIG_PATH" --seed "$SEED"
+diff --git a/scripts/run_new_methods_natural_images.sh b/scripts/run_new_methods_natural_images.sh
+new file mode 100644
+index 0000000..bf5bec2
+--- /dev/null
++++ b/scripts/run_new_methods_natural_images.sh
+@@ -0,0 +1,60 @@
++#!/bin/bash
++#SBATCH -c1
++#SBATCH --mem=8G
++#SBATCH --gres shard:8
++#SBATCH --job-name="new-methods-natimg"
++#SBATCH --output=slurm/slurm_%x_%A_%a.out
++#SBATCH --error=slurm/slurm_%x_%A_%a.err
++#SBATCH --array=0-59   # 3 datasets × 4 methods × 5 seeds
++#SBATCH --time=06:00:00
++
++# Environment setup
++source /mnt/cephfs/home/gsarridis/anaconda3/etc/profile.d/conda.sh
++conda activate dl310
++
++export PYTHONPATH="/mnt/cephfs/home/gsarridis/projects/vb-mitigator/"
++cd /mnt/cephfs/home/gsarridis/projects/vb-mitigator
++
++# Define datasets, methods, and seeds
++# CelebA uses "blonde.yaml", others use "dev.yaml"
++METHODS="bias_ensemble george bpa gerne"
++SEEDS="1 2 3 4 5"
++
++set -- $METHODS; METHOD_ARR=("$@")
++set -- $SEEDS; SEED_ARR=("$@")
++
++NUM_METHODS=${#METHOD_ARR[@]}
++NUM_SEEDS=${#SEED_ARR[@]}
++
++# 3 datasets: celeba, waterbirds, urbancars
++NUM_DATASETS=3
++EXPERIMENT_ID=$SLURM_ARRAY_TASK_ID
++
++DATASET_IDX=$(( EXPERIMENT_ID / (NUM_METHODS * NUM_SEEDS) ))
++METHOD_IDX=$(( (EXPERIMENT_ID / NUM_SEEDS) % NUM_METHODS ))
++SEED_IDX=$(( EXPERIMENT_ID % NUM_SEEDS ))
++
++METHOD=${METHOD_ARR[$METHOD_IDX]}
++SEED=${SEED_ARR[$SEED_IDX]}
++
++if [ $DATASET_IDX -eq 0 ]; then
++    DATASET="celeba"
++    CONFIG_PATH="configs/celeba/$METHOD/blonde.yaml"
++elif [ $DATASET_IDX -eq 1 ]; then
++    DATASET="waterbirds"
++    CONFIG_PATH="configs/waterbirds/$METHOD/dev.yaml"
++elif [ $DATASET_IDX -eq 2 ]; then
++    DATASET="urbancars"
++    CONFIG_PATH="configs/urbancars/$METHOD/dev.yaml"
++fi
++
++echo "====================================="
++echo "SLURM Job ID: $SLURM_JOB_ID"
++echo "SLURM Array Task ID: $SLURM_ARRAY_TASK_ID"
++echo "Node: $(hostname)"
++echo "GPUs Allocated: $CUDA_VISIBLE_DEVICES"
++echo "Running experiment: Dataset=$DATASET, Method=$METHOD, Seed=$SEED"
++echo "Config: $CONFIG_PATH"
++echo "====================================="
++
++srun python tools/train.py --cfg "$CONFIG_PATH" --seed "$SEED"
+diff --git a/scripts/run_new_methods_ucf101.sh b/scripts/run_new_methods_ucf101.sh
+new file mode 100644
+index 0000000..75376ca
+--- /dev/null
++++ b/scripts/run_new_methods_ucf101.sh
+@@ -0,0 +1,47 @@
++#!/bin/bash
++#SBATCH -c4
++#SBATCH --mem=24G
++#SBATCH --gres shard:24
++#SBATCH --job-name="new-methods-ucf101"
++#SBATCH --output=slurm/slurm_%x_%A_%a.out
++#SBATCH --error=slurm/slurm_%x_%A_%a.err
++#SBATCH --array=0-11   # 4 methods × 3 seeds
++#SBATCH --time=10:00:00
++
++# Environment setup
++source /mnt/cephfs/home/gsarridis/anaconda3/etc/profile.d/conda.sh
++conda activate dl310
++
++export PYTHONPATH="/mnt/cephfs/home/gsarridis/projects/vb-mitigator/"
++cd /mnt/cephfs/home/gsarridis/projects/vb-mitigator
++
++# Define methods and seeds
++METHODS="bias_ensemble george bpa gerne"
++SEEDS="0 1 2"
++
++set -- $METHODS; METHOD_ARR=("$@")
++set -- $SEEDS; SEED_ARR=("$@")
++
++NUM_METHODS=${#METHOD_ARR[@]}
++NUM_SEEDS=${#SEED_ARR[@]}
++
++EXPERIMENT_ID=$SLURM_ARRAY_TASK_ID
++
++METHOD_IDX=$(( EXPERIMENT_ID % NUM_METHODS ))
++SEED_IDX=$(( EXPERIMENT_ID / NUM_METHODS ))
++
++METHOD=${METHOD_ARR[$METHOD_IDX]}
++SEED=${SEED_ARR[$SEED_IDX]}
++
++CONFIG_PATH="configs/ucf101/$METHOD/scuba_swin.yaml"
++
++echo "====================================="
++echo "SLURM Job ID: $SLURM_JOB_ID"
++echo "SLURM Array Task ID: $SLURM_ARRAY_TASK_ID"
++echo "Node: $(hostname)"
++echo "GPUs Allocated: $CUDA_VISIBLE_DEVICES"
++echo "Running experiment: Dataset=ucf101, Method=$METHOD, Seed=$SEED"
++echo "Config: $CONFIG_PATH"
++echo "====================================="
++
++srun python tools/train.py --cfg "$CONFIG_PATH" --seed "$SEED"
+diff --git a/scripts/run_sensitivity_analysis.sh b/scripts/run_sensitivity_analysis.sh
+new file mode 100644
+index 0000000..9a6fa18
+--- /dev/null
++++ b/scripts/run_sensitivity_analysis.sh
+@@ -0,0 +1,61 @@
++#!/bin/bash
++#SBATCH -c1
++#SBATCH --mem=8G
++#SBATCH --gres shard:4
++#SBATCH --job-name="sensitivity"
++#SBATCH --output=slurm/slurm_%x_%A_%a.out
++#SBATCH --error=slurm/slurm_%x_%A_%a.err
++#SBATCH --array=0-239   # 2 datasets × 8 methods × 3 ratios × 5 seeds
++#SBATCH --time=06:00:00
++
++# Environment setup
++source /mnt/cephfs/home/gsarridis/anaconda3/etc/profile.d/conda.sh
++conda activate dl310
++
++export PYTHONPATH="/mnt/cephfs/home/gsarridis/projects/vb-mitigator/"
++cd /mnt/cephfs/home/gsarridis/projects/vb-mitigator
++
++# Methods
++METHODS="erm maviasb badd flac bias_ensemble george bpa gerne"
++SEEDS="1 2 3 4 5"
++
++set -- $METHODS; METHOD_ARR=("$@")
++set -- $SEEDS; SEED_ARR=("$@")
++
++NUM_METHODS=${#METHOD_ARR[@]}
++NUM_SEEDS=${#SEED_ARR[@]}
++
++# 2 datasets × 3 ratios each = 6 dataset-ratio combos
++# CheXpert: 0.7, 0.8, 0.95
++# Speech Accent: 3, 5, 19
++NUM_COMBOS=6
++
++EXPERIMENT_ID=$SLURM_ARRAY_TASK_ID
++
++COMBO_IDX=$(( EXPERIMENT_ID / (NUM_METHODS * NUM_SEEDS) ))
++METHOD_IDX=$(( (EXPERIMENT_ID / NUM_SEEDS) % NUM_METHODS ))
++SEED_IDX=$(( EXPERIMENT_ID % NUM_SEEDS ))
++
++METHOD=${METHOD_ARR[$METHOD_IDX]}
++SEED=${SEED_ARR[$SEED_IDX]}
++
++# Map combo index to dataset + ratio
++case $COMBO_IDX in
++    0) DATASET="chexpert_nih"; CONFIG_PATH="configs/chexpert_nih/$METHOD/sensitivity_0_7.yaml" ;;
++    1) DATASET="chexpert_nih"; CONFIG_PATH="configs/chexpert_nih/$METHOD/sensitivity_0_8.yaml" ;;
++    2) DATASET="chexpert_nih"; CONFIG_PATH="configs/chexpert_nih/$METHOD/sensitivity_0_95.yaml" ;;
++    3) DATASET="speech_accent_archive"; CONFIG_PATH="configs/speech_accent_archive/$METHOD/sensitivity_ratio_3.yaml" ;;
++    4) DATASET="speech_accent_archive"; CONFIG_PATH="configs/speech_accent_archive/$METHOD/sensitivity_ratio_5.yaml" ;;
++    5) DATASET="speech_accent_archive"; CONFIG_PATH="configs/speech_accent_archive/$METHOD/sensitivity_ratio_19.yaml" ;;
++esac
++
++echo "====================================="
++echo "SLURM Job ID: $SLURM_JOB_ID"
++echo "SLURM Array Task ID: $SLURM_ARRAY_TASK_ID"
++echo "Node: $(hostname)"
++echo "GPUs Allocated: $CUDA_VISIBLE_DEVICES"
++echo "Running sensitivity: Dataset=$DATASET, Method=$METHOD, Seed=$SEED"
++echo "Config: $CONFIG_PATH"
++echo "====================================="
++
++srun python tools/train.py --cfg "$CONFIG_PATH" --seed "$SEED"
