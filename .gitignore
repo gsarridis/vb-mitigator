@@ -11,6 +11,8 @@ data/biased_mnist/pickles/
 !data/pickles/
 !data/clusters/
 /output/
+/outputs/
+/outputs_r18/
 /slurm/
 /tmp/
 /coco/
