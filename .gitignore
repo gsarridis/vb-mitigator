@@ -14,3 +14,8 @@ data/biased_mnist/pickles/
 /slurm/
 /tmp/
 /coco/
+/tmp_text_similarities/
+/tag_extraction/
+/_vlm_study/
+/outputs/
+/dictionary_learning/
