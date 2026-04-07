@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "bpa"
+  TAG: "dev"
+  PROJECT: "bias_in_bios_baselines"
+DATASET:
+  TYPE: "bias_in_bios"
+  BIASES: ["gender"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "bpa"
+  BPA:
+    CKPT_PATH: "./output/bias_in_bios_baselines/dev/erm/best"
+    PER_CLUSTERS: 4
+    UPDATE_CLUSTER_ITER: 10
+    MOMENTUM: 0.3
+    EXP_STEP: 0.05
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 50
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [16, 33]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "classification_head"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

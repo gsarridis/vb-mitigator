@@ -1,0 +1,13 @@
+Method,Avg Acc,WG Acc
+Vanilla,46.5,16.9
+BB,66.1,0.0
+Debian,67.9,25.7
+DI,69.2,31.3
+EnD,52.2,18.7
+GroupDro,72.6,52.5
+JTT,45.2,18.9
+LfF,69.4,27.9
+SD,67.9,19.1
+FLAC,68.3,29.9
+BAdd,70.1,43.1
+MAVias,73.8,46.8

@@ -1,0 +1,35 @@
+EXPERIMENT:
+  NAME: "george"
+  TAG: "dev_in_out_scuba_swin"
+  PROJECT: "ucf101_baselines"
+DATASET:
+  TYPE: "ucf101"
+  UCF101:
+    TEST_BENCHMARK: "scuba"
+    SAMPLE_DURATION: 32
+  BIASES: ["bias"]
+  NUM_WORKERS: 4
+MITIGATOR:
+  TYPE: "george"
+  GEORGE:
+    DISCOVERY_EPOCHS: 30
+    CLUSTER_METHOD: "gmm"
+    MAX_K: 10
+    SEARCH_K: True
+    REDUCTION: "umap"
+    REDUCTION_COMPONENTS: 2
+    ROBUST_STEP_SIZE: 0.01
+SOLVER:
+  BATCH_SIZE: 16
+  EPOCHS: 30
+  LR: 0.0000125
+  TYPE: "AdamW"
+  WEIGHT_DECAY: 0.01
+  SCHEDULER:
+    TYPE: "cosine_with_warmup"
+    LINEAR_WARMUP: 2.5
+MODEL:
+  TYPE: "swin_t3d"
+METRIC: "acc"
+LOG:
+  SAVE_CRITERION: "test"

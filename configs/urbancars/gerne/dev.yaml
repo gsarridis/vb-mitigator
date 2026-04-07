@@ -1,0 +1,22 @@
+EXPERIMENT:
+  NAME: "gerne"
+  TAG: "dev"
+  PROJECT: "urbancars_baselines"
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+MITIGATOR:
+  TYPE: "gerne"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 150
+  LR: 0.001
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+METRIC: "wg_ovr_tags"

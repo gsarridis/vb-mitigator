@@ -247,7 +247,7 @@ class CustomChestXrayDataset(Dataset):
 
 
 def get_chexpert_nih_loader(
-    batch_size=64, n_workers=4, transform=None, sampler=None
+    batch_size=64, n_workers=4, transform=None, sampler=None, bias_ratio=0.9
 ) -> None:
     target_resolution = (256, 256)
     transform_test = transform
@@ -280,7 +280,7 @@ def get_chexpert_nih_loader(
             ]
         )
 
-    train_dataset, test_dataset = create_custom_split()
+    train_dataset, test_dataset = create_custom_split(bias_ratio=bias_ratio)
     train_dataset = CustomChestXrayDataset(train_dataset, transform=transform_train)
     test_dataset = CustomChestXrayDataset(test_dataset, transform_test)
     if sampler == "weighted":

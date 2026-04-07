@@ -1,0 +1,28 @@
+EXPERIMENT:
+  NAME: "bpa"
+  TAG: "dev"
+  PROJECT: "waterbirds_baselines"
+DATASET:
+  TYPE: "waterbirds"
+  BIASES: ["background"]
+MITIGATOR:
+  TYPE: "bpa"
+  BPA:
+    CKPT_PATH: "./output/waterbirds_baselines/dev/erm/best"
+    PER_CLUSTERS: 4
+    UPDATE_CLUSTER_ITER: 10
+    MOMENTUM: 0.3
+    EXP_STEP: 0.05
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 100
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+  FREEZE_BACKBONE: False
+METRIC: "wg_ovr"

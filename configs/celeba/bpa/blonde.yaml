@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "bpa"
+  TAG: "blonde"
+  PROJECT: "celeba_baselines"
+DATASET:
+  TYPE: "celeba"
+  BIASES: ["gender"]
+  CELEBA:
+    BIAS: "gender"
+    TARGET: "blonde"
+MITIGATOR:
+  TYPE: "bpa"
+  BPA:
+    CKPT_PATH: "./output/celeba_baselines/blonde/erm/best"
+    PER_CLUSTERS: 8
+    UPDATE_CLUSTER_ITER: 10
+    MOMENTUM: 0.3
+    EXP_STEP: 0.05
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 10
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [3, 6]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: True
+  FREEZE_BACKBONE: False
+METRIC: "wg_ovr"

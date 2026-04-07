@@ -1,0 +1,13 @@
+dataset,method,wg_accuracy,rank
+UrbanCars,DI,86.13,1.0
+UrbanCars,BAdd,84.64,2.0
+UrbanCars,MAVias,80.8,3.0
+UrbanCars,JTT,72.48,4.0
+UrbanCars,FLAC,67.56,5.0
+UrbanCars,BB,66.24,6.0
+UrbanCars,SD,58.56,7.0
+UrbanCars,Debian,48.96,8.0
+UrbanCars,EnD,47.52,9.0
+UrbanCars,LfF,46.88,10.0
+UrbanCars,ERM,34.72,11.0
+UrbanCars,GroupDRO,20.0,12.0

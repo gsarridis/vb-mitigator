@@ -1,0 +1,13 @@
+dataset,method,wg_accuracy,rank
+Waterbirds,MAVias,95.9,1.0
+Waterbirds,Debian,94.74,2.0
+Waterbirds,EnD,94.72,3.0
+Waterbirds,LfF,94.42,4.0
+Waterbirds,SD,94.1,5.0
+Waterbirds,BAdd,94.0,6.0
+Waterbirds,BB,93.24,7.0
+Waterbirds,DI,91.64,8.0
+Waterbirds,FLAC,91.08,9.0
+Waterbirds,JTT,90.9,10.0
+Waterbirds,GroupDRO,66.38,11.0
+Waterbirds,ERM,47.04,12.0

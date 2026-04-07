@@ -16,6 +16,12 @@ from .softcon import SoftConTrainer
 from .erm_bcc import ERMBCCTrainer
 from .maviasb import MAVIASBTrainer
 from .erm_dev import ERMDevTrainer
+from .bias_ensemble import BiasEnsembleTrainer
+from .george import GeorgeTrainer
+from .bpa import BPATrainer
+from .gerne import GERNETrainer
+from .nsf import NSFTrainer
+
 
 method_to_trainer = {
     "erm": ERMTrainer,
@@ -36,4 +42,9 @@ method_to_trainer = {
     "erm_bcc": ERMBCCTrainer,
     "maviasb": MAVIASBTrainer,
     "erm_dev": ERMDevTrainer,
+    "bias_ensemble": BiasEnsembleTrainer,
+    "george": GeorgeTrainer,
+    "bpa": BPATrainer,
+    "gerne": GERNETrainer,
+    "nsf": NSFTrainer,
 }

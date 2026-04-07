@@ -82,6 +82,7 @@ class BaseTrainer:
         self._setup_logger()
         self.device = self._setup_device()
         self.current_epoch = 0
+        self.current_lr = 0.0
         self._setup_dataset()
         self._setup_models()
         self._setup_criterion()
@@ -159,17 +160,24 @@ class BaseTrainer:
                     continue
 
                 # Parameters that should NOT have weight decay
-                if any(nd in name for nd in ['absolute_pos_embed', 'relative_position_bias_table', 'norm']):
-                    if 'absolute_pos_embed' in name:
-                        abs_counter +=1
-                    elif 'relative_position_bias_table' in name:
-                        rel_counter +=1
-                    elif 'norm' in name:
-                        norm_counter +=1
+                if any(
+                    nd in name
+                    for nd in [
+                        "absolute_pos_embed",
+                        "relative_position_bias_table",
+                        "norm",
+                    ]
+                ):
+                    if "absolute_pos_embed" in name:
+                        abs_counter += 1
+                    elif "relative_position_bias_table" in name:
+                        rel_counter += 1
+                    elif "norm" in name:
+                        norm_counter += 1
                     no_decay.append(param)
 
                 # Backbone parameters → lower LR
-                elif 'extractor' in name:
+                elif "extractor" in name:
                     backbone.append(param)
                     backbone_counter += 1
 
@@ -178,12 +186,25 @@ class BaseTrainer:
                     decay.append(param)
 
             # Build the optimizer
-            self.optimizer = torch.optim.AdamW([
-                {'params': decay, 'lr': self.cfg.SOLVER.LR, 'weight_decay': self.cfg.SOLVER.WEIGHT_DECAY},
-                {'params': no_decay, 'lr': self.cfg.SOLVER.LR, 'weight_decay': 0.0},
-                {'params': backbone, 'lr': self.cfg.SOLVER.LR * 0.1, 'weight_decay': self.cfg.SOLVER.WEIGHT_DECAY}
-            ], betas=(0.9, 0.999))
-            print(f"abs: {abs_counter}, rel: {rel_counter}, norm: {norm_counter}, backbone: {backbone_counter}")
+            self.optimizer = torch.optim.AdamW(
+                [
+                    {
+                        "params": decay,
+                        "lr": self.cfg.SOLVER.LR,
+                        "weight_decay": self.cfg.SOLVER.WEIGHT_DECAY,
+                    },
+                    {"params": no_decay, "lr": self.cfg.SOLVER.LR, "weight_decay": 0.0},
+                    {
+                        "params": backbone,
+                        "lr": self.cfg.SOLVER.LR * 0.1,
+                        "weight_decay": self.cfg.SOLVER.WEIGHT_DECAY,
+                    },
+                ],
+                betas=(0.9, 0.999),
+            )
+            print(
+                f"abs: {abs_counter}, rel: {rel_counter}, norm: {norm_counter}, backbone: {backbone_counter}"
+            )
         else:
             raise ValueError(f"Unsupported optimizer type: {self.cfg.SOLVER.TYPE}")
 
@@ -212,7 +233,11 @@ class BaseTrainer:
         if self.cfg.SOLVER.SCHEDULER.TYPE == "StepLR":
             self.scheduler = torch.optim.lr_scheduler.StepLR(
                 self.optimizer,
-                step_size=int(self.cfg.SOLVER.SCHEDULER.STEP_SIZE * train_data_len / self.cfg.SOLVER.BATCH_SIZE),
+                step_size=int(
+                    self.cfg.SOLVER.SCHEDULER.STEP_SIZE
+                    * train_data_len
+                    / self.cfg.SOLVER.BATCH_SIZE
+                ),
                 gamma=self.cfg.SOLVER.SCHEDULER.LR_DECAY_RATE,
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "MultiStepLR":
@@ -231,11 +256,15 @@ class BaseTrainer:
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "cosine_with_warmup":
             self.scheduler = CosineAnnealingWarmupRestarts(
                 self.optimizer,
-                first_cycle_steps=int(self.cfg.SOLVER.EPOCHS * train_data_len / self.cfg.SOLVER.BATCH_SIZE),
+                first_cycle_steps=int(
+                    self.cfg.SOLVER.EPOCHS * train_data_len / self.cfg.SOLVER.BATCH_SIZE
+                ),
                 min_lr=1e-10,
                 max_lr=self.cfg.SOLVER.LR,
                 warmup_steps=int(
-                    self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP * train_data_len / self.cfg.SOLVER.BATCH_SIZE
+                    self.cfg.SOLVER.SCHEDULER.LINEAR_WARMUP
+                    * train_data_len
+                    / self.cfg.SOLVER.BATCH_SIZE
                 ),
             )
         elif self.cfg.SOLVER.SCHEDULER.TYPE == "None":
@@ -587,7 +616,8 @@ class BaseTrainer:
         )
         self.log_path = os.path.join(self.cfg.LOG.PREFIX, experiment_name)
         if not os.path.exists(self.log_path):
-            os.makedirs(self.log_path)
+            # os.makedirs(self.log_path)
+            os.makedirs(self.log_path, exist_ok=True)
         self.logger = setup_logger(
             os.path.join(self.log_path, f"out{self.cfg.EXPERIMENT.SEED}.log")
         )
@@ -817,10 +847,8 @@ class BaseTrainer:
             df.to_csv(save_path, index=True)  # keep index for clarity
             print(log_msg(f"Saved full results to {save_path}", "EVAL", self.logger))
 
-
     def test_lr_behavior(self):
         """Simulate LR updates to visualize scheduler behavior."""
-
 
         if not hasattr(self, "scheduler") or self.scheduler is None:
             print("No scheduler initialized (type is 'None').")
@@ -834,7 +862,11 @@ class BaseTrainer:
             lrs.append(param_group["lr"])
         steps.append(0)
 
-        num_steps = int(self.cfg.SOLVER.EPOCHS *  len(self.sets["train"]) / self.cfg.SOLVER.BATCH_SIZE)
+        num_steps = int(
+            self.cfg.SOLVER.EPOCHS
+            * len(self.sets["train"])
+            / self.cfg.SOLVER.BATCH_SIZE
+        )
         # Simulate training steps
         for step in range(1, num_steps + 1):
             self.scheduler.step()

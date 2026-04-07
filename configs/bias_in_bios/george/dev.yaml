@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "george"
+  TAG: "dev"
+  PROJECT: "bias_in_bios_baselines"
+DATASET:
+  TYPE: "bias_in_bios"
+  BIASES: ["gender"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "george"
+  GEORGE:
+    DISCOVERY_EPOCHS: 50
+    CLUSTER_METHOD: "gmm"
+    MAX_K: 10
+    SEARCH_K: True
+    REDUCTION: "umap"
+    REDUCTION_COMPONENTS: 2
+    ROBUST_STEP_SIZE: 0.01
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 50
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [16, 33]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "classification_head"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

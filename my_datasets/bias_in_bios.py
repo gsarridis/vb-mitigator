@@ -48,22 +48,29 @@ class CustomTextDataset(Dataset):
 
 
 def compute_or_load_embeddings(texts, split_name, model, cache_dir, device):
-    os.makedirs(cache_dir, exist_ok=True)
-    emb_path = os.path.join(cache_dir, f"{split_name}_embeddings.npy")
+    # os.makedirs(cache_dir, exist_ok=True)
+    # emb_path = os.path.join(cache_dir, f"{split_name}_embeddings.npy")
 
-    if os.path.exists(emb_path):
-        print(f"Loading cached embeddings for '{split_name}' from: {emb_path}")
-        embeddings = np.load(emb_path)
-    else:
-        print(f"Generating embeddings for '{split_name}'...")
-        embeddings = model.encode(
-            texts,
-            show_progress_bar=True,
-            convert_to_numpy=True,
-            device=str(device),
-        )
-    np.save(emb_path, embeddings)
-    print(f"Saved embeddings to: {emb_path}")
+    # if os.path.exists(emb_path):
+    #     print(f"Loading cached embeddings for '{split_name}' from: {emb_path}")
+    #     embeddings = np.load(emb_path)
+    # else:
+    #     print(f"Generating embeddings for '{split_name}'...")
+    #     embeddings = model.encode(
+    #         texts,
+    #         show_progress_bar=True,
+    #         convert_to_numpy=True,
+    #         device=str(device),
+    #     )
+    # np.save(emb_path, embeddings)
+    # print(f"Saved embeddings to: {emb_path}")
+    print(f"Generating embeddings for '{split_name}'...")
+    embeddings = model.encode(
+        texts,
+        show_progress_bar=True,
+        convert_to_numpy=True,
+        device=str(device),
+    )
     return embeddings
 
 

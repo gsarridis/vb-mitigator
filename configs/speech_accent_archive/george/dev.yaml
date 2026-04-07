@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "george"
+  TAG: "dev"
+  PROJECT: "speech_accent_archive_baselines"
+DATASET:
+  TYPE: "speech_accent_archive"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "george"
+  GEORGE:
+    DISCOVERY_EPOCHS: 100
+    CLUSTER_METHOD: "gmm"
+    MAX_K: 10
+    SEARCH_K: True
+    REDUCTION: "umap"
+    REDUCTION_COMPONENTS: 2
+    ROBUST_STEP_SIZE: 0.01
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 100
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [33, 66]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "lstm_classifier"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

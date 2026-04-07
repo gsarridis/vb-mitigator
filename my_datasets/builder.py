@@ -1100,6 +1100,7 @@ def get_dataset(cfg):
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
     elif dataset_name == "speech_accent_archive":
+        bias_ratio = cfg.DATASET.SPEECH_ACCENT_ARCHIVE.BIAS_RATIO
         if method_name == "groupdro":
             (
                 train_loader,
@@ -1114,6 +1115,7 @@ def get_dataset(cfg):
                 num_workers=cfg.DATASET.NUM_WORKERS,
                 encoder_name=cfg.DATASET.SPEECH_ACCENT_ARCHIVE.AUDIO_ENCODER,
                 sampler="weighted",
+                desired_bias_ratio=bias_ratio,
             )
         else:
             (
@@ -1128,6 +1130,7 @@ def get_dataset(cfg):
                 batch_size=cfg.SOLVER.BATCH_SIZE,
                 num_workers=cfg.DATASET.NUM_WORKERS,
                 encoder_name=cfg.DATASET.SPEECH_ACCENT_ARCHIVE.AUDIO_ENCODER,
+                desired_bias_ratio=bias_ratio,
             )
 
         dataset = {}
@@ -1285,6 +1288,7 @@ def get_dataset(cfg):
                 "this is a text dataset - cannot extract tags like images. Needs a new implementation."
             )
     elif dataset_name == "chexpert_nih":
+        bias_ratio = cfg.DATASET.CHEXPERT_NIH.BIAS_RATIO
         if method_name == "groupdro":
             (
                 train_loader,
@@ -1296,6 +1300,7 @@ def get_dataset(cfg):
             ) = get_chexpert_nih_loader(
                 batch_size=cfg.SOLVER.BATCH_SIZE,
                 sampler="weighted",
+                bias_ratio=bias_ratio,
             )
         else:
             (
@@ -1307,6 +1312,7 @@ def get_dataset(cfg):
                 test_dataset,
             ) = get_chexpert_nih_loader(
                 batch_size=cfg.SOLVER.BATCH_SIZE,
+                bias_ratio=bias_ratio,
             )
 
         dataset = {}

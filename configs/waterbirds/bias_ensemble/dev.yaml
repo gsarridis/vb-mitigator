@@ -1,0 +1,22 @@
+EXPERIMENT:
+  NAME: "bias_ensemble"
+  TAG: "dev"
+  PROJECT: "waterbirds_baselines"
+DATASET:
+  TYPE: "waterbirds"
+  BIASES: ["background"]
+MITIGATOR:
+  TYPE: "bias_ensemble"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 100
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+  FREEZE_BACKBONE: False
+METRIC: "wg_ovr"

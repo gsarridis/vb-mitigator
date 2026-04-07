@@ -1,0 +1,24 @@
+EXPERIMENT:
+  NAME: "bias_ensemble"
+  TAG: "dev"
+  PROJECT: "jigsaw_toxic_comments_baselines"
+DATASET:
+  TYPE: "jigsaw_toxic_comments"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "bias_ensemble"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 200
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [70, 140]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "classification_head"
+METRIC: "acc"
+LOG:
+  SAVE_CRITERION: "val"

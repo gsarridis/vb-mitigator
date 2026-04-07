@@ -1,0 +1,28 @@
+EXPERIMENT:
+  NAME: "george"
+  TAG: "dev"
+  PROJECT: "urbansounds_baselines"
+DATASET:
+  TYPE: "urbansounds"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "george"
+  GEORGE:
+    NUM_CLUSTERS: 2
+    DISCOVERY_EPOCHS: 100
+    ROBUST_STEP_SIZE: 0.01
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 100
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [33, 66]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "cnn_classifier_mfcc"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

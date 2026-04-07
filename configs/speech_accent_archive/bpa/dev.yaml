@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "bpa"
+  TAG: "dev"
+  PROJECT: "speech_accent_archive_baselines"
+DATASET:
+  TYPE: "speech_accent_archive"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "bpa"
+  BPA:
+    CKPT_PATH: "./output/speech_accent_archive_baselines/dev/erm/best"
+    PER_CLUSTERS: 4
+    UPDATE_CLUSTER_ITER: 10
+    MOMENTUM: 0.3
+    EXP_STEP: 0.05
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 100
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [33, 66]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "lstm_classifier"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

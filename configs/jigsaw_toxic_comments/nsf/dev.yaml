@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "nsf"
+  TAG: "dev"
+  PROJECT: "jigsaw_toxic_comments_baselines"
+DATASET:
+  TYPE: "jigsaw_toxic_comments"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "nsf"
+  NSF:
+    CKPT_PATH: "./output/jigsaw_toxic_comments_baselines/dev/erm/best"
+    FEATURE_SPLIT: "val"
+    NUM_EPOCHS_TRANSFORM: 300
+    NUM_EPOCHS_FT: 500
+    LR_TRANSFORM: 0.001
+    LR_FT: 0.001
+    W_REG: 10.0
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 1
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "classification_head"
+METRIC: "acc"
+LOG:
+  SAVE_CRITERION: "val"

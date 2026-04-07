@@ -129,7 +129,9 @@ CFG.DATASET.UCF101.VIDEO_PATH = "/var/local/storage/isarridis/UCF101/UCF-101-jpg
 CFG.DATASET.UCF101.ANNOTATION_PATH = (
     "/var/local/storage/isarridis/UCF101/ucf101_01.json"
 )
-CFG.DATASET.UCF101.ANNOTATION_PATH_SCUBA = "/var/local/storage/isarridis/scuba-ucf/testlist01.txt"
+CFG.DATASET.UCF101.ANNOTATION_PATH_SCUBA = (
+    "/var/local/storage/isarridis/scuba-ucf/testlist01.txt"
+)
 # CFG.DATASET.UCF101.VIDEO_PATH_SCUBA = "/mnt/cephfs/home/gsarridis/projects/StillMix/main_network/mmaction2/data/UCF101-24/generated"
 CFG.DATASET.UCF101.VIDEO_PATH_SCUBA = (
     "/var/local/storage/isarridis/scuba-ucf/generated_videos"
@@ -151,6 +153,9 @@ CFG.DATASET.JIGSAW_TOXIC_COMMENTS.CLASSIFICATION_HEAD = CN()
 CFG.DATASET.JIGSAW_TOXIC_COMMENTS.CLASSIFICATION_HEAD.INPUT_DIM = 368
 CFG.DATASET.JIGSAW_TOXIC_COMMENTS.CLASSIFICATION_HEAD.HIDDEN_DIM = 256
 
+CFG.DATASET.CHEXPERT_NIH = CN()
+CFG.DATASET.CHEXPERT_NIH.BIAS_RATIO = 0.9
+
 
 CFG.DATASET.BIAS_IN_BIOS = CN()
 CFG.DATASET.BIAS_IN_BIOS.ROOT = "./data/bias_in_bios"
@@ -164,6 +169,7 @@ CFG.DATASET.BIAS_IN_BIOS.CLASSIFICATION_HEAD.HIDDEN_DIM = 256
 CFG.DATASET.SPEECH_ACCENT_ARCHIVE = CN()
 CFG.DATASET.SPEECH_ACCENT_ARCHIVE.ROOT = "./data/speech_accent_archive"
 CFG.DATASET.SPEECH_ACCENT_ARCHIVE.AUDIO_ENCODER = "RealAudioEncoder"
+CFG.DATASET.SPEECH_ACCENT_ARCHIVE.BIAS_RATIO = 9
 CFG.DATASET.SPEECH_ACCENT_ARCHIVE.CLASSIFICATION_HEAD = CN()
 CFG.DATASET.SPEECH_ACCENT_ARCHIVE.CLASSIFICATION_HEAD.INPUT_DIM = 768
 CFG.DATASET.SPEECH_ACCENT_ARCHIVE.CLASSIFICATION_HEAD.HIDDEN_DIM = 256
@@ -318,3 +324,90 @@ CFG.MITIGATOR.END = CN()
 CFG.MITIGATOR.END.ALPHA = 1
 CFG.MITIGATOR.END.BETA = 1
 CFG.MITIGATOR.END.WEIGHT = 1
+
+# BIAS ENSEMBLE (Lee et al., AAAI 2023)
+CFG.MITIGATOR.BIAS_ENSEMBLE = CN()
+# CFG.MITIGATOR.BIAS_ENSEMBLE.TEMPERATURE = 1.0
+# CFG.MITIGATOR.BIAS_ENSEMBLE.SWAP_EPOCH = 0
+CFG.MITIGATOR.BIAS_ENSEMBLE.GCE_Q = 0.7
+CFG.MITIGATOR.BIAS_ENSEMBLE.NUM_BIAS_MODELS = 3
+CFG.MITIGATOR.BIAS_ENSEMBLE.PRETRAIN_EPOCHS = 20
+CFG.MITIGATOR.BIAS_ENSEMBLE.SOFTMAX_THRESHOLD = 0.9
+CFG.MITIGATOR.BIAS_ENSEMBLE.AGREEMENT = 3
+
+# GEORGE (Sohoni et al., NeurIPS 2020)
+CFG.MITIGATOR.GEORGE = CN()
+# CFG.MITIGATOR.GEORGE.NUM_CLUSTERS = 2
+# CFG.MITIGATOR.GEORGE.DISCOVERY_EPOCHS = 50
+# CFG.MITIGATOR.GEORGE.ROBUST_STEP_SIZE = 0.01
+# GEORGE (Sohoni et al., NeurIPS 2020)
+# https://github.com/HazyResearch/hidden-stratification
+CFG.MITIGATOR.GEORGE = CN()
+# Discovery: how many epochs to train the ERM model whose features
+# we'll cluster
+CFG.MITIGATOR.GEORGE.DISCOVERY_EPOCHS = 50
+# Clustering method: 'gmm' (paper default in schema) or 'kmeans'
+CFG.MITIGATOR.GEORGE.CLUSTER_METHOD = "gmm"
+# Maximum k to consider when search_k is True; otherwise the fixed k
+CFG.MITIGATOR.GEORGE.MAX_K = 10
+# Whether to sweep k = 2..max_k and pick by silhouette score
+CFG.MITIGATOR.GEORGE.SEARCH_K = True
+# Dimensionality reduction before clustering: 'none', 'pca', or 'umap'
+CFG.MITIGATOR.GEORGE.REDUCTION = "umap"
+# Number of components after reduction
+CFG.MITIGATOR.GEORGE.REDUCTION_COMPONENTS = 2
+# GroupDRO step size in phase 3
+CFG.MITIGATOR.GEORGE.ROBUST_STEP_SIZE = 0.01
+
+# BPA (Seo et al., CVPR 2022)
+# CFG.MITIGATOR.BPA = CN()
+# CFG.MITIGATOR.BPA.NUM_PSEUDO_ATTRS = 2
+# CFG.MITIGATOR.BPA.DISCOVERY_EPOCHS = 50
+# CFG.MITIGATOR.BPA.LOSS_WEIGHT = 1.0
+# BPA — Unsupervised Learning of Debiased Representations with
+# Pseudo-Attributes (Seo et al., CVPR 2022)
+# https://github.com/skynbe/pseudo-attributes
+CFG.MITIGATOR.BPA = CN()
+# Path to a pretrained ERM checkpoint (the "base model"). If empty, BPA
+# will train one inline for BASE_EPOCHS epochs.
+CFG.MITIGATOR.BPA.CKPT_PATH = ""
+CFG.MITIGATOR.BPA.BASE_EPOCHS = 50
+# Number of clusters per class (paper default for CelebA: 8)
+CFG.MITIGATOR.BPA.PER_CLUSTERS = 8
+# How often (in iterations) to recompute per-cluster aggregate stats
+# (mean loss, mean acc). 0 = once per epoch. Paper default: 10.
+CFG.MITIGATOR.BPA.UPDATE_CLUSTER_ITER = 10
+# Momentum used by the centroid bank EMA (paper default: 0.3)
+CFG.MITIGATOR.BPA.MOMENTUM = 0.3
+# Exponential step size for the AvgFixedCentroids 'expavg' weight
+# averaging (paper default: 0.05)
+CFG.MITIGATOR.BPA.EXP_STEP = 0.05
+
+# GERNE (Asaad et al., ICCV 2025)
+CFG.MITIGATOR.GERNE = CN()
+CFG.MITIGATOR.GERNE.GCE_Q = 0.7
+CFG.MITIGATOR.GERNE.EXTRAPOLATION_LAMBDA = 1.0
+CFG.MITIGATOR.GERNE.REG_LAMBDA = 0.1
+
+# NSF / SSC (Li et al., CVPR 2025)
+# "Let Samples Speak: Mitigating Spurious Correlation by Exploiting
+#  the Clusterness of Samples"
+# https://github.com/davelee-uestc/nsf_debiasing
+CFG.MITIGATOR.NSF = CN()
+# Path to a pretrained ERM checkpoint. If empty, NSF will train an ERM
+# base model itself for ERM_EPOCHS epochs.
+CFG.MITIGATOR.NSF.CKPT_PATH = ""
+# How many epochs to train the ERM base model when CKPT_PATH is empty.
+CFG.MITIGATOR.NSF.ERM_EPOCHS = 50
+# Which split to extract features from for the SSC pipeline. The
+# official paper uses 'val' (held out from ERM training).
+CFG.MITIGATOR.NSF.FEATURE_SPLIT = "val"
+# Optimization steps for the feature transformation (paper N1)
+CFG.MITIGATOR.NSF.NUM_EPOCHS_TRANSFORM = 300
+# Optimization steps for the new classifier head (paper N2)
+CFG.MITIGATOR.NSF.NUM_EPOCHS_FT = 500
+# Learning rates
+CFG.MITIGATOR.NSF.LR_TRANSFORM = 1e-3
+CFG.MITIGATOR.NSF.LR_FT = 1e-3
+# Regularization weight on mean(w) in the transformation loss (paper: 10)
+CFG.MITIGATOR.NSF.W_REG = 10.0

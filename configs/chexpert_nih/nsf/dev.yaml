@@ -1,0 +1,31 @@
+EXPERIMENT:
+  NAME: "nsf"
+  TAG: "dev"
+  PROJECT: "chexpert_nih_baselines"
+DATASET:
+  TYPE: "chexpert_nih"
+  BIASES: ["bias"]
+  NUM_WORKERS: 4
+MITIGATOR:
+  TYPE: "nsf"
+  NSF:
+    CKPT_PATH: "./output/chexpert_nih_baselines/dev/erm/best"
+    FEATURE_SPLIT: "val"
+    NUM_EPOCHS_TRANSFORM: 300
+    NUM_EPOCHS_FT: 500
+    LR_TRANSFORM: 0.001
+    LR_FT: 0.001
+    W_REG: 10.0
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 1
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: True
+METRIC: "wg_ovr"

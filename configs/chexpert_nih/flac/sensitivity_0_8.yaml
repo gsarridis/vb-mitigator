@@ -1,0 +1,29 @@
+EXPERIMENT:
+  NAME: "flac"
+  TAG: "sensitivity_bias_ratio_0_8"
+  PROJECT: "chexpert_nih_sensitivity"
+DATASET:
+  TYPE: "chexpert_nih"
+  BIASES: ["bias"]
+  NUM_WORKERS: 4
+  CHEXPERT_NIH:
+    BIAS_RATIO: 0.8
+MITIGATOR:
+  TYPE: "flac"
+  FLAC:
+    BCC_PATH: "./output/chexpert_nih_baselines/bcc/erm/best"
+    LOSS:
+      ALPHA: 1000.0
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 20
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [6, 13]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: True
+METRIC: "wg_ovr"

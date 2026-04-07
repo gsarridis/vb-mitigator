@@ -1,0 +1,13 @@
+Method,Official Set Acc,Generated Set Acc
+Vanilla,94.6,73.5
+BB,75.5,14.0
+Debian,94.8,81.6
+DI,93.9,74.2
+EnD,94.9,81.6
+GroupDro,91.0,94.0
+JTT,72.5,80.8
+LfF,94.7,81.8
+SD,94.7,72.8
+FLAC,85.7,95.8
+BAdd,88.2,95.5
+MAVias,90.1,94.0

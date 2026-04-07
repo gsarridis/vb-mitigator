@@ -1,0 +1,73 @@
+method,dataset,mean,std
+Vanilla,Jigsaw Toxic Comments,73.5,0.4
+BB,Jigsaw Toxic Comments,14.0,0.8
+Debian,Jigsaw Toxic Comments,81.6,0.7
+DI,Jigsaw Toxic Comments,74.2,1.3
+EnD,Jigsaw Toxic Comments,81.6,0.7
+GroupDro,Jigsaw Toxic Comments,94.0,2.7
+JTT,Jigsaw Toxic Comments,80.8,1.5
+LfF,Jigsaw Toxic Comments,81.8,0.6
+SD,Jigsaw Toxic Comments,72.8,0.3
+FLAC,Jigsaw Toxic Comments,95.8,2.5
+BAdd,Jigsaw Toxic Comments,95.5,0.9
+MAVias,Jigsaw Toxic Comments,94.0,1.1
+Vanilla,Bias in Bios,16.9,14.7
+BB,Bias in Bios,0.0,0.0
+Debian,Bias in Bios,25.7,1.6
+DI,Bias in Bios,31.3,4.2
+EnD,Bias in Bios,18.7,12.6
+GroupDro,Bias in Bios,52.5,3.5
+JTT,Bias in Bios,18.9,5.9
+LfF,Bias in Bios,27.9,4.0
+SD,Bias in Bios,19.1,2.9
+FLAC,Bias in Bios,29.9,3.5
+BAdd,Bias in Bios,43.1,1.4
+MAVias,Bias in Bios,46.8,0.6
+Vanilla,Speech Accent Archive,64.9,29.8
+BB,Speech Accent Archive,80.5,2.1
+Debian,Speech Accent Archive,78.9,2.3
+DI,Speech Accent Archive,79.7,1.7
+EnD,Speech Accent Archive,78.9,2.2
+GroupDro,Speech Accent Archive,75.0,2.2
+JTT,Speech Accent Archive,72.7,2.5
+LfF,Speech Accent Archive,79.6,2.0
+SD,Speech Accent Archive,79.4,3.1
+FLAC,Speech Accent Archive,81.6,1.1
+BAdd,Speech Accent Archive,78.4,6.1
+MAVias,Speech Accent Archive,84.7,0.2
+Vanilla,UrbanSounds8K,47.5,3.4
+BB,UrbanSounds8K,65.3,8.5
+Debian,UrbanSounds8K,51.3,5.1
+DI,UrbanSounds8K,60.5,4.4
+EnD,UrbanSounds8K,54.0,9.2
+GroupDro,UrbanSounds8K,39.7,6.7
+JTT,UrbanSounds8K,49.3,2.8
+LfF,UrbanSounds8K,53.0,7.9
+SD,UrbanSounds8K,44.7,5.7
+FLAC,UrbanSounds8K,60.2,5.6
+BAdd,UrbanSounds8K,65.5,7.3
+MAVias,UrbanSounds8K,62.7,6.3
+Vanilla,CheXpert+NIH,31.0,3.9
+BB,CheXpert+NIH,61.1,7.3
+Debian,CheXpert+NIH,31.8,8.2
+DI,CheXpert+NIH,59.3,4.4
+EnD,CheXpert+NIH,31.5,2.5
+GroupDro,CheXpert+NIH,12.5,10.2
+JTT,CheXpert+NIH,20.1,9.5
+LfF,CheXpert+NIH,25.0,10.3
+SD,CheXpert+NIH,25.2,9.6
+FLAC,CheXpert+NIH,46.3,5.8
+BAdd,CheXpert+NIH,64.4,5.3
+MAVias,CheXpert+NIH,55.0,3.8
+Vanilla,UCF101+SCUBA,72.0,0.3
+BB,UCF101+SCUBA,69.4,1.9
+Debian,UCF101+SCUBA,70.1,1.3
+DI,UCF101+SCUBA,46.6,3.1
+EnD,UCF101+SCUBA,72.5,0.9
+GroupDro,UCF101+SCUBA,69.0,1.8
+JTT,UCF101+SCUBA,65.4,1.1
+LfF,UCF101+SCUBA,72.6,0.8
+SD,UCF101+SCUBA,74.5,1.0
+FLAC,UCF101+SCUBA,73.4,1.0
+BAdd,UCF101+SCUBA,73.2,2.2
+MAVias,UCF101+SCUBA,76.1,0.9

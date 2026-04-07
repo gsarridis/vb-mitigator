@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "bpa"
+  TAG: "dev"
+  PROJECT: "jigsaw_toxic_comments_baselines"
+DATASET:
+  TYPE: "jigsaw_toxic_comments"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+MITIGATOR:
+  TYPE: "bpa"
+  BPA:
+    CKPT_PATH: "./output/jigsaw_toxic_comments_baselines/dev/erm/best"
+    PER_CLUSTERS: 4
+    UPDATE_CLUSTER_ITER: 10
+    MOMENTUM: 0.3
+    EXP_STEP: 0.05
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 200
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [70, 140]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "classification_head"
+METRIC: "acc"
+LOG:
+  SAVE_CRITERION: "val"
