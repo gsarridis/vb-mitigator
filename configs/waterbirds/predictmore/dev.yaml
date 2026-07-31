@@ -1,0 +1,33 @@
+EXPERIMENT:
+  NAME: "predictmore"
+  TAG: "dev"
+  PROJECT: "waterbirds_baselines"
+DATASET:
+  TYPE: "waterbirds"
+  BIASES: ["background"]
+MITIGATOR:
+  TYPE: "predictmore"
+  PREDICTMORE:
+    AUX_TASKS: ["rotation", "masked_recon"]
+    LAMBDA_ROT: 0.1
+    LAMBDA_MASK: 0.1
+    LAMBDA_JIGSAW: 0.0
+    MASK_PROB: 0.5
+    JIGSAW_GRID: 3
+    JIGSAW_PERMS: 24
+    AUX_FRACTION: 0.5
+    WARMUP_EPOCHS: 1
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 100
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [60]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+METRIC: "wg_ovr"
+ 

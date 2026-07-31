@@ -8,7 +8,7 @@ DATASET:
 MITIGATOR:
   TYPE: "bpa"
   BPA:
-    CKPT_PATH: "./output/urbancars_baselines/dev/erm/best"
+    CKPT_PATH: ""
     PER_CLUSTERS: 4
     UPDATE_CLUSTER_ITER: 10
     MOMENTUM: 0.3

@@ -1,0 +1,16 @@
+method,dataset,mean,std,rank
+badd,urbansounds58,65.540000,7.294725,1
+bb,urbansounds58,65.339999,8.465993,2
+maviasb,urbansounds58,62.679999,6.326294,3
+bpa,urbansounds58,62.260000,1.540454,4
+di,urbansounds58,60.480001,4.379156,5
+flac,urbansounds58,60.160002,5.610972,6
+george,urbansounds58,58.660000,6.071903,7
+end,urbansounds58,54.000000,9.243646,8
+lff,urbansounds58,52.960000,7.872928,9
+debian,urbansounds58,51.299999,5.110282,10
+jtt,urbansounds58,49.340000,2.760977,11
+erm,urbansounds58,47.500001,3.432200,12
+sd,urbansounds58,44.700000,5.664362,13
+groupdro,urbansounds58,39.700000,6.671956,14
+bias_ensemble,urbansounds58,14.000000,31.304952,15

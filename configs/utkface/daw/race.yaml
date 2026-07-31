@@ -1,0 +1,43 @@
+EXPERIMENT:
+  NAME: "daw"
+  TAG: "race"
+  PROJECT: "utkface_baselines"
+DATASET:
+  TYPE: "utkface"
+  UTKFACE:
+    BIAS: "race"
+MITIGATOR:
+  TYPE: "daw"
+  DAW:
+    DENSITY_SOURCE: "last_layer_gradient"
+    KERNEL: "gaussian"
+    DENSITY_ESTIMATOR: "softmax"      # kNN avoids the KDE over-correction
+    ALPHA: 2.0
+    KNN_K: 10
+    SOFTMAX_T: 1.0
+    BANDWIDTH: "median"
+    WARMUP_EPOCHS: 0
+    RENORMALIZE: True
+    WEIGHT_FLOOR: 0.0
+    WEIGHT_CEILING: 100.0
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 20
+  LR: 0.001
+  TYPE: "Adam"
+  SCHEDULER:
+    LR_DECAY_STAGES: [6, 13]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: False
+  FREEZE_BACKBONE: False
+
+
+METRIC: "wg_ovr"
+
+# 80%
+# BANDWIDTH: median
+# DENSITY_ESTIMATOR: softmax
+# DENSITY_SOURCE: feature
+# KERNEL: cosine

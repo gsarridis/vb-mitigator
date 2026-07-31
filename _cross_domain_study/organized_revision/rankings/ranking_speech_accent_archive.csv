@@ -1,0 +1,16 @@
+method,dataset,mean,std,rank
+maviasb,speech_accent_archive,84.659998,0.240832,1
+george,speech_accent_archive,82.620000,1.920156,2
+flac,speech_accent_archive,81.560001,1.071447,3
+bb,speech_accent_archive,80.460001,2.109029,4
+di,speech_accent_archive,79.660001,1.731475,5
+lff,speech_accent_archive,79.640000,1.986957,6
+sd,speech_accent_archive,79.400001,3.100809,7
+bpa,speech_accent_archive,79.160000,2.143129,8
+end,speech_accent_archive,78.920001,2.170716,9
+debian,speech_accent_archive,78.880000,2.318838,10
+badd,speech_accent_archive,78.380002,6.145486,11
+groupdro,speech_accent_archive,74.979999,2.184491,12
+jtt,speech_accent_archive,72.680000,2.532192,13
+bias_ensemble,speech_accent_archive,72.360000,6.673680,14
+erm,speech_accent_archive,64.942858,29.765689,15

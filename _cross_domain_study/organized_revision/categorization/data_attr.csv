@@ -1,0 +1,7 @@
+dataset,classes,bias_intensity
+Bias in Bios,28,29.6
+Jigsaw Toxic Comments,2,10.55
+UrbanSounds8K,2,25.4
+Speech Accent Archive,2,6.6
+CheXpert+NIH,2,30.2
+UCF101+SCUBA,101,20.0

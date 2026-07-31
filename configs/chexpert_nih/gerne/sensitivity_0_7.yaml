@@ -5,11 +5,16 @@ EXPERIMENT:
 DATASET:
   TYPE: "chexpert_nih"
   BIASES: ["bias"]
-  NUM_WORKERS: 0
+  NUM_WORKERS: 4
   CHEXPERT_NIH:
     BIAS_RATIO: 0.7
 MITIGATOR:
   TYPE: "gerne"
+  GERNE:
+    BETA: 1.0
+    C: 0.5
+    CORR: 0.5
+    NUM_BATCHES: 50
 SOLVER:
   BATCH_SIZE: 64
   EPOCHS: 20

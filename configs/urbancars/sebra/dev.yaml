@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "sebra"
+  TAG: "dev"
+  PROJECT: "urbancars_baselines"
+DATASET:
+  TYPE: "urbancars"
+  BIASES: ["bj_cooc_obj"]
+MITIGATOR:
+  TYPE: "sebra"
+  SEBRA:
+    RANK_ROUNDS: 30
+    BETA_INVERSE: 0.8
+    P_CRITICAL: 0.7
+    STAGE2_EPOCHS: 150
+    GAP: 2
+    TEMPERATURE: 0.05
+    CLASSIFIER_WEIGHT: 1.0
+    BATCH_SIZE_STAGE2: 64
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 1
+  LR: 0.001
+  TYPE: "SGD"
+  MOMENTUM: 0.9
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+METRIC: "wg_ovr_tags"

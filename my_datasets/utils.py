@@ -1,3 +1,4 @@
+import io
 import random
 import torch
 import os
@@ -10,6 +11,7 @@ import math
 import numbers
 import collections
 import numpy as np
+import torchvision.transforms as transforms
 from PIL import Image, ImageOps
 
 accimage = None
@@ -424,7 +426,9 @@ def get_sampling_weights(targets, *bias_targets_list):
     # Count samples per group
     for idx in range(len(targets)):
         target_class = targets[idx].item()
-        bias_indices = [torch.tensor(bias_targets)[idx].item() for bias_targets in bias_targets_list]
+        bias_indices = [
+            torch.tensor(bias_targets)[idx].item() for bias_targets in bias_targets_list
+        ]
 
         # Compute unique group ID
         group_id = target_class
@@ -442,7 +446,9 @@ def get_sampling_weights(targets, *bias_targets_list):
     # Assign weights to samples
     for idx in range(len(targets)):
         target_class = targets[idx].item()
-        bias_indices = [torch.tensor(bias_targets)[idx].item() for bias_targets in bias_targets_list]
+        bias_indices = [
+            torch.tensor(bias_targets)[idx].item() for bias_targets in bias_targets_list
+        ]
 
         # Compute unique group ID
         group_id = target_class
@@ -951,3 +957,54 @@ class VideoID(object):
 
     def __call__(self, target):
         return target["video_id"]
+
+
+class JPEGCompression:
+    def __init__(self, quality=96, subsampling="4:4:4"):
+        self.quality = quality
+        self.subsampling = subsampling
+
+    def __call__(self, img):
+        outputIoStream = io.BytesIO()
+        img.save(
+            outputIoStream,
+            "JPEG",
+            quality=self.quality,
+            subsampling=self.subsampling,
+        )
+        outputIoStream.seek(0)
+        return Image.open(outputIoStream)
+
+    def __repr__(self):
+        cls = self.__class__.__name__
+        return f"{cls}(quality={self.quality}, subsampling={self.subsampling})"
+
+
+class Rescale:
+    def __init__(
+        self,
+        scale_factor=0.2,
+        is_random=False,
+        interpolation=transforms.InterpolationMode.BILINEAR,
+    ):
+        self.scale_factor = scale_factor
+        self.is_random = is_random
+        self.interpolation = interpolation
+        self.rng = np.random.default_rng(seed=42)
+
+    def __call__(self, img):
+        W, H = img.size
+        if self.is_random:
+            scale = 1 + self.rng.uniform(-self.scale_factor, self.scale_factor)
+        else:
+            scale = self.scale_factor
+
+        W = int(W * scale)
+        H = int(H * scale)
+        return transforms.functional.resize(
+            img, (H, W), interpolation=self.interpolation
+        )
+
+    def __repr__(self):
+        cls = self.__class__.__name__
+        return f"{cls}(scale_factor={self.scale_factor}, is_random={self.is_random}, interpolation={self.interpolation})"

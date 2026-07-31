@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "georeg"
+  TAG: "dev"
+  PROJECT: "jigsaw_toxic_comments_baselines"
+DATASET:
+  TYPE: "jigsaw_toxic_comments"
+  BIASES: ["bias"]
+MITIGATOR:
+  TYPE: "georeg"
+  GEOREG:
+    ALPHA: 0.01      # logit-norm penalty (Spectral Decoupling)
+    BETA:  0.01      # feature decorrelation penalty
+    GAMMA: 1.0       # variance hinge (anti-collapse)
+    TARGET_STD: 1.0
+    WARMUP_EPOCHS: 0
+    KEEP_WEIGHT_DECAY: False
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 200
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [70, 140]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "classification_head"
+METRIC: "acc"
+LOG:
+  SAVE_CRITERION: "val"

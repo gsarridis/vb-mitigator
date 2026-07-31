@@ -1,0 +1,35 @@
+% Add to your LaTeX preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{xcolor}
+% \newcommand{\std}[1]{{\scriptsize$\pm$#1}}
+
+\begin{table}[ht]
+\centering
+\caption{Performance comparison on Jigsaw Toxic Comments and Bias in Bios datasets}
+\label{tab:text_results}
+\begin{tabular}{lllll}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{2}{c}{Jigsaw Toxic Comments} & \multicolumn{2}{c}{Bias in Bios} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & Official Set Acc & Generated Set Acc & Avg Acc & WG Acc \\
+\midrule
+Vanilla & 94.6\std{0.1} & 73.5\std{0.4} & 46.5\std{40.2} & 16.9\std{14.7} \\
+BB & 75.5\std{0.9} {\color{red}(-19.1)} & 14.0\std{0.8} {\color{red}(-59.5)} & 66.1\std{0.3} {\color{blue}(+19.6)} & 0.0\std{0.0} {\color{red}(-16.9)} \\
+Debian & 94.8\std{0.1} {\color{blue}(+0.2)} & 81.6\std{0.7} {\color{blue}(+8.1)} & 67.9\std{0.3} {\color{blue}(+21.4)} & 25.7\std{1.6} {\color{blue}(+8.8)} \\
+DI & 93.9\std{0.1} {\color{red}(-0.7)} & 74.2\std{1.3} {\color{blue}(+0.7)} & 69.2\std{0.5} {\color{blue}(+22.7)} & 31.3\std{4.2} {\color{blue}(+14.4)} \\
+EnD & 94.9\std{0.2} {\color{blue}(+0.3)} & 81.6\std{0.7} {\color{blue}(+8.1)} & 52.2\std{34.8} {\color{blue}(+5.7)} & 18.7\std{12.6} {\color{blue}(+1.8)} \\
+GroupDro & 91.0\std{1.6} {\color{red}(-3.6)} & 94.0\std{2.7} {\color{blue}(+20.5)} & 72.6\std{0.7} {\color{blue}(+26.1)} & 52.5\std{3.5} {\color{blue}(+35.6)} \\
+JTT & 72.5\std{1.2} {\color{red}(-22.1)} & 80.8\std{1.5} {\color{blue}(+7.3)} & 45.2\std{1.1} {\color{red}(-1.3)} & 18.9\std{5.9} {\color{blue}(+2.0)} \\
+LfF & 94.7\std{0.2} {\color{blue}(+0.1)} & 81.8\std{0.6} {\color{blue}(+8.3)} & 69.4\std{0.2} {\color{blue}(+22.9)} & 27.9\std{4.0} {\color{blue}(+11.0)} \\
+SD & 94.7\std{0.1} {\color{blue}(+0.1)} & 72.8\std{0.3} {\color{red}(-0.7)} & 67.9\std{0.7} {\color{blue}(+21.4)} & 19.1\std{2.9} {\color{blue}(+2.2)} \\
+NSF & 90.4\std{0.3} {\color{red}(-4.2)} & 50.6\std{0.6} {\color{red}(-22.9)} & 49.3\std{0.2} {\color{blue}(+2.8)} & 0.0\std{0.0} {\color{red}(-16.9)} \\
+GEORGE & 94.9\std{0.1} {\color{blue}(+0.3)} & 74.3\std{0.9} {\color{blue}(+0.8)} & 35.7\std{0.3} {\color{red}(-10.8)} & 0.0\std{0.0} {\color{red}(-16.9)} \\
+BE & 94.6\std{0.1} {\color{blue}(+0.0)} & 70.9\std{1.9} {\color{red}(-2.6)} & 60.2\std{1.5} {\color{blue}(+13.7)} & 19.6\std{7.3} {\color{blue}(+2.7)} \\
+BPA & 94.6\std{0.2} {\color{blue}(+0.0)} & 70.3\std{4.0} {\color{red}(-3.2)} & 72.5\std{0.3} {\color{blue}(+26.0)} & 46.3\std{1.6} {\color{blue}(+29.4)} \\
+FLAC & 85.7\std{1.9} {\color{red}(-8.9)} & 95.8\std{2.5} {\color{blue}(+22.3)} & 68.3\std{0.8} {\color{blue}(+21.8)} & 29.9\std{3.5} {\color{blue}(+13.0)} \\
+BAdd & 88.2\std{1.1} {\color{red}(-6.4)} & 95.5\std{0.9} {\color{blue}(+22.0)} & 70.1\std{0.6} {\color{blue}(+23.6)} & 43.1\std{1.4} {\color{blue}(+26.2)} \\
+MAVIAS & 90.1\std{0.7} {\color{red}(-4.5)} & 94.0\std{1.1} {\color{blue}(+20.5)} & 73.8\std{0.3} {\color{blue}(+27.3)} & 46.8\std{0.6} {\color{blue}(+29.9)} \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,33 @@
+EXPERIMENT:
+  NAME: "sae"
+  TAG: "resize"
+  PROJECT: "imagenet9m_baselines"
+DATASET:
+  TYPE: "imagenet9m"
+  BIASES: ["resize"]
+  IMAGENET9M:
+    SCENARIO: "single"
+    CLASSES: [0, 1]
+    BIAS_TYPE: "resize"
+    CORRELATION: 0.5            # balanced: SAE training + bias-conflict eval
+    JPEG_CLASSES: [[95, "4:4:4"], [75, "4:2:0"]]
+    RESIZE_CLASSES: [2.0, 0.5]
+MITIGATOR:
+  TYPE: "sae"
+  SAE:
+    MODEL_PATH: "./output/imagenet9m_baselines/resize/erm/best"   # biased ERM (resnet50, CLASSES [0,1]) to steer
+    EXPANSION_FACTOR: 8
+    L1_PENALTY: 0.1
+    SUP_PENALTY: 1.0
+    HEAD_EPOCHS: 20
+    HEAD_LR: 0.001
+SOLVER:
+  BATCH_SIZE: 256
+  EPOCHS: 20                    # SAE training epochs
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: False
+METRIC: "sae_steer"

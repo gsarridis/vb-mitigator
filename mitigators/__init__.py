@@ -19,9 +19,15 @@ from .erm_dev import ERMDevTrainer
 from .bias_ensemble import BiasEnsembleTrainer
 from .george import GeorgeTrainer
 from .bpa import BPATrainer
-from .gerne import GERNETrainer
 from .nsf import NSFTrainer
-
+from .sebra import SebraTrainer
+from .gerne import GERNETrainer
+from .georeg import GeoRegTrainer
+from .margingate import MarginGateTrainer
+from .predictmore import PredictMoreTrainer
+from .daw import DAWTrainer
+from .maviasc import MAVIASCTrainer
+from .sae_steer import SAESteerTrainer
 
 method_to_trainer = {
     "erm": ERMTrainer,
@@ -47,4 +53,11 @@ method_to_trainer = {
     "bpa": BPATrainer,
     "gerne": GERNETrainer,
     "nsf": NSFTrainer,
+    "sebra": SebraTrainer,
+    "georeg": GeoRegTrainer,
+    "margingate": MarginGateTrainer,
+    "predictmore": PredictMoreTrainer,
+    "daw": DAWTrainer,
+    "maviasc": MAVIASCTrainer,
+    "sae": SAESteerTrainer,
 }

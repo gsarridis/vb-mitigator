@@ -1,0 +1,33 @@
+EXPERIMENT:
+  NAME: "sebra"
+  TAG: "dev"
+  PROJECT: "speech_accent_archive_baselines"
+DATASET:
+  TYPE: "speech_accent_archive"
+  BIASES: ["bias"]
+  NUM_WORKERS: 4
+MITIGATOR:
+  TYPE: "sebra"
+  SEBRA:
+    RANK_ROUNDS: 20
+    BETA_INVERSE: 0.8
+    P_CRITICAL: 0.7
+    STAGE2_EPOCHS: 100
+    GAP: 2
+    TEMPERATURE: 0.05
+    CLASSIFIER_WEIGHT: 1.0
+    BATCH_SIZE_STAGE2: 64
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 1
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [1000]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "lstm_classifier"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

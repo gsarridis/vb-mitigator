@@ -2,6 +2,11 @@ from my_datasets.celeba import get_celeba
 from my_datasets.chexpert_nih import get_chexpert_nih_loader
 from my_datasets.cifar100 import get_cifar100_loaders
 from my_datasets.imagenet9 import get_background_challenge_data, get_imagenet9l
+from my_datasets.imagenet9m import (
+    get_imagenet9m_loader,
+    imagenet9m_bias_names,
+    SUPERCLASS_NAMES,
+)
 from my_datasets.speech_accent_archive import get_speech_accent_dataloaders
 from my_datasets.ucf101 import get_ucf101, VideoClassificationTrain
 from my_datasets.urbancars import get_urbancars_loader
@@ -557,6 +562,70 @@ def get_dataset(cfg):
                 transform=get_transform(
                     image_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.IMG_SIZE
                 ),
+            )
+            dataset["dataloaders"]["tag_train"] = tag_train_loader
+            dataset["dataloaders"]["tag_test"] = tag_test_loader
+    elif dataset_name == "imagenet9m":
+        if method_name == "groupdro":
+            raise NotImplementedError(
+                "GroupDRO weighted sampling is not yet wired for imagenet9m. "
+                "Bias annotations exist, so this can be added as a follow-up."
+            )
+
+        train_loader, train_dataset = get_imagenet9m_loader(cfg, split="train")
+        val_loader, val_dataset = get_imagenet9m_loader(cfg, split="val")
+        test_loader, test_dataset = get_imagenet9m_loader(cfg, split="test")
+
+        classes = list(cfg.DATASET.IMAGENET9M.CLASSES)
+        num_class = len(classes)
+
+        dataset = {}
+        dataset["num_class"] = num_class
+        dataset["biases"] = imagenet9m_bias_names(cfg)
+        if cfg.DATASET.IMAGENET9M.SCENARIO == "multi":
+            # target x jpeg x resize = 2 x 2 x 2
+            dataset["num_groups"] = num_class * 2 * 2
+            dataset["ba_groups"] = [(0, 0), (1, 1)]
+        else:
+            # target x bias (1:1 aligned groups on the diagonal)
+            dataset["num_groups"] = num_class * num_class
+            dataset["ba_groups"] = [(i, i) for i in range(num_class)]
+
+        dataset["dataloaders"] = {
+            "train": train_loader,
+            "val": val_loader,
+            "test": test_loader,
+        }
+        dataset["sets"] = {
+            "train": train_dataset,
+            "val": val_dataset,
+            "test": test_dataset,
+        }
+        dataset["target2name"] = {i: SUPERCLASS_NAMES[c] for i, c in enumerate(classes)}
+        dataset["root"] = cfg.DATASET.IMAGENET9M.MANIFEST_DIR
+
+        if (
+            method_name == "mavias"
+            or method_name == "erm_tags"
+            or metric_name == "wg_ovr_tags"
+        ):
+            tag_train_loader, _ = get_imagenet9m_loader(
+                cfg,
+                split="train",
+                batch_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.BATCH_SIZE,
+                transform=get_transform(
+                    image_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.IMG_SIZE
+                ),
+                shuffle=False,
+            )
+            tag_test_loader, _ = get_imagenet9m_loader(
+                cfg,
+                split="test",
+                batch_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.BATCH_SIZE,
+                transform=get_transform(
+                    image_size=cfg.MITIGATOR.MAVIAS.TAGGING_MODEL.IMG_SIZE
+                ),
+                shuffle=False,
             )
             dataset["dataloaders"]["tag_train"] = tag_train_loader
             dataset["dataloaders"]["tag_test"] = tag_test_loader

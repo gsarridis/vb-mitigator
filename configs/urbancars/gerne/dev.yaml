@@ -7,8 +7,13 @@ DATASET:
   BIASES: ["bj_cooc_obj"]
 MITIGATOR:
   TYPE: "gerne"
+  GERNE:
+    BETA: 1.0
+    C: 0.5
+    CORR: 0.5
+    NUM_BATCHES: 50
 SOLVER:
-  BATCH_SIZE: 64
+  BATCH_SIZE: 32
   EPOCHS: 150
   LR: 0.001
   TYPE: "SGD"
@@ -19,4 +24,4 @@ SOLVER:
 MODEL:
   TYPE: "resnet50"
   PRETRAINED: True
-METRIC: "wg_ovr_tags"
+METRIC: "wg_ovr"

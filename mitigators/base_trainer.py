@@ -92,7 +92,7 @@ class BaseTrainer:
         self._metric_specific_setups()
         self._basic_eval_setups()
         self._method_specific_setups()
-        self._setup_resume()
+        # self._setup_resume()
         show_cfg(cfg, self.logger)
 
     def _setup_resume(self):

@@ -10,6 +10,12 @@ DATASET:
     BIAS_RATIO: 19
 MITIGATOR:
   TYPE: "bpa"
+  BPA:
+    CKPT_PATH: "./output/speech_accent_archive_baselines/dev/erm/best"
+    PER_CLUSTERS: 4
+    UPDATE_CLUSTER_ITER: 10
+    MOMENTUM: 0.3
+    EXP_STEP: 0.05
 SOLVER:
   BATCH_SIZE: 64
   EPOCHS: 100

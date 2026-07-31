@@ -1,0 +1,21 @@
+Dataset,Method,Seed,Best Epoch,test_overall,test_worst_group_accuracy
+celeba,bias_ensemble,seed_4,4,85.9,73.2
+celeba,bias_ensemble,seed_2,9,64.2,29.2
+celeba,bias_ensemble,seed_5,5,84.6,69.39999999999999
+celeba,bias_ensemble,seed_3,3,77.3,57.699999999999996
+celeba,bias_ensemble,seed_1,9,54.50000000000001,3.3000000000000003
+celeba,bpa,seed_4,8,84.89999999999999,72.2
+celeba,bpa,seed_2,7,82.3,74.4
+celeba,bpa,seed_5,4,83.7,69.1
+celeba,bpa,seed_3,6,83.3,75.6
+celeba,bpa,seed_1,6,85.3,76.1
+celeba,george,seed_4,7,85.2,70.0
+celeba,george,seed_2,0,83.2,67.2
+celeba,george,seed_5,3,85.39999999999999,65.0
+celeba,george,seed_3,0,85.2,73.3
+celeba,george,seed_1,8,85.39999999999999,65.60000000000001
+celeba,nsf,seed_4,0,84.1,58.599999999999994
+celeba,nsf,seed_2,0,83.89999999999999,61.5
+celeba,nsf,seed_5,0,83.8,59.699999999999996
+celeba,nsf,seed_3,0,83.5,60.0
+celeba,nsf,seed_1,0,84.39999999999999,61.0

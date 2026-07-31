@@ -8,7 +8,7 @@ DATASET:
 MITIGATOR:
   TYPE: "nsf"
   NSF:
-    CKPT_PATH: "./output/urbancars_baselines/dev/erm/best"
+    CKPT_PATH: ""
     FEATURE_SPLIT: "val"
     NUM_EPOCHS_TRANSFORM: 300
     NUM_EPOCHS_FT: 500

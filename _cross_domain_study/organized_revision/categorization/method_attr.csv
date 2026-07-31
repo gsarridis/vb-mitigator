@@ -1,0 +1,16 @@
+method,bias_labels,bcc,multi_obj,reweight,fundamental
+GroupDro,1,0,0,0,0
+DI,1,0,1,0,0
+EnD,1,0,1,0,0
+BB,1,0,0,0,0
+BAdd,1,1,0,0,0
+FLAC,1,1,0,0,0
+MAVias,1,1,0,0,0
+LfF,0,0,0,1,0
+JTT,0,0,0,1,0
+Debian,0,0,1,0,0
+SD,0,0,0,0,1
+BE,0,0,0,1,0
+GEORGE,0,0,0,0,0
+NSF,0,0,0,0,0
+BPA,0,0,0,0,0

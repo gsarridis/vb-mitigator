@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "georeg"
+  TAG: "race"
+  PROJECT: "utkface_baselines"
+DATASET:
+  TYPE: "utkface"
+  BIASES: ["race"]
+  UTKFACE:
+    BIAS: "race"
+MITIGATOR:
+  TYPE: "georeg"
+  GEOREG:
+    ALPHA: 0.0      # logit-norm penalty (Spectral Decoupling)
+    BETA:  0.0      # feature decorrelation penalty
+    GAMMA: 2.0     # variance hinge (anti-collapse)
+    TARGET_STD: 1.0
+    WARMUP_EPOCHS: 0
+    KEEP_WEIGHT_DECAY: False
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 100
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [60, 80]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+METRIC: "wg_ovr"

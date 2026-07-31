@@ -117,12 +117,46 @@ CFG.DATASET.CELEBA.IMAGE_SIZE = 224
 CFG.DATASET.CELEBA.BIAS_ALIGNED = [(0, 0), (1, 1)]
 
 CFG.DATASET.IMAGENET9 = CN()
-CFG.DATASET.IMAGENET9.ROOT_IMAGENET = "/home/isarridis/datasets/imagenet/"  # you should manually download ImageNet and define the root directory here.
+CFG.DATASET.IMAGENET9.ROOT_IMAGENET = "/mnt/cephfs/home/common/datasets/imagenet2012"  # you should manually download ImageNet and define the root directory here.
 CFG.DATASET.IMAGENET9.ROOT_IMAGENET_BG = "./data/imagenet9"
 CFG.DATASET.IMAGENET9.IMAGE_SIZE = 224
 CFG.DATASET.IMAGENET9.BIAS = "unknown"
 CFG.DATASET.IMAGENET9.BENCHMARK_VAL = "mixed_rand"  # choices: mixed_rand, mixed_next, mixed_same, no_fg, only_bg_b, only_bg_t, only_fg, original
 CFG.DATASET.IMAGENET9.BENCHMARK_TEST = "original"  # choices: mixed_rand, mixed_next, mixed_same, no_fg, only_bg_b, only_bg_t, only_fg, original
+
+CFG.DATASET.IMAGENET9M = CN()
+CFG.DATASET.IMAGENET9M.ROOT_IMAGENET = "/mnt/cephfs/home/common/datasets/imagenet2012"  # ImageNet root (expects a train/ subdir)
+CFG.DATASET.IMAGENET9M.MANIFEST_DIR = "./data/imagenet9m"  # where reproducibility manifests (balanced subset + bias assignment) are cached
+CFG.DATASET.IMAGENET9M.IMAGE_SIZE = 224
+CFG.DATASET.IMAGENET9M.SPLIT_RATIOS = [0.7, 0.1, 0.2]  # train / val / test
+CFG.DATASET.IMAGENET9M.SCENARIO = "single"  # "single" or "multi"
+CFG.DATASET.IMAGENET9M.CLASSES = [
+    0,
+    1,
+    2,
+    3,
+]  # ImageNet-9 superclass ids (0..8); 4 for single, exactly 2 for multi
+# single-attribute scenario
+CFG.DATASET.IMAGENET9M.BIAS_TYPE = "jpeg"  # "jpeg" or "resize"
+CFG.DATASET.IMAGENET9M.CORRELATION = (
+    0.9  # train fraction of bias-aligned samples per class
+)
+# multi-attribute scenario (jpeg + resize); train joint distribution = product of the two correlations
+CFG.DATASET.IMAGENET9M.CORRELATION_JPEG = 0.95
+CFG.DATASET.IMAGENET9M.CORRELATION_RESIZE = 0.95
+# bias-class definitions, 1:1 with CLASSES (sliced to len(CLASSES) by index)
+CFG.DATASET.IMAGENET9M.JPEG_CLASSES = [
+    [95, "4:4:4"],
+    [75, "4:2:0"],
+    [95, "4:2:0"],
+    [75, "4:4:4"],
+]  # (quality, chroma-subsampling)
+CFG.DATASET.IMAGENET9M.RESIZE_CLASSES = [
+    2.0,
+    0.5,
+    1.4142136,
+    0.7071068,
+]  # scale factors: 2, sqrt(2), 1/sqrt(2), 1/2
 
 CFG.DATASET.UCF101 = CN()
 CFG.DATASET.UCF101.VIDEO_PATH = "/var/local/storage/isarridis/UCF101/UCF-101-jpg"
@@ -253,6 +287,7 @@ CFG.MITIGATOR.MAVIASB.PROJNET.OPTIM.WEIGHT_DECAY = 5e-4
 CFG.MITIGATOR.MAVIASB.PROJNET.OPTIM.MOMENTUM = 0.9
 CFG.MITIGATOR.MAVIASB.PROJNET.OPTIM.TYPE = "SGD"
 CFG.MITIGATOR.MAVIASB.BCC_PATH = ""
+CFG.MITIGATOR.MAVIASB.BCC_PATHS = []  # multiple BCC checkpoints (overrides BCC_PATH when non-empty)
 
 
 CFG.MITIGATOR.MHMAVIAS = CN()
@@ -290,6 +325,7 @@ CFG.MITIGATOR.FLAC.LOSS.ALPHA = 110.0
 CFG.MITIGATOR.FLAC.LOSS.DELTA = 1.0
 CFG.MITIGATOR.FLAC.LOSS.CE_WEIGHT = 1.0
 CFG.MITIGATOR.FLAC.BCC_PATH = ""
+CFG.MITIGATOR.FLAC.BCC_PATHS = []  # multiple BCC checkpoints (overrides BCC_PATH when non-empty)
 
 # FLAC-B CFG
 CFG.MITIGATOR.FLACB = CN()
@@ -308,6 +344,7 @@ CFG.MITIGATOR.SOFTCON.WEIGHT = 1000
 CFG.MITIGATOR.BADD = CN()
 CFG.MITIGATOR.BADD.M = 1.0
 CFG.MITIGATOR.BADD.BCC_PATH = ""
+CFG.MITIGATOR.BADD.BCC_PATHS = []  # multiple BCC checkpoints (overrides BCC_PATH when non-empty)
 
 
 # GROUPDRO CFG
@@ -385,10 +422,13 @@ CFG.MITIGATOR.BPA.EXP_STEP = 0.05
 
 # GERNE (Asaad et al., ICCV 2025)
 CFG.MITIGATOR.GERNE = CN()
-CFG.MITIGATOR.GERNE.GCE_Q = 0.7
-CFG.MITIGATOR.GERNE.EXTRAPOLATION_LAMBDA = 1.0
-CFG.MITIGATOR.GERNE.REG_LAMBDA = 0.1
-
+CFG.MITIGATOR.GERNE.BETA = 1.0  # extrapolation factor (paper's beta)
+CFG.MITIGATOR.GERNE.C = 0.5  # bias-reduction factor in [0, 1]
+CFG.MITIGATOR.GERNE.CORR = 0.5  # correlation coefficient in [0, 1]
+CFG.MITIGATOR.GERNE.NUM_BATCHES = 50  # optimizer steps per epoch
+CFG.MITIGATOR.GERNE.EPS = 1e-4
+CFG.MITIGATOR.GERNE.BN_EVAL = True  # freeze BN stats while training
+CFG.MITIGATOR.GERNE.DROP_LAST = True  # skip step if either window is empty
 # NSF / SSC (Li et al., CVPR 2025)
 # "Let Samples Speak: Mitigating Spurious Correlation by Exploiting
 #  the Clusterness of Samples"
@@ -411,3 +451,98 @@ CFG.MITIGATOR.NSF.LR_TRANSFORM = 1e-3
 CFG.MITIGATOR.NSF.LR_FT = 1e-3
 # Regularization weight on mean(w) in the transformation loss (paper: 10)
 CFG.MITIGATOR.NSF.W_REG = 10.0
+
+
+# Sebra (Adarsh et al., ICLR 2025)
+# "Sebra: Debiasing through Self-Guided Bias Ranking"
+# https://github.com/kadarsh22/Sebra
+CFG.MITIGATOR.SEBRA = CN()
+# Stage 1: number of ranking rounds (each round trains on the active pool
+# and then drops samples whose p_y exceeds P_CRITICAL)
+CFG.MITIGATOR.SEBRA.RANK_ROUNDS = 30
+# Stage 1: UpweightedTrainingLoss exponent (paper default: 0.8)
+CFG.MITIGATOR.SEBRA.BETA_INVERSE = 0.8
+# Stage 1: confidence threshold above which a sample is "learned" and
+# dropped from the active training pool (paper default: 0.7)
+CFG.MITIGATOR.SEBRA.P_CRITICAL = 0.7
+# Stage 2: number of training epochs for the contrastive stage
+CFG.MITIGATOR.SEBRA.STAGE2_EPOCHS = 30
+# Stage 2: rank gap for selecting positives (positive's rank =
+# min(anchor_rank + gap, max_rank)). Paper default: 2 (or 3 for CelebA).
+CFG.MITIGATOR.SEBRA.GAP = 2
+# Stage 2: contrastive loss temperature (paper default: 0.05)
+CFG.MITIGATOR.SEBRA.TEMPERATURE = 0.05
+# Stage 2: weight on the classifier-head CE loss relative to the
+# contrastive loss (paper default: 1 for CelebA, 0.5 default in launcher)
+CFG.MITIGATOR.SEBRA.CLASSIFIER_WEIGHT = 1.0
+# Stage 2: batch size (paper default: 64 for CelebA)
+CFG.MITIGATOR.SEBRA.BATCH_SIZE_STAGE2 = 64
+
+
+# GEOREG CFG
+CFG.MITIGATOR.GEOREG = CN()
+CFG.MITIGATOR.GEOREG.ALPHA = 0.01  # logit-norm penalty (SD term)
+CFG.MITIGATOR.GEOREG.BETA = 0.01  # feature decorrelation
+CFG.MITIGATOR.GEOREG.GAMMA = 1.0  # variance hinge (anti-collapse)
+CFG.MITIGATOR.GEOREG.TARGET_STD = 1.0  # target per-dim std
+CFG.MITIGATOR.GEOREG.WARMUP_EPOCHS = 0  # ramp-up of regularisation weights
+CFG.MITIGATOR.GEOREG.KEEP_WEIGHT_DECAY = False
+
+# MARGINGATE CFG
+CFG.MITIGATOR.MARGINGATE = CN()
+CFG.MITIGATOR.MARGINGATE.MARGIN = 1.0
+CFG.MITIGATOR.MARGINGATE.TEMPERATURE = 0.5
+CFG.MITIGATOR.MARGINGATE.WARMUP_EPOCHS = 1
+CFG.MITIGATOR.MARGINGATE.MIN_EFFECTIVE_BATCH = 1.0
+CFG.MITIGATOR.MARGINGATE.RENORMALIZE = True
+
+
+CFG.MITIGATOR.PREDICTMORE = CN()
+CFG.MITIGATOR.PREDICTMORE.AUX_TASKS = ["rotation", "masked_recon"]
+CFG.MITIGATOR.PREDICTMORE.LAMBDA_ROT = 0.5
+CFG.MITIGATOR.PREDICTMORE.LAMBDA_MASK = 0.5
+CFG.MITIGATOR.PREDICTMORE.LAMBDA_JIGSAW = 0.5
+CFG.MITIGATOR.PREDICTMORE.MASK_PROB = 0.5
+CFG.MITIGATOR.PREDICTMORE.JIGSAW_GRID = 3
+CFG.MITIGATOR.PREDICTMORE.JIGSAW_PERMS = 24
+CFG.MITIGATOR.PREDICTMORE.AUX_FRACTION = 0.5
+CFG.MITIGATOR.PREDICTMORE.WARMUP_EPOCHS = 1
+
+# DAW CFG
+CFG.MITIGATOR.DAW = CN()
+CFG.MITIGATOR.DAW.DENSITY_SOURCE = "last_layer_gradient"
+CFG.MITIGATOR.DAW.KERNEL = "gaussian"
+CFG.MITIGATOR.DAW.DENSITY_ESTIMATOR = "knn"
+CFG.MITIGATOR.DAW.ALPHA = 0.5
+CFG.MITIGATOR.DAW.KNN_K = 10
+CFG.MITIGATOR.DAW.SOFTMAX_T = 1.0
+CFG.MITIGATOR.DAW.BANDWIDTH = "median"
+CFG.MITIGATOR.DAW.WARMUP_EPOCHS = 1
+CFG.MITIGATOR.DAW.RENORMALIZE = True
+CFG.MITIGATOR.DAW.WEIGHT_FLOOR = 0.0
+CFG.MITIGATOR.DAW.WEIGHT_CEILING = 0.0
+CFG.MITIGATOR.DAW.ERM_PATH = "output/utkface_baselines/race/erm/best"
+CFG.MITIGATOR.DAW.LOG_PER_GROUP = True
+
+
+CFG.MITIGATOR.SAE = CN()
+CFG.MITIGATOR.SAE.MODEL_PATH = ""  # checkpoint of the (frozen) classifier to steer, e.g. an ERM baseline
+CFG.MITIGATOR.SAE.EXPANSION_FACTOR = 8  # SAE dict_size = factor * feature dim
+CFG.MITIGATOR.SAE.L1_PENALTY = 0.1  # sparsity weight (excludes the supervised neurons)
+CFG.MITIGATOR.SAE.SUP_PENALTY = 1.0  # weight of the per-attribute supervised CE
+CFG.MITIGATOR.SAE.STEER_VALUE = 0.0  # value the dedicated neurons are set to when steering
+CFG.MITIGATOR.SAE.STEER_ATTRS = []  # bias attributes to steer; [] = all of DATASET biases
+CFG.MITIGATOR.SAE.HEAD_EPOCHS = 20  # last-layer (DFR) retraining epochs on steered features
+CFG.MITIGATOR.SAE.HEAD_LR = 0.001
+
+CFG.MITIGATOR.MAVIASC = CN()
+CFG.MITIGATOR.MAVIASC.LOSS = CN()
+CFG.MITIGATOR.MAVIASC.LOSS.ALPHA = 0.1
+CFG.MITIGATOR.MAVIASC.LOSS.LAMBDA = 0.8
+CFG.MITIGATOR.MAVIASC.PROJNET = CN()
+CFG.MITIGATOR.MAVIASC.PROJNET.OPTIM = CN()
+CFG.MITIGATOR.MAVIASC.PROJNET.OPTIM.LR = 0.001
+CFG.MITIGATOR.MAVIASC.PROJNET.OPTIM.WEIGHT_DECAY = 5e-4
+CFG.MITIGATOR.MAVIASC.PROJNET.OPTIM.MOMENTUM = 0.9
+CFG.MITIGATOR.MAVIASC.PROJNET.OPTIM.TYPE = "SGD"
+CFG.MITIGATOR.MAVIASC.BCC_PATH = ""

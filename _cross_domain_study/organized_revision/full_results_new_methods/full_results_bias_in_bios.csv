@@ -1,0 +1,20 @@
+Dataset,Method,Seed,Best Epoch,test_overall,test_worst_group_accuracy
+bias_in_bios,bias_ensemble,seed_4,2,60.5,21.2
+bias_in_bios,bias_ensemble,seed_2,3,58.599999999999994,15.4
+bias_in_bios,bias_ensemble,seed_5,1,62.2,26.1
+bias_in_bios,bias_ensemble,seed_3,1,61.0,26.200000000000003
+bias_in_bios,bias_ensemble,seed_1,1,58.8,9.2
+bias_in_bios,bpa,seed_4,28,73.0,45.1
+bias_in_bios,bpa,seed_2,32,72.5,47.8
+bias_in_bios,bpa,seed_5,24,72.2,47.5
+bias_in_bios,bpa,seed_3,25,72.5,46.9
+bias_in_bios,bpa,seed_1,25,72.39999999999999,44.1
+bias_in_bios,george,seed_4,0,35.6,0.0
+bias_in_bios,george,seed_2,0,36.199999999999996,0.0
+bias_in_bios,george,seed_5,0,35.6,0.0
+bias_in_bios,george,seed_3,0,35.6,0.0
+bias_in_bios,george,seed_1,0,35.6,0.0
+bias_in_bios,nsf,seed_4,0,49.5,0.0
+bias_in_bios,nsf,seed_2,0,49.3,0.0
+bias_in_bios,nsf,seed_3,0,49.1,0.0
+bias_in_bios,nsf,seed_1,0,49.2,0.0

@@ -20,7 +20,7 @@ import torch.nn.functional as F
 from transformers import CLIPTokenizer, CLIPModel, CLIPTextModel
 from ram.models import ram_plus
 
-from models.builder import get_bcc, get_model
+from models.builder import get_bcc, get_model, get_local_bccs
 from models.simple_mlp import SimpleMLP
 from models.utils import get_local_model_dict
 from .base_trainer import BaseTrainer
@@ -38,17 +38,14 @@ class MAVIASBTrainer(BaseTrainer):
 
         self.model.to(self.device)
 
-        if self.cfg.MITIGATOR.MAVIASB.BCC_PATH != "":
-            bcc_net_dict = get_local_model_dict(self.cfg.MITIGATOR.MAVIASB.BCC_PATH)
-            self.bcc_net = get_model(
-                self.cfg.MODEL.TYPE,
-                self.num_class,
-            )
-            self.bcc_net.load_state_dict(bcc_net_dict["model"])
+        bcc_paths = list(self.cfg.MITIGATOR.MAVIASB.BCC_PATHS)
+        if not bcc_paths and self.cfg.MITIGATOR.MAVIASB.BCC_PATH != "":
+            bcc_paths = [self.cfg.MITIGATOR.MAVIASB.BCC_PATH]
 
-            self.bcc_net.to(self.device)
-            self.bcc_net.eval()
-            self.bcc_nets = {self.biases[0]: self.bcc_net}
+        if bcc_paths:
+            self.bcc_nets = get_local_bccs(
+                self.cfg, bcc_paths, self.num_class, self.device, self.biases
+            )
         else:
             self.bcc_nets = get_bcc(self.cfg, self.num_class)
 

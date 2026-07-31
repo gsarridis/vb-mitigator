@@ -1,0 +1,35 @@
+% Add to your LaTeX preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{xcolor}
+% \newcommand{\std}[1]{{\scriptsize$\pm$#1}}
+
+\begin{table}[ht]
+\centering
+\caption{Performance comparison on Speech Accent Archive and UrbanSounds8k.}
+\label{tab:audio_results}
+\begin{tabular}{lllll}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{2}{c}{Accent Archive} & \multicolumn{2}{c}{UrbanSounds} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+ & Avg Acc & WG Acc & Avg Acc & WG Acc \\
+\midrule
+Vanilla & 71.5\std{31.7} & 64.9\std{29.8} & 72.9\std{1.8} & 47.5\std{3.4} \\
+BB & 84.9\std{1.0} {\color{blue}(+13.4)} & 80.5\std{2.1} {\color{blue}(+15.6)} & 75.3\std{4.3} {\color{blue}(+2.4)} & 65.3\std{8.5} {\color{blue}(+17.8)} \\
+Debian & 84.1\std{0.9} {\color{blue}(+12.6)} & 78.9\std{2.3} {\color{blue}(+14.0)} & 71.8\std{2.4} {\color{red}(-1.1)} & 51.3\std{5.1} {\color{blue}(+3.8)} \\
+DI & 84.0\std{1.1} {\color{blue}(+12.5)} & 79.7\std{1.7} {\color{blue}(+14.8)} & 74.1\std{1.7} {\color{blue}(+1.2)} & 60.5\std{4.4} {\color{blue}(+13.0)} \\
+EnD & 84.6\std{1.1} {\color{blue}(+13.1)} & 78.9\std{2.2} {\color{blue}(+14.0)} & 72.5\std{2.6} {\color{red}(-0.4)} & 54.0\std{9.2} {\color{blue}(+6.5)} \\
+GroupDro & 82.8\std{0.9} {\color{blue}(+11.3)} & 75.0\std{2.2} {\color{blue}(+10.1)} & 67.8\std{4.7} {\color{red}(-5.1)} & 39.7\std{6.7} {\color{red}(-7.8)} \\
+JTT & 78.1\std{0.4} {\color{blue}(+6.6)} & 72.7\std{2.5} {\color{blue}(+7.8)} & 72.5\std{1.7} {\color{red}(-0.4)} & 49.3\std{2.8} {\color{blue}(+1.8)} \\
+LfF & 85.0\std{1.6} {\color{blue}(+13.5)} & 79.6\std{2.0} {\color{blue}(+14.7)} & 71.6\std{3.0} {\color{red}(-1.3)} & 53.0\std{7.9} {\color{blue}(+5.5)} \\
+SD & 85.3\std{1.7} {\color{blue}(+13.8)} & 79.4\std{3.1} {\color{blue}(+14.5)} & 72.6\std{2.1} {\color{red}(-0.3)} & 44.7\std{5.7} {\color{red}(-2.8)} \\
+GEORGE & 86.6\std{2.9} {\color{blue}(+15.1)} & 82.6\std{1.9} {\color{blue}(+17.7)} & 72.9\std{2.2} {\color{blue}(+0.0)} & 58.7\std{6.1} {\color{blue}(+11.2)} \\
+BE & 82.1\std{2.7} {\color{blue}(+10.6)} & 72.4\std{6.7} {\color{blue}(+7.5)} & 55.1\std{11.5} {\color{red}(-17.8)} & 14.0\std{31.3} {\color{red}(-33.5)} \\
+BPA & 85.7\std{2.6} {\color{blue}(+14.2)} & 79.2\std{2.1} {\color{blue}(+14.3)} & 71.6\std{3.0} {\color{red}(-1.3)} & 62.3\std{1.5} {\color{blue}(+14.8)} \\
+FLAC & 84.8\std{0.9} {\color{blue}(+13.3)} & 81.6\std{1.1} {\color{blue}(+16.7)} & 71.2\std{3.9} {\color{red}(-1.7)} & 60.2\std{5.6} {\color{blue}(+12.7)} \\
+BAdd & 82.9\std{0.2} {\color{blue}(+11.4)} & 78.4\std{6.1} {\color{blue}(+13.5)} & 75.9\std{2.2} {\color{blue}(+3.0)} & 65.5\std{7.3} {\color{blue}(+18.0)} \\
+MAVIAS & 86.4\std{1.1} {\color{blue}(+14.9)} & 84.7\std{0.2} {\color{blue}(+19.8)} & 68.8\std{4.0} {\color{red}(-4.1)} & 62.7\std{6.3} {\color{blue}(+15.2)} \\
+NSF & 79.5\std{0.6} {\color{blue}(+8.0)} & 60.3\std{2.4} {\color{red}(-4.6)} & 65.8\std{0.8} {\color{red}(-7.1)} & 34.6\std{3.0} {\color{red}(-12.9)} \\
+\bottomrule
+\end{tabular}
+\end{table}

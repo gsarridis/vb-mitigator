@@ -1,0 +1,21 @@
+Dataset,Method,Seed,Best Epoch,test_overall,test_worst_group_accuracy
+urbansounds58,bias_ensemble,seed_4,0,50.0,0.0
+urbansounds58,bias_ensemble,seed_2,0,50.0,0.0
+urbansounds58,bias_ensemble,seed_5,0,50.0,0.0
+urbansounds58,bias_ensemble,seed_3,20,75.7,70.0
+urbansounds58,bias_ensemble,seed_1,0,50.0,0.0
+urbansounds58,bpa,seed_4,13,74.6,60.0
+urbansounds58,bpa,seed_2,14,68.60000000000001,63.4
+urbansounds58,bpa,seed_5,20,68.60000000000001,63.3
+urbansounds58,bpa,seed_3,12,74.4,63.3
+urbansounds58,bpa,seed_1,13,71.7,61.3
+urbansounds58,george,seed_4,6,74.3,66.7
+urbansounds58,george,seed_2,89,70.7,56.699999999999996
+urbansounds58,george,seed_5,10,74.7,63.3
+urbansounds58,george,seed_3,15,74.5,53.300000000000004
+urbansounds58,george,seed_1,63,70.19999999999999,53.300000000000004
+urbansounds58,nsf,seed_4,0,65.3,33.300000000000004
+urbansounds58,nsf,seed_2,0,67.30000000000001,40.0
+urbansounds58,nsf,seed_5,0,65.3,33.300000000000004
+urbansounds58,nsf,seed_3,0,65.60000000000001,33.300000000000004
+urbansounds58,nsf,seed_1,0,65.7,33.300000000000004

@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "softcon"
+  TAG: "multi"
+  PROJECT: "imagenet9m_baselines"
+DATASET:
+  TYPE: "imagenet9m"
+  BIASES: ["jpeg", "resize"]
+  IMAGENET9M:
+    SCENARIO: "multi"
+    CLASSES: [0, 1]
+    CORRELATION_JPEG: 0.95
+    CORRELATION_RESIZE: 0.95
+    # multi uses exactly 2 bias classes per type (index 0 -> target 0, index 1 -> target 1)
+    JPEG_CLASSES: [[95, "4:4:4"], [75, "4:2:0"]]
+    RESIZE_CLASSES: [2.0, 0.5]
+MITIGATOR:
+  TYPE: "softcon"
+  SOFTCON:
+    BCC_PATH: "./output/imagenet9m_baselines/tags_multi/erm/best"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 30
+  LR: 0.001
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [25]
+    LR_DECAY_RATE: 0.5
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+METRIC: "wg_ovr"

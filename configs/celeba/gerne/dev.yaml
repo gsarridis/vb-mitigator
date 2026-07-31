@@ -1,0 +1,31 @@
+EXPERIMENT:
+  NAME: "gerne"
+  TAG: "blonde"
+  PROJECT: "celeba_baselines"
+DATASET:
+  TYPE: "celeba"
+  BIASES: ["gender"]
+  CELEBA:
+    BIAS: "gender"
+    TARGET: "blonde"
+MITIGATOR:
+  TYPE: "gerne"
+  GERNE:
+    BETA: 1.0
+    C: 0.5
+    CORR: 0.5
+    NUM_BATCHES: 50
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 40
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [13, 26]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: True
+  FREEZE_BACKBONE: False
+METRIC: "wg_ovr"

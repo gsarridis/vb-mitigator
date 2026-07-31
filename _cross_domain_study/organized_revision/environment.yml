@@ -1,0 +1,12 @@
+name: friedman_ranking
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - scipy
+  - rpy2
+  - r-base=4.3.*       # R base
+  - r-essentials       # includes utils, stats, etc.

@@ -1,0 +1,16 @@
+Dataset,Method,Seed,Best Epoch,test_overall,test_worst_group_accuracy
+waterbirds,bias_ensemble,seed_4,8,54.50000000000001,9.0
+waterbirds,bias_ensemble,seed_2,7,56.39999999999999,12.5
+waterbirds,bias_ensemble,seed_3,8,64.60000000000001,29.4
+waterbirds,bpa,seed_4,73,96.6,96.1
+waterbirds,bpa,seed_2,96,96.39999999999999,96.0
+waterbirds,bpa,seed_5,88,96.3,95.39999999999999
+waterbirds,bpa,seed_3,42,96.7,96.0
+waterbirds,bpa,seed_1,75,96.3,96.1
+waterbirds,george,seed_4,33,96.5,95.19999999999999
+waterbirds,george,seed_2,33,96.2,95.19999999999999
+waterbirds,george,seed_5,12,96.39999999999999,95.39999999999999
+waterbirds,george,seed_3,31,96.39999999999999,94.8
+waterbirds,george,seed_1,19,96.0,95.39999999999999
+waterbirds,nsf,seed_4,0,96.0,93.5
+

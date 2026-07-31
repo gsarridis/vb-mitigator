@@ -9,7 +9,7 @@ Functions:
 
 from models.resnet import set_resnet_fc
 from models import models_dict
-from .utils import get_model_dict
+from .utils import get_model_dict, get_local_model_dict
 
 
 def get_model(model_name, num_class, pretrained=False):
@@ -91,3 +91,28 @@ def get_bcc(cfg, num_class):
                 f"Unsupported dataset ({dataset_name}) or bias ({bias_name}) type."
             )
     return models
+
+
+def get_local_bccs(cfg, bcc_paths, num_class, device, biases):
+    """Load one or more bias-capturing classifiers from local checkpoints.
+
+    Args:
+        cfg: config (uses ``cfg.MODEL.TYPE`` for the architecture, shared by all BCCs).
+        bcc_paths (list[str]): checkpoint paths, each a dict with a "model" state_dict.
+        num_class (int): number of classes of each BCC.
+        device: device to place the models on.
+        biases (list[str]): bias names, used to key the returned dict (falls back to
+            "bcc_{i}" when there are more paths than bias names).
+
+    Returns:
+        dict[str, nn.Module]: {name: bcc_model} in eval mode on ``device``.
+    """
+    bcc_nets = {}
+    for i, path in enumerate(bcc_paths):
+        state = get_local_model_dict(path)
+        net = get_model(cfg.MODEL.TYPE, num_class)
+        net.load_state_dict(state["model"])
+        net.to(device).eval()
+        key = biases[i] if i < len(biases) else f"bcc_{i}"
+        bcc_nets[key] = net
+    return bcc_nets

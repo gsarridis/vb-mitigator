@@ -1,0 +1,21 @@
+Dataset,Method,Seed,Best Epoch,test_overall,test_worst_group_accuracy
+speech_accent_archive,bias_ensemble,seed_4,6,80.4,71.1
+speech_accent_archive,bias_ensemble,seed_2,2,83.39999999999999,79.3
+speech_accent_archive,bias_ensemble,seed_5,2,86.4,77.8
+speech_accent_archive,bias_ensemble,seed_3,4,80.30000000000001,71.1
+speech_accent_archive,bias_ensemble,seed_1,3,80.2,62.5
+speech_accent_archive,bpa,seed_4,9,90.2,77.8
+speech_accent_archive,bpa,seed_2,47,85.0,81.2
+speech_accent_archive,bpa,seed_5,5,84.7,76.3
+speech_accent_archive,bpa,seed_3,6,84.1,79.3
+speech_accent_archive,bpa,seed_1,8,84.3,81.2
+speech_accent_archive,george,seed_4,15,83.89999999999999,81.2
+speech_accent_archive,george,seed_2,29,86.9,81.5
+speech_accent_archive,george,seed_5,11,84.1,81.2
+speech_accent_archive,george,seed_3,27,87.2,83.7
+speech_accent_archive,george,seed_1,20,91.0,85.5
+speech_accent_archive,nsf,seed_4,0,79.9,59.3
+speech_accent_archive,nsf,seed_2,0,78.9,63.0
+speech_accent_archive,nsf,seed_5,0,72.6,40.0
+speech_accent_archive,nsf,seed_3,0,72.8,40.0
+speech_accent_archive,nsf,seed_1,0,79.80000000000001,58.5

@@ -1,0 +1,28 @@
+EXPERIMENT:
+  NAME: "jtt"
+  TAG: "sensitivity_bias_ratio_5"
+  PROJECT: "speech_accent_archive_sensitivity"
+DATASET:
+  TYPE: "speech_accent_archive"
+  BIASES: ["bias"]
+  NUM_WORKERS: 0
+  SPEECH_ACCENT_ARCHIVE:
+    BIAS_RATIO: 5
+MITIGATOR:
+  TYPE: "jtt"
+  JTT:
+    BIAS_DISCOVERY_EPOCHS: 50
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 100
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 0.0
+  SCHEDULER:
+    LR_DECAY_STAGES: [33, 66]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "lstm_classifier"
+METRIC: "wg_ovr"
+LOG:
+  SAVE_CRITERION: "test"

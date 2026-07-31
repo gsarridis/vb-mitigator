@@ -1,0 +1,32 @@
+EXPERIMENT:
+  NAME: "softcon"
+  TAG: "dev"
+  PROJECT: "imagenet9m_baselines"
+DATASET:
+  TYPE: "imagenet9m"
+  BIASES: ["jpeg"]
+  IMAGENET9M:
+    SCENARIO: "single"
+    CLASSES: [0, 1, 2, 3]
+    BIAS_TYPE: "jpeg"             # active bias type: "jpeg" or "resize"
+    CORRELATION: 0.9
+    # bias classes of the active BIAS_TYPE, 1:1 with CLASSES (index i -> target i)
+    JPEG_CLASSES: [[95, "4:4:4"], [75, "4:2:0"], [95, "4:2:0"], [75, "4:4:4"]]
+    RESIZE_CLASSES: [2.0, 0.5, 1.4142136, 0.7071068]
+MITIGATOR:
+  TYPE: "softcon"
+  SOFTCON:
+    BCC_PATH: "./output/imagenet9m_baselines/tags/erm/best"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 30
+  LR: 0.001
+  TYPE: "SGD"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [25]
+    LR_DECAY_RATE: 0.5
+MODEL:
+  TYPE: "resnet50"
+  PRETRAINED: True
+METRIC: "wg_ovr"

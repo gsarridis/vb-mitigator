@@ -2,10 +2,10 @@
 #SBATCH -c4
 #SBATCH --mem=6G
 #SBATCH --gres shard:6
-#SBATCH --job-name="new-methods"
+#SBATCH --job-name="geo_med"
 #SBATCH --output=slurm/slurm_%x_%A_%a.out
 #SBATCH --error=slurm/slurm_%x_%A_%a.err
-#SBATCH --array=0-99   # 5 datasets × 4 methods × 5 seeds
+#SBATCH --array=0-4   # 1 datasets × 1 methods × 5 seeds
 #SBATCH --time=06:00:00
 #SBATCH --exclude=iti-54-41
 

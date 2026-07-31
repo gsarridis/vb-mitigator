@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "erm"
+  TAG: "jpeg"
+  PROJECT: "imagenet9m_baselines"
+DATASET:
+  TYPE: "imagenet9m"
+  BIASES: ["jpeg"]
+  IMAGENET9M:
+    SCENARIO: "single"
+    CLASSES: [1, 5]
+    BIAS_TYPE: "jpeg"             # active bias type: "jpeg" or "resize"
+    CORRELATION: 0.99
+    # bias classes of the active BIAS_TYPE, 1:1 with CLASSES (index i -> target i)
+    JPEG_CLASSES: [[95, "4:4:4"], [75, "4:2:0"]]
+    RESIZE_CLASSES: [2.0, 0.5]
+MITIGATOR:
+  TYPE: "erm"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 30
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [25]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: False
+METRIC: "wg_ovr"

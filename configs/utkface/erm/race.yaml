@@ -1,0 +1,27 @@
+EXPERIMENT:
+  NAME: "erm"
+  TAG: "race"
+  PROJECT: "utkface_baselines"
+DATASET:
+  TYPE: "utkface"
+  UTKFACE:
+    BIAS: "race"
+MITIGATOR:
+  TYPE: "erm"
+SOLVER:
+  BATCH_SIZE: 128
+  EPOCHS: 20
+  LR: 0.001
+  TYPE: "Adam"
+  SCHEDULER:
+    LR_DECAY_STAGES: [6, 13]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: True
+  FREEZE_BACKBONE: False
+LOG:
+  TRAIN_PERFORMANCE: True
+
+METRIC: "wg_ovr"
+

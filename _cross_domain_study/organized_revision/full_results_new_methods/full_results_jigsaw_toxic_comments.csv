@@ -1,0 +1,21 @@
+Dataset,Method,Seed,Best Epoch,val_accuracy,test_accuracy
+jigsaw_toxic_comments,bias_ensemble,seed_4,4,94.59269662921348,70.9090909090909
+jigsaw_toxic_comments,bias_ensemble,seed_2,4,94.6629213483146,73.93939393939394
+jigsaw_toxic_comments,bias_ensemble,seed_5,5,94.3820224719101,70.60606060606061
+jigsaw_toxic_comments,bias_ensemble,seed_3,4,94.6629213483146,68.78787878787878
+jigsaw_toxic_comments,bias_ensemble,seed_1,4,94.45224719101124,70.3030303030303
+jigsaw_toxic_comments,bpa,seed_4,3,94.59269662921348,74.24242424242425
+jigsaw_toxic_comments,bpa,seed_2,3,94.73314606741572,71.51515151515152
+jigsaw_toxic_comments,bpa,seed_5,3,94.311797752809,71.21212121212122
+jigsaw_toxic_comments,bpa,seed_3,2,94.6629213483146,70.9090909090909
+jigsaw_toxic_comments,bpa,seed_1,3,94.52247191011236,63.63636363636363
+jigsaw_toxic_comments,george,seed_4,6,94.87359550561798,74.24242424242425
+jigsaw_toxic_comments,george,seed_2,5,94.87359550561798,74.84848484848486
+jigsaw_toxic_comments,george,seed_5,4,94.73314606741572,73.93939393939394
+jigsaw_toxic_comments,george,seed_3,5,94.87359550561798,75.45454545454545
+jigsaw_toxic_comments,george,seed_1,6,95.01404494382022,73.03030303030303
+jigsaw_toxic_comments,nsf,seed_4,0,90.30898876404494,50.30303030303031
+jigsaw_toxic_comments,nsf,seed_2,0,90.58988764044943,51.21212121212121
+jigsaw_toxic_comments,nsf,seed_5,0,90.23876404494382,50.30303030303031
+jigsaw_toxic_comments,nsf,seed_3,0,90.23876404494382,50.0
+jigsaw_toxic_comments,nsf,seed_1,0,90.87078651685393,51.21212121212121

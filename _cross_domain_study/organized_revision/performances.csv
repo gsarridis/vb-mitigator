@@ -1,0 +1,91 @@
+method,dataset,mean,std
+GroupDro,Bias in Bios,52.5,3.5
+MAVias,Bias in Bios,46.8,0.6
+BPA,Bias in Bios,46.3,1.6
+BAdd,Bias in Bios,43.1,1.4
+DI,Bias in Bios,31.3,4.2
+FLAC,Bias in Bios,29.9,3.5
+LfF,Bias in Bios,27.9,4.0
+Debian,Bias in Bios,25.7,1.6
+BE,Bias in Bios,19.6,7.3
+SD,Bias in Bios,19.1,2.9
+JTT,Bias in Bios,18.9,5.9
+EnD,Bias in Bios,18.7,12.6
+Vanilla,Bias in Bios,16.9,14.7
+BB,Bias in Bios,0.0,0.0
+GEORGE,Bias in Bios,0.0,0.0
+FLAC,Jigsaw Toxic Comments,95.8,2.5
+BAdd,Jigsaw Toxic Comments,95.5,0.9
+MAVias,Jigsaw Toxic Comments,94.0,1.1
+GroupDro,Jigsaw Toxic Comments,94.0,2.7
+LfF,Jigsaw Toxic Comments,81.8,0.6
+Debian,Jigsaw Toxic Comments,81.6,0.7
+EnD,Jigsaw Toxic Comments,81.6,0.7
+JTT,Jigsaw Toxic Comments,80.8,1.5
+GEORGE,Jigsaw Toxic Comments,74.3,0.9
+DI,Jigsaw Toxic Comments,74.2,1.3
+Vanilla,Jigsaw Toxic Comments,73.5,0.4
+SD,Jigsaw Toxic Comments,72.8,0.3
+BE,Jigsaw Toxic Comments,70.9,1.9
+BPA,Jigsaw Toxic Comments,70.3,4.0
+BB,Jigsaw Toxic Comments,14.0,0.8
+BAdd,UrbanSounds8k,65.5,7.3
+BB,UrbanSounds8k,65.3,8.5
+MAVias,UrbanSounds8k,62.7,6.3
+BPA,UrbanSounds8k,62.3,1.5
+DI,UrbanSounds8k,60.5,4.4
+FLAC,UrbanSounds8k,60.2,5.6
+GEORGE,UrbanSounds8k,58.7,6.1
+EnD,UrbanSounds8k,54.0,9.2
+LfF,UrbanSounds8k,53.0,7.9
+Debian,UrbanSounds8k,51.3,5.1
+JTT,UrbanSounds8k,49.3,2.8
+Vanilla,UrbanSounds8k,47.5,3.4
+SD,UrbanSounds8k,44.7,5.7
+GroupDro,UrbanSounds8k,39.7,6.7
+BE,UrbanSounds8k,14.0,31.3
+MAVias,Speech Accent Archive,84.7,0.2
+GEORGE,Speech Accent Archive,82.6,1.9
+FLAC,Speech Accent Archive,81.6,1.1
+BB,Speech Accent Archive,80.5,2.1
+DI,Speech Accent Archive,79.7,1.7
+LfF,Speech Accent Archive,79.6,2.0
+SD,Speech Accent Archive,79.4,3.1
+BPA,Speech Accent Archive,79.2,2.1
+EnD,Speech Accent Archive,78.9,2.2
+Debian,Speech Accent Archive,78.9,2.3
+BAdd,Speech Accent Archive,78.4,6.1
+GroupDro,Speech Accent Archive,75.0,2.2
+JTT,Speech Accent Archive,72.7,2.5
+BE,Speech Accent Archive,72.4,6.7
+Vanilla,Speech Accent Archive,64.9,29.8
+BAdd,CheXpert+NIH,64.4,5.3
+BB,CheXpert+NIH,61.1,7.3
+DI,CheXpert+NIH,59.3,4.4
+MAVias,CheXpert+NIH,55.0,3.8
+FLAC,CheXpert+NIH,46.3,5.8
+BPA,CheXpert+NIH,39.0,2.6
+GEORGE,CheXpert+NIH,32.3,17.5
+Debian,CheXpert+NIH,31.8,8.2
+EnD,CheXpert+NIH,31.5,2.5
+Vanilla,CheXpert+NIH,31.0,3.9
+SD,CheXpert+NIH,25.2,9.6
+LfF,CheXpert+NIH,25.0,10.3
+JTT,CheXpert+NIH,20.1,9.5
+BE,CheXpert+NIH,15.0,20.7
+GroupDro,CheXpert+NIH,12.5,10.2
+MAVias,UCF101+SCUBA,76.1,1.1
+BPA,UCF101+SCUBA,75.7,0.2
+SD,UCF101+SCUBA,74.5,1.2
+BE,UCF101+SCUBA,74.0,0.8
+FLAC,UCF101+SCUBA,73.4,1.2
+BAdd,UCF101+SCUBA,73.2,2.7
+LfF,UCF101+SCUBA,72.6,1.0
+EnD,UCF101+SCUBA,72.5,1.1
+Vanilla,UCF101+SCUBA,72.0,0.3
+Debian,UCF101+SCUBA,70.1,1.6
+BB,UCF101+SCUBA,69.4,2.3
+GroupDro,UCF101+SCUBA,69.0,2.2
+JTT,UCF101+SCUBA,65.4,1.4
+GEORGE,UCF101+SCUBA,54.6,1.6
+DI,UCF101+SCUBA,46.6,3.7

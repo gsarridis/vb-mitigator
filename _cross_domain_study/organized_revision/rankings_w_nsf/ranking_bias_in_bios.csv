@@ -1,0 +1,17 @@
+method,dataset,mean,std,rank
+groupdro,bias_in_bios,52.459999,3.539492,1
+maviasb,bias_in_bios,46.760000,0.594138,2
+bpa,bias_in_bios,46.280000,1.606860,3
+badd,bias_in_bios,43.140000,1.425833,4
+di,bias_in_bios,31.325000,4.195533,5
+flac,bias_in_bios,29.860000,3.464535,6
+lff,bias_in_bios,27.880000,4.043761,7
+debian,bias_in_bios,25.700001,1.643168,8
+bias_ensemble,bias_in_bios,19.620000,7.317240,9
+sd,bias_in_bios,19.100000,2.885307,10
+jtt,bias_in_bios,18.850000,5.942222,11
+end,bias_in_bios,18.675000,12.589778,12
+erm,bias_in_bios,16.933333,14.741212,13
+bb,bias_in_bios,0.000000,0.000000,14
+george,bias_in_bios,0.000000,0.000000,14
+nsf,bias_in_bios,0.000000,0.000000,14

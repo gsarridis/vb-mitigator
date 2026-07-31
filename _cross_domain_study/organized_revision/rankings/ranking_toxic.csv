@@ -1,0 +1,16 @@
+method,dataset,mean,std,rank
+flac,toxic,95.818182,2.520804,1
+badd,toxic,95.515152,0.943781,2
+maviasb,toxic,94.000000,1.058439,3
+groupdro,toxic,93.999998,2.653895,4
+lff,toxic,81.757576,0.582891,5
+debian,toxic,81.616161,0.682100,6
+end,toxic,81.575757,0.691017,7
+jtt,toxic,80.787880,1.462731,8
+george,toxic,74.303030,0.919136,9
+di,toxic,74.242424,1.303380,10
+erm,toxic,73.535353,0.366986,11
+sd,toxic,72.848485,0.345510,12
+bias_ensemble,toxic,70.909091,1.880254,13
+bpa,toxic,70.303030,3.956838,14
+bb,toxic,14.000000,0.840875,15

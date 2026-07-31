@@ -1,0 +1,16 @@
+method,dataset,mean,std,rank
+di,chexpert_nih_s07,75.800000,3.439477,1
+bb,chexpert_nih_s07,74.433333,0.351188,2
+debian,chexpert_nih_s07,73.666667,0.832666,3
+bias_ensemble,chexpert_nih_s07,72.350000,3.747666,4
+flac,chexpert_nih_s07,72.133333,1.069268,5
+maviasb,chexpert_nih_s07,72.066667,1.106044,6
+sd,chexpert_nih_s07,71.633333,2.631223,7
+erm,chexpert_nih_s07,71.433333,1.504438,8
+lff,chexpert_nih_s07,71.233333,3.868247,9
+bpa,chexpert_nih_s07,70.466667,3.855299,10
+end,chexpert_nih_s07,69.900000,0.264575,11
+george,chexpert_nih_s07,69.500000,1.385641,12
+badd,chexpert_nih_s07,69.033333,5.804596,13
+groupdro,chexpert_nih_s07,63.800000,5.930430,14
+jtt,chexpert_nih_s07,62.266667,3.667879,15

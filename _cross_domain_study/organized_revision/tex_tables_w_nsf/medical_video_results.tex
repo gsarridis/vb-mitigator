@@ -1,0 +1,35 @@
+% Add to your LaTeX preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{xcolor}
+% \newcommand{\std}[1]{{\scriptsize$\pm$#1}}
+
+\begin{table}[ht]
+\centering
+\caption{erformance on CheXpert + NIH and UCF101+SCUBA datasets.}
+\label{tab:medical_video_results}
+\begin{tabular}{llll}
+\toprule
+\multirow{2}{*}{Method} & \multicolumn{2}{c}{CheXpert + NIH} & UCF101+SCUBA \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-4}
+ & Avg Acc & WG Acc & Acc \\
+\midrule
+Vanilla & 61.2\std{3.4} & 31.0\std{3.9} & 72.0\std{0.3} \\
+BB & 70.8\std{3.9} {\color{blue}(+9.6)} & 61.1\std{7.3} {\color{blue}(+30.1)} & 69.4\std{2.3} {\color{red}(-2.6)} \\
+Debian & 62.1\std{2.8} {\color{blue}(+0.9)} & 31.8\std{8.2} {\color{blue}(+0.8)} & 70.1\std{1.6} {\color{red}(-1.9)} \\
+DI & 69.0\std{1.4} {\color{blue}(+7.8)} & 59.3\std{4.4} {\color{blue}(+28.3)} & 46.6\std{3.7} {\color{red}(-25.4)} \\
+EnD & 61.7\std{4.2} {\color{blue}(+0.5)} & 31.5\std{2.5} {\color{blue}(+0.5)} & 72.5\std{1.1} {\color{blue}(+0.5)} \\
+GroupDro & 58.0\std{1.9} {\color{red}(-3.2)} & 12.5\std{10.2} {\color{red}(-18.5)} & 69.0\std{2.2} {\color{red}(-3.0)} \\
+JTT & 54.8\std{3.5} {\color{red}(-6.4)} & 20.1\std{9.5} {\color{red}(-10.9)} & 65.4\std{1.4} {\color{red}(-6.6)} \\
+LfF & 60.8\std{4.4} {\color{red}(-0.4)} & 25.0\std{10.3} {\color{red}(-6.0)} & 72.6\std{1.0} {\color{blue}(+0.6)} \\
+SD & 59.0\std{4.4} {\color{red}(-2.2)} & 25.2\std{9.6} {\color{red}(-5.8)} & 74.5\std{1.2} {\color{blue}(+2.5)} \\
+NSF & 61.2\std{0.2} {\color{blue}(+0.0)} & 17.4\std{0.7} {\color{red}(-13.6)} & 68.9\std{0.1} {\color{red}(-3.1)} \\
+GEORGE & 59.1\std{4.1} {\color{red}(-2.1)} & 32.3\std{17.5} {\color{blue}(+1.3)} & 54.6\std{1.6} {\color{red}(-17.4)} \\
+BE & 57.2\std{10.1} {\color{red}(-4.0)} & 15.0\std{20.7} {\color{red}(-16.0)} & 74.0\std{0.8} {\color{blue}(+2.0)} \\
+BPA & 58.6\std{4.0} {\color{red}(-2.6)} & 39.0\std{2.6} {\color{blue}(+8.0)} & 75.7\std{0.2} {\color{blue}(+3.7)} \\
+FLAC & 52.9\std{3.8} {\color{red}(-8.3)} & 46.3\std{5.8} {\color{blue}(+15.3)} & 73.4\std{1.2} {\color{blue}(+1.4)} \\
+BAdd & 72.1\std{2.3} {\color{blue}(+10.9)} & 64.4\std{5.3} {\color{blue}(+33.4)} & 73.2\std{2.7} {\color{blue}(+1.2)} \\
+MAVIAS & 68.7\std{1.5} {\color{blue}(+7.5)} & 55.0\std{3.8} {\color{blue}(+24.0)} & 76.1\std{1.1} {\color{blue}(+4.1)} \\
+\bottomrule
+\end{tabular}
+\end{table}

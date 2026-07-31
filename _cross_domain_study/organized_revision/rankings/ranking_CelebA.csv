@@ -1,0 +1,16 @@
+dataset,method,wg_accuracy,rank
+CelebA,BAdd,88.98,1.0
+CelebA,BB,85.68,2.0
+CelebA,DI,84.88,3.0
+CelebA,MAVias,84.88,3.0
+CelebA,FLAC,84.32,4.0
+CelebA,JTT,74.68,5.0
+CelebA,BPA,73.48,6.0
+CelebA,GEORGE,68.22,7.0
+CelebA,bias_ensemble,66.76,8.0
+CelebA,LfF,58.58,9.0
+CelebA,EnD,54.56,10.0
+CelebA,SD,52.1,11.0
+CelebA,Debian,49.22,12.0
+CelebA,GroupDRO,48.88,13.0
+CelebA,ERM,34.34,14.0

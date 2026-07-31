@@ -1,0 +1,34 @@
+% Add to your LaTeX preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{xcolor}
+% \newcommand{\std}[1]{{\scriptsize$\pm$#1}}
+
+\begin{table}[ht]
+\centering
+\caption{Performance on UCF101+SCUBA dataset.}
+\label{tab:video_org_results}
+\begin{tabular}{ll}
+\toprule
+\multirow{2}{*}{Method} & UCF101+SCUBA \\
+\cmidrule(lr){2-2}
+ & Acc \\
+\midrule
+Vanilla & 47.0\std{1.0} \\
+BB & 40.4\std{2.7} {\color{red}(-6.6)} \\
+Debian & 46.4\std{2.0} {\color{red}(-0.6)} \\
+DI & 39.4\std{2.5} {\color{red}(-7.6)} \\
+EnD & 47.5\std{1.6} {\color{blue}(+0.5)} \\
+GroupDro & 43.1\std{3.0} {\color{red}(-3.9)} \\
+JTT & 47.6\std{1.5} {\color{blue}(+0.6)} \\
+LfF & 47.2\std{0.4} {\color{blue}(+0.2)} \\
+SD & 47.6\std{0.8} {\color{blue}(+0.6)} \\
+GEORGE & 43.5\std{1.5} {\color{red}(-3.5)} \\
+BE & 48.3\std{0.1} {\color{blue}(+1.3)} \\
+BPA & 46.5\std{1.4} {\color{red}(-0.5)} \\
+FLAC & 48.5\std{1.6} {\color{blue}(+1.5)} \\
+BAdd & 45.9\std{4.2} {\color{red}(-1.1)} \\
+MAVIAS & 50.6\std{1.0} {\color{blue}(+3.6)} \\
+\bottomrule
+\end{tabular}
+\end{table}

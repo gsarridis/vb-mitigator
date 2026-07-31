@@ -1,0 +1,30 @@
+EXPERIMENT:
+  NAME: "erm"
+  TAG: "multi_pretrained"
+  PROJECT: "imagenet9m_baselines"
+DATASET:
+  TYPE: "imagenet9m"
+  BIASES: ["jpeg", "resize"]
+  IMAGENET9M:
+    SCENARIO: "multi"
+    CLASSES: [1, 5]
+    CORRELATION_JPEG: 0.5
+    CORRELATION_RESIZE: 0.5
+    # multi uses exactly 2 bias classes per type (index 0 -> target 0, index 1 -> target 1)
+    JPEG_CLASSES: [[95, "4:4:4"], [95, "4:4:4"]]
+    RESIZE_CLASSES: [1.0, 1.0]
+MITIGATOR:
+  TYPE: "erm"
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 30
+  LR: 0.001
+  TYPE: "Adam"
+  WEIGHT_DECAY: 1e-4
+  SCHEDULER:
+    LR_DECAY_STAGES: [25]
+    LR_DECAY_RATE: 0.1
+MODEL:
+  TYPE: "resnet18"
+  PRETRAINED: False
+METRIC: "wg_ovr"
